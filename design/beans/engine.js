@@ -19,11 +19,11 @@ Engine.prototype.start = function() {
 
 module.exports = {
 	id: "engine",
+	order: 2,
 	func: Engine,
+	asyncInit: true,
 	initMethod: "init",
 	destroyMethod: "destroy",
-	asyncInit: true,
-	order: 2
 	// props: [{
 	// 	name: "car",
 	// 	ref: "car"

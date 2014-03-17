@@ -22,20 +22,26 @@ var main = function() {
 	// engine.start();
 	car1.run();
 
-	var countDownLatch = beanFactory.getBean("countDownLatch", 1, function() {
-		console.log("done");
-	});
+	// var countDownLatch = beanFactory.getBean("countDownLatch", 1, function() {
+	// 	console.log("done");
+	// });
 
-	countDownLatch.done();
+	// countDownLatch.done();
 	// var car = beanFactory.getBean("car");
 }
 
 var testApplicationContext = function() {
-	var applicationContext = new ApplicationContext();
+	var paths = ["moduleA/context.json"];
+	var applicationContext = new ApplicationContext(paths);
 	applicationContext.refresh();
 
-	var beanFactory = applicationContext.getBeanFactory();
-	beanFactory.destroySingletons();
+	// setTimeout(function() {
+		console.log('applicationContext refresh');
+		applicationContext.refresh();
+	// }, 10000);
+
+
+	// applicationContext.destroyBeans();
 }
 
 var testResourceLoader = function() {
@@ -48,6 +54,6 @@ process.env.LOGGER_LINE = true;
 
 // main();
 
-// testApplicationContext();
+testApplicationContext();
 
-testResourceLoader();
+// testResourceLoader();
