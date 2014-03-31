@@ -1,3 +1,3 @@
-module.exports = process.env.POMELO_COV ?
-  require('./lib-cov/pomelo-web') :
-  require('./lib/pomelo-web');
+module.exports = process.env.BEARCAT_COV ?
+	require('./lib-cov/bearcat') :
+	require('./lib/bearcat');

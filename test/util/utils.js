@@ -104,5 +104,63 @@ describe('utils', function() {
 
 			done();
 		});
+
+		it('should getLoadPath right', function(done) {
+			var p = require.resolve('../moduleA/context.json');
+			var loadPath = utils.getLoadPath('beans.wheel', p);
+
+			var bean = require(loadPath);
+			bean.should.be.exist;
+
+			done();
+		});
+
+		it('should requireUncached right', function(done) {
+			var p = require.resolve('../moduleA/context.json');
+			var obj = utils.requireUncached(p);
+
+			obj.should.be.exist;
+			done();
+		});
+
+		it('should checkFileType right', function(done) {
+			var ret = utils.checkFileType('js', 'js');
+
+			ret.should.be.false;
+
+			ret = utils.checkFileType('a.js', 'js');
+			ret.should.be.true;
+
+			done();
+		});
+
+		it('should check isFile right', function(done) {
+			var p = require.resolve('./beanUtil');
+			var ret = utils.isFile(p);
+			ret.should.be.true;
+
+			ret = utils.isFile(__dirname);
+			ret.should.be.false;
+
+			done();
+		});
+
+		it('should check isDir right', function(done) {
+			var ret = utils.isDir(__dirname);
+			ret.should.be.true;
+
+			var p = require.resolve('./beanUtil');
+			ret = utils.isDir(p);
+			ret.should.be.false;
+
+			done();
+		});
+
+		it('should getFileName right', function(done) {
+			var fn = utils.getFileName('a.js', 3);
+			fn.should.equal('a');
+
+			done();
+		});
 	});
 });

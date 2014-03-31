@@ -1,0 +1,13 @@
+{
+	"name": "design",
+	"dependencies": {
+		"moduleB": "*"
+	},
+	"beans": [{
+		"func": "beans.wheel",
+		"id": "wheel",
+		"initMethod": "init",
+		"destroyMethod": "destroy",
+		"order": 3
+	}]
+}
