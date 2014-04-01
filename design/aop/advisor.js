@@ -6,11 +6,12 @@ advisor.prototype.log = function() {
 	console.log('advisor aop log');
 }
 
+
 module.exports = {
-	"id": "advisor",
+	id: "advisor",
 	func: advisor,
 	aop: [{
-		"pointcut": "",
+		"pointcut": "before:aop.car.runLog",
 		"advice": "log"
 	}]
 }

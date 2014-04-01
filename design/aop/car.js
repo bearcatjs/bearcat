@@ -4,6 +4,6 @@ var car = function() {
 
 module.exports = car;
 
-car.prototype.run = function(num) {
-	console.log('car run... ' + num);
+car.prototype.runLog = function() {
+	console.log('car run... ');
 }
