@@ -17,8 +17,7 @@
   ],
   "dependencies": {
     "pomelo-logger": "0.1.x",
-    "async": "*",
-    "log4js": "*"
+    "async": "*"
   },
   "author": "fantasyni",
   "license": "MIT",

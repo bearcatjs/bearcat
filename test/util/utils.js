@@ -83,6 +83,9 @@ describe('utils', function() {
 			ret = utils.isNotNull(1);
 			ret.should.be.true;
 
+			ret = utils.isNotNull(0);
+			ret.should.be.true;
+
 			ret = utils.isNotNull({});
 			ret.should.be.true;
 
@@ -91,6 +94,9 @@ describe('utils', function() {
 
 			ret = utils.isNotNull(null);
 			ret.should.be.false;
+
+			ret = utils.isNotNull(false);
+			ret.should.be.true;
 
 			done();
 		});
