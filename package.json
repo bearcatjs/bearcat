@@ -16,8 +16,7 @@
     "MVC"
   ],
   "dependencies": {
-    "pomelo-logger": "0.1.x",
-    "async": "*"
+    "pomelo-logger": "0.1.x"
   },
   "author": "fantasyni",
   "license": "MIT",
