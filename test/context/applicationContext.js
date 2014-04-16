@@ -295,6 +295,110 @@ describe('applicationContext', function() {
 				id: "acar"
 			});
 
+			var abcar = applicationContext.getBeanByMeta({});
+
+			applicationContext.registerBeanMeta({});
+
+			done();
+		});
+	});
+
+	describe('startUpDate', function() {
+		it('should startUpDate right', function(done) {
+			var simplepath = require.resolve('../../examples/simple/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+
+			applicationContext.refresh();
+
+			applicationContext.setStartupDate(Date.now());
+			applicationContext.getStartupDate();
+
+			done();
+		});
+	});
+
+	describe('refreshBeanFactory', function() {
+		it('should refreshBeanFactory right', function(done) {
+			var simplepath = require.resolve('../../examples/simple/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+
+			applicationContext.refresh();
+
+			applicationContext.refresh();
+
+			applicationContext.cancelRefresh();
+
+			done();
+		});
+	});
+
+	describe('get set', function() {
+		it('should get set right', function(done) {
+			var simplepath = require.resolve('../../examples/simple/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+
+			applicationContext.refresh();
+
+			var r = applicationContext.getEnv();
+			r.should.eql('dev');
+
+			r = applicationContext.isRunning();
+			r.should.eql(true);
+
+			r = applicationContext.containsBean('car');
+			r.should.eql(true);
+
+			r = applicationContext.isSingleton('car');
+			r.should.eql(true);
+
+			r = applicationContext.isPrototype('car');
+			r.should.eql(false);
+
+			r = applicationContext.containsBeanDefinition('car');
+			r.should.eql(true);
+
+			r = applicationContext.getBeanDefinition('car');
+			r.should.exist;
+
+			applicationContext.removeBeanDefinition('car');
+			r = applicationContext.containsBeanDefinition('car');
+			r.should.eql(false);
+
+			done();
+		});
+	});
+
+	describe('placeholder', function() {
+		it('should placeholder right', function(done) {
+			var simplepath = require.resolve('../../examples/placeholder/context.json');
+			var paths = [simplepath];
+			var path = require('path');
+
+			var configPath = path.dirname(simplepath) + '/config';
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.setConfigPath(configPath);
+			applicationContext.refresh();
+
+			var car = applicationContext.getBean('car');
+			var r = car.run();
+			r.should.exist;
+			r.should.eql('car100');
+
+			applicationContext.setEnv('prod');
+			applicationContext.refresh();
+
+			car = applicationContext.getBean('car');
+			r = car.run();
+			r.should.exist;
+			r.should.eql('car1000');
+
 			done();
 		});
 	});
