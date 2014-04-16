@@ -1,4 +1,6 @@
-var ApplicationContext = require('../../lib/context/applicationContext');
+var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
+
+var ApplicationContext = require('../../' + lib + '/context/applicationContext');
 var should = require('should');
 
 describe('applicationContext', function() {
@@ -48,6 +50,23 @@ describe('applicationContext', function() {
 			var r = car.run();
 			r.should.exist;
 			r.should.eql('car');
+
+			done();
+		});
+	});
+
+	describe('simple_meta_merge', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/simple_meta_merge/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.refresh();
+
+			var car = applicationContext.getBean('car');
+			var r = car.run();
+			r.should.exist;
+			r.should.eql('car' + 100);
 
 			done();
 		});
@@ -236,6 +255,47 @@ describe('applicationContext', function() {
 				done();
 			})
 			applicationContext.refresh();
+		});
+	});
+
+	describe('getBeanByMeta', function() {
+		it('should getBeanByMeta right', function(done) {
+			var simplepath = require.resolve('../../examples/simple/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+
+			applicationContext.refresh();
+
+			var CarM = function() {
+
+			}
+
+			CarM.prototype.run = function(num) {
+				console.log('mcar' + num);
+				return 'mcar' + num;
+			}
+
+			CarM.prototype.dyInit = function() {
+
+			}
+
+			CarM.prototype.a = 1;
+			var mcar = applicationContext.getBeanByMeta({
+				id: "mcar",
+				func: CarM
+			});
+
+			var r = mcar.run(100);
+			r.should.eql('mcar' + 100);
+
+			// mcar.dyInit();
+
+			var acar = applicationContext.getBeanByMeta({
+				id: "acar"
+			});
+
+			done();
 		});
 	});
 });

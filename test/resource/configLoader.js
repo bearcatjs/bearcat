@@ -1,4 +1,6 @@
-var ConfigLoader = require('../../lib/resource/configLoader');
+var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
+
+var ConfigLoader = require('../../' + lib + '/resource/configLoader');
 var should = require('should');
 
 describe('configLoader', function() {

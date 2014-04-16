@@ -1,7 +1,9 @@
-var beanWrapper = require('../../lib/beans/support/beanWrapper');
+var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
+
+var beanWrapper = require('../../' + lib + '/beans/support/beanWrapper');
 var mock_args = require('../mock-base/mock-arg-props');
-var beanUtil = require('../../lib/util/beanUtil');
-var constant = require('../../lib/util/constant');
+var beanUtil = require('../../' + lib + '/util/beanUtil');
+var constant = require('../../' + lib + '/util/constant');
 var should = require('should');
 
 describe('beanUtil', function() {
@@ -161,8 +163,33 @@ describe('beanUtil', function() {
 		});
 	});
 
-	describe('#buildBeanWrapper', function() {
-		it('should buildBeanWrapper t1 ok', function(done) {
+	describe('#getBeanSettingsMap', function() {
+		it('should getBeanSettingsMap t1 ok', function(done) {
+
+			var r = beanUtil.getBeanSettingsMap(1);
+			r.should.eql({});
+
+			var mock = function() {
+
+			}
+
+			mock.prototype.getName = function() {
+				return '';
+			}
+
+			r = beanUtil.getBeanSettingsMap([new mock()]);
+			r.should.eql({});
+			done();
+		});
+	});
+
+	describe('#getBeanSettingsArray', function() {
+		it('should getBeanSettingsArray t1 ok', function(done) {
+
+			var r = beanUtil.getBeanSettingsArray(null);
+			console.log(r);
+			r.should.eql([]);
+
 			done();
 		});
 	});

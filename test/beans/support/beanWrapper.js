@@ -1,5 +1,7 @@
-var BeanWrapper = require('../../../lib/beans/support/beanWrapper');
-var Constant = require('../../../lib/util/constant');
+var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
+
+var BeanWrapper = require('../../../' + lib + '/beans/support/beanWrapper');
+var Constant = require('../../../' + lib + '/util/constant');
 var should = require('should');
 
 describe('beanWrapper', function() {

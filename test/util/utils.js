@@ -1,6 +1,8 @@
+var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
+
 var mock_args = require('../mock-base/mock-arg-props');
-var utils = require('../../lib/util/utils');
-var constant = require('../../lib/util/constant');
+var utils = require('../../' + lib + '/util/utils');
+var constant = require('../../' + lib + '/util/constant');
 var should = require('should');
 
 describe('utils', function() {
@@ -108,6 +110,8 @@ describe('utils', function() {
 			var myBeanUtil = utils.myRequire('../../lib/util/beanUtil');
 			myBeanUtil.should.be.exist;
 
+			var a = utils.myRequire('a');
+
 			done();
 		});
 
@@ -117,6 +121,8 @@ describe('utils', function() {
 
 			var bean = require(loadPath);
 			bean.should.be.exist;
+
+			var r = utils.getLoadPath(null, p);
 
 			done();
 		});
@@ -165,6 +171,28 @@ describe('utils', function() {
 		it('should getFileName right', function(done) {
 			var fn = utils.getFileName('a.js', 3);
 			fn.should.equal('a');
+
+			fn = utils.getFileName('a', 2);
+			fn.should.equal('a');
+
+			done();
+		});
+
+		it('should compareByOrder right', function(done) {
+			var Car = require('../mock-base/mock-compare');
+			var car1 = new Car();
+			car1.setOrder(2);
+
+			var car2 = new Car();
+			car2.setOrder(0);
+
+			var r = utils.compareByOrder(car1, car2);
+			r.should.equal(-1);
+
+			done();
+		});
+
+		it('should parseArgs right', function(done) {
 
 			done();
 		});
