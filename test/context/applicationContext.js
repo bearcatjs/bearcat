@@ -55,6 +55,18 @@ describe('applicationContext', function() {
 		});
 	});
 
+	describe('simple_meta_error', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/simple_meta_error/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.refresh();
+
+			done();
+		});
+	});
+
 	describe('simple_meta_merge', function() {
 		it('should get bean right', function(done) {
 			var simplepath = require.resolve('../../examples/simple_meta_merge/context.json');
@@ -67,6 +79,20 @@ describe('applicationContext', function() {
 			var r = car.run();
 			r.should.exist;
 			r.should.eql('car' + 100);
+
+			done();
+		});
+	});
+
+	describe('simple_meta_mismatch', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/simple_meta_mismatch/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.refresh();
+
+			var car = applicationContext.getBean('car');
 
 			done();
 		});
@@ -222,6 +248,25 @@ describe('applicationContext', function() {
 		});
 	});
 
+
+	describe('simple_factory_bean_error', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/simple_factory_bean_error/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.on('finishRefresh', function() {
+				var car = applicationContext.getBean('car');
+				// var r = car.run();
+				// r.should.exist;
+				// r.should.eql('car 0');
+
+				done();
+			})
+			applicationContext.refresh();
+		});
+	});
+
 	describe('simple_module_inject', function() {
 		it('should get bean right', function(done) {
 			var simplepath = require.resolve('../../examples/simple_module_inject/context.json');
@@ -321,7 +366,7 @@ describe('applicationContext', function() {
 
 	describe('refreshBeanFactory', function() {
 		it('should refreshBeanFactory right', function(done) {
-			var simplepath = require.resolve('../../examples/simple/context.json');
+			var simplepath = require.resolve('../../examples/simple_inject/context.json');
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -398,6 +443,34 @@ describe('applicationContext', function() {
 			r = car.run();
 			r.should.exist;
 			r.should.eql('car1000');
+
+			done();
+		});
+	});
+
+	describe('circle reference', function() {
+		it('should circle reference right', function(done) {
+			var simplepath = require.resolve('../../examples/circle_reference/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+
+			applicationContext.refresh();
+
+			applicationContext.getBean('xxx');
+
+			done();
+		});
+	});
+
+	describe('context path null', function() {
+		it('should context path right', function(done) {
+			var simplepath = require.resolve('../../examples/circle_reference/context.json') + 1;
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+
+			applicationContext.refresh();
 
 			done();
 		});
