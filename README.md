@@ -1,5 +1,29 @@
-## Bearcat
-Bearcat is application framework which provides a lightweight container for writing simple, maintainable [node.js](http://nodejs.org/). Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat    enables you to build applications from "plain old javaScript object"(POJOS) and to apply enterprise services non-invasively to POJOs.
+## Bearcat -- a POJOs based application framework
+Bearcat is a POJOs based application framework which provides a lightweight container for writing simple, maintainable [node.js](http://nodejs.org/). Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJOS) and to apply enterprise services non-invasively to POJOs.
+
+## Features
+### lightweight container
+
+* Dependency injection implementated Inversion of Control(IoC) to manage POJOs
+* AOP based declarative middleware services
+* Consistent development and configuration
+
+### Easy
+
+* Simple meta configuration and POJOs
+* Lightweight: high development efficiency based on node.js
+* Reuseable: POJOs can be used to any development environment
+* Invasive: there's no dependence on a container API
+* Modular: you just use only those parts that you need
+* One stop shop: no need for a dedicated Singleton or factory for every object etc
+
+### Powerful
+
+* Good reference materials: full docs, many examples includes [web based todo](https://github.com/bearcatnode/todo), [realtime based app](https://github.com/bearcatnode/chatofpomelo-websocket)
+* well-tested: test cases coverage is over 95%
+
+### Extensible
+* Custom features: you can add custom codes to container
 
 ## License
 
