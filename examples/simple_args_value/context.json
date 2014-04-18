@@ -1,0 +1,11 @@
+{
+	"name": "simple",
+	"beans": [{
+		"id": "car",
+		"func": "car",
+		"args": [{
+			"name": "num",
+			"value": 100
+		}]
+	}]
+}

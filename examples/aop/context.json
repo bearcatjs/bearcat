@@ -1,0 +1,38 @@
+{
+	"name": "simple",
+	"beans": [{
+		"id": "car",
+		"func": "car"
+	}, {
+		"id": "wheel",
+		"func": "wheel"
+	}, {
+		"id": "base",
+		"func": "base",
+		"proxy": false
+	}, {
+		"id": "aspect",
+		"func": "aspect",
+		"aop": [{
+			"pointcut": "before:.*?runBefore",
+			"advice": "doBefore"
+		}, {
+			"pointcut": "before:.*?runBeforeError",
+			"advice": "doBeforeError"
+		}, {
+			"pointcut": "before:.*?runTimeBefore",
+			"advice": "doBeforeRuntime",
+			"runtime": true
+		}, {
+			"pointcut": "after:.*?runAfter",
+			"advice": "doAfter"
+		}, {
+			"pointcut": "around:.*?runAround",
+			"advice": "doAround"
+		}, {
+			"pointcut": "around:.*?runTimeAround",
+			"advice": "doAroundRuntime",
+			"runtime": true
+		}]
+	}]
+}
