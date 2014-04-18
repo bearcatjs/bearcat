@@ -1,0 +1,14 @@
+{
+	"name": "design",
+	"dependencies": {
+		"moduleB": "*"
+	},
+	"beans": [{
+		"id": "car",
+		"func": "beans.car",
+		"props": [{
+			"name": "wheel",
+			"ref": "wheel"
+		}]
+	}]
+}

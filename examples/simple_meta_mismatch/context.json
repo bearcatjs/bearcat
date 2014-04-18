@@ -1,0 +1,8 @@
+{
+	"name": "simple_meta",
+	"scope": "prototype",
+	"beans": [{
+		"id": "car",
+		"func": "car"
+	}]
+}

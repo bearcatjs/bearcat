@@ -1,0 +1,15 @@
+{
+	"name": "simple_async_init",
+	"beans": [{
+		"id": "car",
+		"func": "car",
+		"init": "init",
+		"order": 2
+	}, {
+		"id": "wheel",
+		"func": "wheel",
+		"async": true,
+		"init": "init",
+		"order": 1
+	}]
+}

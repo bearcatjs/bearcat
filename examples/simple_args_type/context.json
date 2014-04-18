@@ -1,0 +1,12 @@
+{
+	"name": "simple",
+	"beans": [{
+		"id": "car",
+		"func": "car",
+		"scope": "prototype",
+		"args": [{
+			"name": "num",
+			"type": "Number"
+		}]
+	}]
+}

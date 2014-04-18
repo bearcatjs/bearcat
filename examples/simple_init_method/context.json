@@ -1,0 +1,9 @@
+{
+	"name": "simple_init_method",
+	"beans": [{
+		"id": "car",
+		"func": "car",
+		"scope": "prototype",
+		"init": "init"
+	}]
+}

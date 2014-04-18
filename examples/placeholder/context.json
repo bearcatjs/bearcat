@@ -1,0 +1,11 @@
+{
+	"name": "simple",
+	"beans": [{
+		"id": "car",
+		"func": "car",
+		"props": [{
+			"name": "num",
+			"value": "${car.num}"
+		}]
+	}]
+}

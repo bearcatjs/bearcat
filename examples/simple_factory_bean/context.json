@@ -1,0 +1,12 @@
+{
+	"name": "simple_factory_bean",
+	"beans": [{
+		"id": "car",
+		"func": "car",
+		"factoryBean": "carFactory",
+		"factoryMethod": "createCar"
+	}, {
+		"id": "carFactory",
+		"func": "carFactory"
+	}]
+}
