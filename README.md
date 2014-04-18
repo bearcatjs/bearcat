@@ -1,10 +1,10 @@
 ## Bearcat -- a POJOs based application framework
-Bearcat is a POJOs based application framework which provides a lightweight container for writing simple, maintainable [node.js](http://nodejs.org/). Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJOS) and to apply enterprise services non-invasively to POJOs.
+Bearcat is a POJOs based application framework which provides a lightweight container for writing simple, maintainable [node.js](http://nodejs.org/). Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJO) and to apply enterprise services non-invasively to POJOs.
 
 ## Features
 ### lightweight container
 
-* Dependency injection implementated Inversion of Control(IoC) to manage POJOs
+* Dependency injection implementated Inversion of Control (IoC) to manage POJOs
 * AOP based declarative middleware services
 * Consistent development and configuration
 
