@@ -1,8 +1,0 @@
-{
-  "name": "design",
-  // "beans": [{
-  //   "id": "car",
-  //   "class": "design.beans.car"
-  // }],
-  "scan": "beans"
-}
