@@ -25,6 +25,29 @@ Bearcat is a POJOs based application framework which provides a lightweight cont
 ### Extensible
 * Custom features: you can add custom codes to container
 
+## What is POJO ? 
+POJO is an acronym for Plain Old Java Object, you can refer to [POJO wikipedia](http://en.wikipedia.org/wiki/Plain_Old_Java_Object). It is mostly used in Java Platform which is used to emphasize that a given object is an ordinary Java Object, not a special object.   
+In Node, what is POJO ?  
+It must be Plain Old JavaScript Object, which is simple, ordinary, and not anonymous.  
+To be not anonymous, it must have Constructor function.  
+So POJO can be like this:  
+```
+var POJO = function() {
+	this.props = null;
+}
+
+POJO.prototype.method = function() {
+	
+}
+
+module.exports = POJO;
+```  
+
+## Why should we use POJO ? 
+* POJO is simple, everyone can write it  
+* POJO makes development consistently, all your codes is POJOs  
+* POJO makes it friendly to document  
+
 ## License
 
 (The MIT License)
