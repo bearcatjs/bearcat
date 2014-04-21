@@ -26,7 +26,7 @@
     "should": ">=0.0.1",
     "mocha": ">=0.0.1",
     "socket.io-client": ">=0.0.1",
-    "jscoverage": ">=0.0.1",
+    "jscoverage": "0.3.3",
     "muk": ">=0.0.1",
     "grunt": "~0.4.2",
     "grunt-mocha-test": "0.8.x",
