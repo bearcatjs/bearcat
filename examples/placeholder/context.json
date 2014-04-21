@@ -6,6 +6,14 @@
 		"props": [{
 			"name": "num",
 			"value": "${car.num}"
-		}]
+		}],
+		"args": [{
+			"name": "anum",
+			"value": "${car.anum}"
+		}],
+		"parent": "${car.parent}"
+	}, {
+		"id": "bus",
+		"func": "bus"
 	}]
 }

@@ -1,0 +1,8 @@
+{
+	"name": "simple_lazy_init",
+	"beans": [{
+		"id": "car",
+		"func": "car",
+		"lazy": true
+	}]
+}
