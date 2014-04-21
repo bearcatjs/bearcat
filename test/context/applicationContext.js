@@ -297,6 +297,11 @@ describe('applicationContext', function() {
 				r.should.exist;
 				r.should.eql('bus 100');
 
+				var tank = applicationContext.getBean('tank');
+				r = tank.run();
+				r.should.exist;
+				r.should.eql('tank 100');
+
 				done();
 			})
 			applicationContext.refresh();
@@ -471,6 +476,40 @@ describe('applicationContext', function() {
 			var applicationContext = new ApplicationContext(paths);
 
 			applicationContext.refresh();
+
+			done();
+		});
+	});
+
+	describe('simple_imports_context', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/simple_imports_context/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.refresh();
+
+			var car = applicationContext.getBean('car');
+			var r = car.run();
+			r.should.exist;
+			r.should.eql('car');
+
+			done();
+		});
+	});
+
+	describe('simple_lazy_init', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/simple_lazy_init/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.refresh();
+
+			var car = applicationContext.getBean('car');
+			var r = car.run();
+			r.should.exist;
+			r.should.eql('car');
 
 			done();
 		});

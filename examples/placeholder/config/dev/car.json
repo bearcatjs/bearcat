@@ -1,3 +1,5 @@
 {
-	"car.num": 100
+	"car.num": 100,
+	"car.anum": 101,
+	"parent": "bus"
 }
