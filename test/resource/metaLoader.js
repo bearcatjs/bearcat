@@ -11,7 +11,7 @@ describe('metaLoader', function() {
 			metaLoader.load(require.resolve('./configLoader'));
 			var path = require('path');
 			var emptypath = require.resolve('../mock-base/mock-meta.js');
-			metaLoader.loadPath({}, path.dirname(emptypath) + '/empty');
+			// metaLoader.loadPath({}, path.dirname(emptypath) + '/empty');
 			done();
 		});
 	});
