@@ -21,7 +21,7 @@ Bearcat is a POJOs based application framework which provides a lightweight cont
 
 ### Powerful
 
-* Good reference materials: full docs, many examples includes [web todo](https://github.com/bearcatnode/todo), [realtime app](https://github.com/bearcatnode/chatofpomelo-websocket)
+* Good reference materials: full [docs](https://github.com/bearcatnode/bearcat/wiki), many examples includes [web todo](https://github.com/bearcatnode/todo), [realtime app](https://github.com/bearcatnode/chatofpomelo-websocket)
 * well-tested: test cases coverage is over 95%
 
 ### Extensible
