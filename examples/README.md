@@ -1,6 +1,6 @@
 these are examples of Bearcat framework  
 
-just examples will be like this:  
+run examples will be like this:  
 ```
 var Bearcat = require('bearcat');
 var contextPath = require.resolve('./context.json');
