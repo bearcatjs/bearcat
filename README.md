@@ -56,6 +56,24 @@ module.exports = POJO;
 * POJO makes development consistently, all your codes is POJOs  
 * POJO makes it friendly to document  
 
+## Usage
+Running bearcat is quite simple, all you have to do is to write simple POJOs and simple configuration metadatas like context.json, after this, passing context.json paths to bearcat, and run it, then all your POJOs will be magicly turned into an elastic, maintainable system.  
+
+```
+var Bearcat = require('bearcat');
+var contextPath = require.resolve('./context.json');
+
+var bearcat = Bearcat.createApp([contextPath]);
+bearcat.start(function(){
+   var helloBearcat = bearcat.getBean('helloBearcat'); // get bean
+   helloBearcat.hello(); // call the method
+});
+```
+
+Codes written by simple POJOs and simple configuration metadatas can be run without Bearcat, however, in this case, you should have to do a lot of things by yourself, like handling dependency, configuration  
+
+more bearcat apis can be refered to [bearcat-api](http://bearcatnode.github.io/bearcat/bearcat-api.html)
+
 ## License
 
 (The MIT License)
