@@ -37,7 +37,17 @@
 
 <p><a href="https://travis-ci.org/bearcatnode/bearcat"><img src="https://travis-ci.org/bearcatnode/bearcat.svg?branch=master" alt="Build Status"></a></p>
 
-<h2>
+<ul>
+<li>Homepage: <a href="http://bearcatnode.github.io/bearcat/">http://bearcatnode.github.io/bearcat/</a>
+</li>
+<li>Mailing list: <a href="https://groups.google.com/group/bearcatnode/">https://groups.google.com/group/bearcatnode/</a>
+</li>
+<li>Wiki: <a href="https://github.com/bearcatnode/bearcat/wiki/">https://github.com/bearcatnode/bearcat/wiki/</a>
+</li>
+<li>Issues: <a href="https://github.com/bearcatnode/bearcat/issues/">https://github.com/bearcatnode/bearcat/issues/</a>
+</li>
+<li>Tags: nodejs, POJO, IoC, AOP, consistent configuration</li>
+</ul><h2>
 <a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <h3>
@@ -63,7 +73,7 @@
 <ul>
 <li>Good reference materials: full <a href="https://github.com/bearcatnode/bearcat/wiki">docs</a>, many examples includes <a href="https://github.com/bearcatnode/todo">web todo</a>, <a href="https://github.com/bearcatnode/chatofpomelo-websocket">realtime app</a>
 </li>
-<li>well-tested: test cases coverage is over 95%</li>
+<li>well-tested: test cases <a href="http://bearcatnode.github.io/bearcat/coverage.html">coverage</a> is over 95%</li>
 </ul><h3>
 <a name="extensible" class="anchor" href="#extensible"><span class="octicon octicon-link"></span></a>Extensible</h3>
 
@@ -100,6 +110,25 @@ module.exports = POJO;
 <li>POJO makes it friendly to document<br>
 </li>
 </ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Running bearcat is quite simple, all you have to do is to write simple POJOs and simple configuration metadatas like context.json, after this, passing context.json paths to bearcat, and run it, then all your POJOs will be magicly turned into an elastic, maintainable system.  </p>
+
+<pre><code>var Bearcat = require('bearcat');
+var contextPath = require.resolve('./context.json');
+
+var bearcat = Bearcat.createApp([contextPath]);
+bearcat.start(function(){
+   var helloBearcat = bearcat.getBean('helloBearcat'); // get bean
+   helloBearcat.hello(); // call the method
+});
+</code></pre>
+
+<p>Codes written by simple POJOs and simple configuration metadatas can be run without Bearcat, however, in this case, you should have to do a lot of things by yourself, like handling dependency, configuration  </p>
+
+<p>more bearcat apis can be refered to <a href="http://bearcatnode.github.io/bearcat/bearcat-api.html">bearcat-api</a></p>
+
+<h2>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>(The MIT License)</p>
