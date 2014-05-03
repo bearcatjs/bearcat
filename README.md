@@ -3,6 +3,12 @@ Bearcat is a POJOs based application framework which provides a lightweight cont
 
 [![Build Status](https://travis-ci.org/bearcatnode/bearcat.svg?branch=master)](https://travis-ci.org/bearcatnode/bearcat)
 
+ * Homepage: <http://bearcatnode.github.io/bearcat/>
+ * Mailing list: <https://groups.google.com/group/bearcatnode/>
+ * Wiki: <https://github.com/bearcatnode/bearcat/wiki/>
+ * Issues: <https://github.com/bearcatnode/bearcat/issues/>
+ * Tags: nodejs, POJO, IoC, AOP, consistent configuration
+
 ## Features
 ### lightweight container
 
