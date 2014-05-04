@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  
+  <title> Write simple, maintainable Nodejs   编写简单, 可维护的Nodejs</title>
+  
+  <meta name="description" content="A jQuery library for modern HTML presentations">
+  <meta name="author" content="Caleb Troughton">
+  <!--meta name="viewport" content="width=1024, user-scalable=no"-->
+  <meta name="viewport" content="width=device-width, initial-scale=1，user-scalable=no"/>
+  
+  <!-- Core and extension CSS files -->
+  <link rel="stylesheet" href="./deck.js/core/deck.core.css">
+  <link rel="stylesheet" href="./deck.js/extensions/goto/deck.goto.css">
+  <link rel="stylesheet" href="./deck.js/extensions/menu/deck.menu.css">
+  <link rel="stylesheet" href="./deck.js/extensions/navigation/deck.navigation.css">
+  <link rel="stylesheet" href="./deck.js/extensions/status/deck.status.css">
+  <link rel="stylesheet" href="./deck.js/extensions/hash/deck.hash.css">
+  
+  <!-- Theme CSS files (menu swaps these out) -->
+  <link rel="stylesheet" id="style-theme-link" href="./deck.js/themes/style/swiss.css">
+  <link rel="stylesheet" id="transition-theme-link" href="./deck.js/themes/transition/horizontal-slide.css">
+  
+  <!-- Custom CSS just for this page -->
+  <link rel="stylesheet" href="./prettify.css">
+  
+  <script src="./deck.js/modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container">
+
+
+<section class="slide"><h1>Write simple, maintainable Nodejs <br/> 编写简单, 可维护的Nodejs</h1>
+
+</section>
+
+<section class="slide">
+<h2>About me</h2>
+
+<ul>
+<li>core member from <a href="http://pomelo.netease.com/">pomelo</a> at Netease</li>
+<li>node.js hacker, over 2 years node experience</li>
+<li>not just a code farmer, but a code poet</li>
+</ul>
+
+<img src="resource/pomelo.jpg">
+</section>
+
+<section class="slide">
+<h2>Category</h2>
+
+<ul>
+<li>Overview</li>
+<li>Framework</li>
+<li>Practice</li>
+</ul>
+
+</section>
+
+<section class="slide">
+<h2>Overview -- Node.js development</h2>
+
+<p>Node.js is a platform built on <a href="https://code.google.com/p/v8/">Chrome's JavaScript runtime</a> for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.</p>
+<h3>node development is easy</h3>
+
+<pre><code>var http = require('http');
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello World\n');
+}).listen(1337, '127.0.0.1');
+console.log('Server running at http://127.0.0.1:1337/');
+</code></pre>
+
+</section>
+
+<section class="slide">
+<h2>Overview -- Node.js development</h2>
+
+<p>With <a href="https://npmjs.org/">npm</a>, a lot of modules and frameworks make node development easier</p>
+
+<a href="http://expressjs.com/">web framework -- express</a>
+<pre><code>app.get('/', function(req, res){
+  res.send('Hello World');
+});
+</code></pre>
+
+<a href="http://pomelo.netease.com/">realtime app framework -- pomelo</a>
+<pre><code>Handler.prototype.entry = function(msg, session, next) {
+  next(null, {code: 200, msg: 'game server is ok.'});
+};</code></pre>
+
+<h3>things seem to be good, however coding a lot, pains will come</h3>
+
+</section>
+
+<section class="slide">
+<h2>Overview -- Node.js development</h2>
+
+<h3>require, exports is not good enough</h3>
+
+<ul>
+  <li>you have to know where the file is, and what it is really exported and then do a lot everytime after require</li>
+  <p>require a constructor function</p>
+<pre><code>var B = require('b');
+var b = new B();
+b.run();
+</code></pre>
+<p>require a function</p>
+<pre><code>var B = require('b');
+B();
+</code></pre>
+<p>require an object</p>
+<pre><code>var B = require('b');
+B.run();
+</code></pre>
+</ul>
+
+<h3>it seems to be nothing serious... however when you require a lot...</h3>
+
+</section>
+
+<section class="slide">
+<h2>Overview -- Node.js development</h2>
+
+<h3>require, exports is not good enough</h3>
+
+<a href="https://github.com/NetEase/lordofpomelo/blob/master/game-server/app/servers/area/handler/playerHandler.js">lordofpomelo playerHandler</a>
+
+<pre><code>var messageService = require('../../../domain/messageService');
+var areaService = require('../../../services/areaService');
+var userDao = require('../../../dao/userDao');
+var bagDao = require('../../../dao/bagDao');
+var equipmentsDao = require('../../../dao/equipmentsDao');
+var taskDao = require('../../../dao/taskDao');
+var Move = require('../../../domain/action/move');
+var actionManager = require('../../../domain/action/actionManager');
+var logger = require('pomelo-logger').getLogger(__filename);
+var pomelo = require('pomelo');
+var consts = require('../../../consts/consts');
+var dataApi = require('../../../util/dataApi');
+var channelUtil = require('../../../util/channelUtil');
+var utils = require('../../../util/utils');</code></pre>
+
+<p>besides the painful counts of file directory, you have to know each file exports</p>
+<p>areaService exports a static object</p>
+<p>Move exports a constructor function</p>
+</section>
+
+<section class="slide">
+<h2>Overview -- Node.js development</h2>
+
+<h3>require, exports is not good enough</h3>
+
+<a href="https://github.com/cnodejs/nodeclub/blob/master/controllers/topic.js">nodeclub topic.js</a>
+
+<pre><code>var sanitize = require('validator').sanitize;
+
+var at = require('../services/at');
+var User = require('../proxy').User;
+var Topic = require('../proxy').Topic;
+var Tag = require('../proxy').Tag;
+var TopicTag = require('../proxy').TopicTag;
+var TopicCollect = require('../proxy').TopicCollect;
+
+var EventProxy = require('eventproxy');
+var Util = require('../libs/util');</code></pre>
+
+<p>you have to deal with it everytime...</p>
+</section>
+
+<section class="slide">
+<h2>Overview -- Node.js development</h2>
+
+<h3>consistent development and configuration needs to be improved</h3>
+
+<p>Node is quite flexible, developers can write several styles of code, like callback, promise, generator with koa</p>
+<pre><code>app.get('/', function(req, res){
+  res.send('Hello World');
+});
+</code></pre>
+<pre><code>Q.fcall(promisedStep1)
+.then(promisedStep2)
+.done();</code></pre>
+<pre><code>var koa = require('koa');
+var app = koa();
+
+app.use(function *(){
+  this.body = 'Hello World';
+});
+
+app.listen(3000);</code></pre>
+<p>However, you are strong enough to write these codes, how about others ? </p>
+<p>Especially, when you are working for a team work project, developers can be flexible too</p>
+<p>an old developer leave the project, a new one joins it</p>
+<p>codes need to be familiar again and again, and anyone can jump to same hole again</p>
+
+<h3>Consistance is important for a team work project</h3>
+<h3>just choose one style, and go thoughout with it</h3>
+</section>
+
+<section class="slide">
+
+<h2>Overview -- Node.js development</h2>
+
+<h3>consistent development and configuration needs to be improved</h3>
+
+<p>consistent configuration</p>
+
+<pre><code>var serverConfig = require('../../config/server');
+var redis = require("redis");
+var client = redis.createClient(serverConfig['redisPort'], serverConfig['redisHost']);
+
+client.on("error", function(err) {
+  console.error("redis error " + err);
+});
+
+client.on("ready", function() {
+  console.log("redis is ready");
+});
+
+module.exports = client;</code></pre>
+
+<p>you require a config file, and set the redis connection</p>
+<p>however, when you switch environments which means serverConfig may be changed, you can not do well with it</p>
+
+</section>
+
+<section class="slide">
+
+<h2>Overview -- Node.js development</h2>
+
+<h3>How to solve these ? If not, it must be too painful...</h3>
+
+<img src="resource/too_complicated.png">
+<h3>solution:  framework</h3>
+
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat</h2>
+
+<p><a href="https://github.com/bearcatnode/bearcat">Bearcat</a> is a POJOs based application framework which provides a lightweight container for writing simple, maintainable node.js, it is designed to solve all of these painful things. Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJO) and to apply enterprise services non-invasively to POJOs.</p>
+
+<blockquote>Simple POJOs + Configuration metadatas = Elastic, maintainable system</blockquote>
+
+<h3>the main concept of Bearcat is: </h3>
+<ul>
+  <li>POJO</li>
+  <li>IoC</li>
+  <li>AOP</li>
+  <li>Consistent configuration</li>
+</ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- POJO</h2>
+<h3>What is POJO</h3>
+<p>POJO is an acronym for Plain Old Java Object, you can refer to <a href="http://en.wikipedia.org/wiki/Plain_Old_Java_Object">POJO wikipedia</a>. It is mostly used in Java Platform which is used to emphasize that a given object is an ordinary Java Object, not a special object.
+In Node, what is POJO ?
+It must be Plain Old JavaScript Object, which is simple, ordinary, and not anonymous.
+To be not anonymous, it must have Constructor function.
+So POJO can be like this:</p>
+<pre><code>var POJO = function() {
+    this.props = null;
+}
+
+POJO.prototype.method = function() {
+
+}
+
+module.exports = POJO;</code></pre>
+
+<h3>Why should we use POJO ?</h3>
+<ul>
+  <li>POJO is simple, everyone can write it</li>
+  <li>POJO makes development consistently, all your codes is POJOs</li>
+  <li>POJO makes it friendly to document</li>
+</ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<p>Inversion of Control (IoC) is a design pattern that addresses a component's dependency resolution, configuration and lifecycle. IoC is best understood through the Hollywood Principle: "Dont's call us, we'll call you". Bearcat implements IoC with dependency injection (DI). That is components do not look up, they provide plain simple configuration metadata enabling the container to resolve dependencies. The container is wholly responsible for wiring up components, passing resolved objects into JavaScript Object properties or constructors.</p>
+
+<p>With simple require and exports, caller and callee are tightly coupled, developers have to deal with it everytime</p>
+
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>Without IoC</h3>
+<pre><code>var Engine = require('./engine');
+var Wheel = require('./wheel');
+
+var Car = function() {
+  this.engine = new Engine();
+  this.wheel = new Wheel();
+}
+
+Car.prototype.run = function() {
+  this.engine.run();
+  var res = this.wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+
+<h3>car have to require engine and wheel, and then instantiate with constructor functions, it is tightly coupled</h3>
+</section>
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>With IoC</h3>
+
+<pre><code>var Car = function(engine) {
+  this.engine = engine;
+  this.wheel = null;
+}
+
+Car.prototype.run = function() {
+  this.engine.run();
+  var res = this.wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+
+<h3>car do not have to know where engine, wheel are from, and how they are being instantiated</h3>
+
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>How to make IoC work ?</h3>
+
+<p>just add a simple configuration metadata file context.json</p>
+<pre><code>{
+  "name": "simple_inject",
+  "beans": [{
+    "id": "car",
+    "func": "car",
+    "props": [{
+      "name": "wheel",
+      "ref": "wheel"
+    }],
+    "args": [{
+      "name": "engine",
+      "ref": "engine"
+    }]
+  }, {
+    "id": "wheel",
+    "func": "wheel"
+  }, {
+    "id": "engine",
+    "func": "engine"
+  }]
+}</code></pre>
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>Bearcat Startup</h3>
+
+<pre><code>var Bearcat = require('bearcat');
+var contextPath = require.resolve('./context.json');
+
+var bearcat = Bearcat.createApp([contextPath]);
+bearcat.start(function(){
+   var car = bearcat.getBean('car'); // get bean
+   car.run(); // call the method
+});</code></pre>
+
+<pre><code>[2014-05-04 18:50:41.996] [INFO] bearcat - [app] Bearcat startup in 6 ms
+run engine...
+run wheel...
+run car...
+</code></pre>
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Scopes</li>
+<p>By default, scope is singleton</p>
+<pre><code>{
+    "name": "simple",
+    "beans": [{
+        "id": "car",
+        "func": "car",
+        "scope": "singleton"
+    }]
+}</code></pre>
+<pre><code>var car1 = bearcat.getBean('car');
+var car2 = bearcat.getBean('car');
+// car2 is exactly the same instance as car1</code></pre></ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Scopes</li>
+<p>you can set scope to prototype</p>
+<pre><code>{
+    "name": "simple",
+    "beans": [{
+        "id": "car",
+        "func": "car",
+        "scope": "prototype"
+    }]
+}</code></pre>
+<pre><code>var car1 = bearcat.getBean('car');
+var car2 = bearcat.getBean('car');
+// car2 is not the same instance as car1</code></pre></ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Lifecycle callbacks</li>
+<p>Initialization method</p>
+<pre><code>var Car = function() {
+    this.num = 0;
+}
+
+Car.prototype.init = function() {
+    console.log('init car...');
+    this.num = 1;
+    return 'init car';
+}
+
+Car.prototype.run = function() {
+    console.log('run car...');
+    return 'car ' + this.num;
+}
+
+module.exports = Car;</code></pre>
+<pre><code>{
+    "name": "simple_init_method",
+    "beans": [{
+        "id": "car",
+        "func": "car",
+        "scope": "prototype",
+        "init": "init"
+    }]
+}</code></pre></ul>
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Lifecycle callbacks</li>
+<p>Destruction method</p>
+<pre><code>var Car = function() {
+
+}
+
+Car.prototype.destroy = function() {
+    console.log('destroy car...');
+    return 'destroy car';
+}
+
+Car.prototype.run = function() {
+    console.log('run car...');
+    return 'car';
+}
+
+module.exports = Car;</code></pre>
+<pre><code>{
+    "name": "simple_destroy_method",
+    "beans": [{
+        "id": "car",
+        "func": "car",
+        "destroy": "destroy"
+    }]
+}</code></pre></ul>
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Lifecycle callbacks</li>
+<p>Async Initialization method</p>
+<pre><code>var Car = function() {
+    this.num = 0;
+}
+
+Car.prototype.init = function() {
+    console.log('init car...');
+    this.num = 1;
+    return 'init car';
+}
+
+Car.prototype.run = function() {
+    console.log('run car...');
+    return 'car ' + this.num;
+}
+
+module.exports = Car;</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Lifecycle callbacks</li>
+<p>Async Initialization method</p>
+<pre><code>var Wheel = function() {}
+
+Wheel.prototype.init = function(cb) {
+    console.log('init wheel...');
+    setTimeout(function() {
+        console.log('asyncInit setTimeout');
+        cb();
+    }, 1000);
+}
+
+Wheel.prototype.run = function() {
+    console.log('run wheel...');
+    return 'wheel';
+}
+
+module.exports = Wheel;</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Lifecycle callbacks</li>
+<p>Async Initialization method</p>
+<pre><code>{
+    "name": "simple_async_init",
+    "beans": [{
+        "id": "car",
+        "func": "car",
+        "init": "init",
+        "order": 2
+    }, {
+        "id": "wheel",
+        "func": "wheel",
+        "async": true,
+        "init": "init",
+        "order": 1
+    }]
+}</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+<h2>Framework -- Bearcat -- IoC</h2>
+<h3>More details abount Bearcat IoC</h3>
+<p>visit Bearcat wiki <a href="https://github.com/bearcatnode/bearcat/wiki/IoC-container">IoC-Container</a></p>
+<p>chinese version is <a href="https://github.com/bearcatnode/bearcat/wiki/IoC%E5%AE%B9%E5%99%A8">IoC-Container-Chinese</a></p>
+</section>
+
+<section class="slide">
+<h2>Framework -- Bearcat -- AOP</h2>
+<p>Aspect-Oriented Programming (AOP) complements Object-Oriented Programming (OOP) by providing another way of thinking about program structure. The key unit of modularity in OOP is the class, whereas in AOP the unit of modularity is the aspect. Aspects enable the modularization of concerns such as transaction management that cut across multiple types and objects.</p>
+</section>
+
+<section class="slide">
+<h2>Framework -- Bearcat -- AOP</h2>
+<h3>aspect -- log -- without AOP</h3>
+<pre><code>var Car = function(engine) {
+  this.engine = engine;
+  this.wheel = null;
+  this.log = null;
+}
+
+Car.prototype.run = function() {
+  this.log.info('log...');
+  this.engine.run();
+  var res = this.wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- AOP</h2>
+  <h3>aspect -- log -- without AOP</h3>
+  <pre><code>var Engine = function() {
+    this.log = null;
+  }
+
+Engine.prototype.run = function() {
+  this.log.info('log...');
+  console.log('run engine...');
+  return 'engine';
+}
+
+module.exports = Engine;</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- AOP</h2>
+  <h3>aspect -- log -- without AOP</h3>
+  <pre><code>var Wheel = function() {
+    this.log = null;
+  }
+
+Wheel.prototype.run = function() {
+  this.log.info('log...');
+  console.log('run wheel...');
+  return 'wheel';
+}
+
+module.exports = Wheel;</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- AOP</h2>
+  <h3>aspect -- log -- with AOP</h3>
+
+  <ul><li>Declare an aspect</li>
+    <pre><code>var Aspect = function() {
+
+}
+
+Aspect.prototype.doBefore = function(next) {
+  console.log('log...');
+  next();
+}</code></pre>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- AOP</h2>
+  <h3>aspect -- log -- with AOP</h3>
+
+  <ul><li>Declare a pointcut, advice in context.json</li>
+    <pre><code>{
+  "name": "simple",
+  "beans": [{
+    "id": "car",
+    "func": "car"
+  }, {
+    "id": "wheel",
+    "func": "wheel"
+  }, {
+    "id": "engine",
+    "func": "engine"
+  }, {
+    "id": "aspect",
+    "func": "aspect",
+    "aop": [{
+      "pointcut": "before:.*?run",
+      "advice": "doBefore"
+    }]
+  }]
+}</code></pre>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- AOP</h2>
+  <h3>aspect -- log -- with AOP</h3>
+
+<pre><code>[2014-05-04 18:50:41.996] [INFO] bearcat - [app] Bearcat startup in 6 ms
+log...
+run engine...
+log...
+run wheel...
+log...
+run car...</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- AOP</h2>
+  <h3>aspect -- transaction -- with AOP</h3>
+ <p>Transaction management is a good example of a AOP crosscutting concern in enterprise Node.js applications</p> 
+ <p><a href="https://github.com/felixge/node-mysql">node-mysql</a> provides simple transaction support at the connection level:</p>
+ <pre><code>connection.beginTransaction(function(err) {
+  if (err) { throw err; }
+  connection.query('INSERT INTO posts SET title=?', title, function(err, result) {
+    if (err) { 
+      connection.rollback(function() {
+        throw err;
+      });
+    }
+
+    var log = 'Post ' + result.insertId + ' added';
+
+    connection.query('INSERT INTO log SET data=?', log, function(err, result) {
+      if (err) { 
+        connection.rollback(function() {
+          throw err;
+        });
+      }  
+      connection.commit(function(err) {
+        if (err) { 
+          connection.rollback(function() {
+            throw err;
+          });
+        }
+        console.log('success!');
+      });
+    });
+  });
+});</code></pre>
+<h3>it is quite original, your business codes coupled with transaction actions</h3>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- AOP</h2>
+  <h3>aspect -- transaction -- with AOP</h3>
+  <h3>with Bearcat AOP, transaction will be simpler</h3>
+  <pre><code>SimpleService.prototype.testMethodTransaction = function(cb, txStatus) {
+    var self = this;
+    this.simpleDao.transaction(txStatus).addPerson(['aaa'], function(err, results) {
+        if (err) {
+            return cb(err); // if err occur, rollback will be emited
+        }
+        self.simpleDao.transaction(txStatus).getList([1, 2], function(err, results) {
+            if (err) { 
+                return cb(err); // if err occur, rollback will be emited
+            }
+            cb(null, results); // commit the operations
+        });
+    });
+}</code></pre>
+
+<p>more details can be refered to <a href="https://github.com/bearcatnode/bearcat-dao#transaction">bearcat-dao transaction</a></p>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- Consistent configuration</h2>
+  <p>In Node.js development, it is common that there are serveral envrionments like development, test, production and so. Corresponding to these envrioments are configurations differed from each other. Therefore, it is necessary to make these configuration consistently.</p>
+
+  <ul><li>Using placeHolders</li>
+    <p>placeHolder is a signature indicating the place to be replaced by the specific envrioment value
+in Bearcat, the placeHolder can be like this:</p>
+<pre><code>${car.num}</code></pre>
+<p>then in config.json file you can define car.num with the specific value</p>
+<pre><code>{
+    "car.num": 100
+}</code></pre></ul>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- Consistent configuration</h2>
+  
+  <ul><li>Environment configuration</li>
+    <p>In Bearcat, you can write different environment configurations in the following structure:</p>
+    <img src="resource/configuration-structure.png">
+<p>in directory named config, you put dev and prod sub-directory named by specific envrioment, and then write the specific configurations in these directory corresponding to each environment.</p>
+</ul>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- Consistent configuration</h2>
+  
+  <ul><li>Switching environment</li>
+    <p>In Bearcat, you can switch different environment in the following ways:</p>
+    <p>Run with env or --env args</p>
+<pre><code>node app.js env=prod</code></pre>
+<p>Run with NODE_ENV</p>
+<pre><code>NODE_ENV=prod node app.js</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+<h1>QA</h1></section>
+
+
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<form action="." method="get" class="goto-form">
+  <label for="goto-slide">Go to slide:</label>
+  <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+  <datalist id="goto-datalist"></datalist>
+  <input type="submit" value="Go">
+</form>
+
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+
+<!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+<script>window.jQuery || document.write('<script src="./deck.js/jquery-1.7.min.js"><\/script>')</script>
+<script src="./prettify.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="./deck.js/core/deck.core.js"></script>
+<script src="./deck.js/extensions/hash/deck.hash.js"></script>
+<script src="./deck.js/extensions/menu/deck.menu.js"></script>
+<script src="./deck.js/extensions/goto/deck.goto.js"></script>
+<script src="./deck.js/extensions/status/deck.status.js"></script>
+<script src="./deck.js/extensions/navigation/deck.navigation.js"></script>
+
+<!-- Specific to this page -->
+<script>
+$(function() {
+  // Deck initialization
+  $.deck('.slide');
+  $('pre code').parent().addClass('prettyprint');
+  prettyPrint();
+});
+</script>
+
+</body>
+</html>
