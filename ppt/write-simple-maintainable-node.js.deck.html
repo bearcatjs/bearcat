@@ -86,15 +86,29 @@ console.log('Server running at http://127.0.0.1:1337/');
 <p>With <a href="https://npmjs.org/">npm</a>, a lot of modules and frameworks make node development easier</p>
 
 <a href="http://expressjs.com/">web framework -- express</a>
-<pre><code>app.get('/', function(req, res){
+<pre><code>var express = require('express');
+var app = express();
+
+app.get('/', function(req, res){
   res.send('Hello World');
 });
+
+app.listen(8001);
 </code></pre>
 
 <a href="http://pomelo.netease.com/">realtime app framework -- pomelo</a>
-<pre><code>Handler.prototype.entry = function(msg, session, next) {
+<pre><code>module.exports = function(app) {
+  return new Handler(app);
+};
+
+var Handler = function(app) {
+  this.app = app;
+};
+
+Handler.prototype.entry = function(msg, session, next) {
   next(null, {code: 200, msg: 'game server is ok.'});
-};</code></pre>
+};
+</code></pre>
 
 <h3>things seem to be good, however coding a lot, pains will come</h3>
 
@@ -251,6 +265,7 @@ module.exports = client;</code></pre>
 
 <blockquote>Simple POJOs + Configuration metadatas = Elastic, maintainable system</blockquote>
 
+  <img src="resource/bearcat-logo.png">
 <h3>the main concept of Bearcat is: </h3>
 <ul>
   <li>POJO</li>
@@ -296,6 +311,7 @@ module.exports = POJO;</code></pre>
 
 <p>With simple require and exports, caller and callee are tightly coupled, developers have to deal with it everytime</p>
 
+<img src="resource/without_di_pain.png">
 </section>
 
 <section class="slide">
@@ -584,11 +600,22 @@ module.exports = Wheel;</code></pre>
 <h3>More details abount Bearcat IoC</h3>
 <p>visit Bearcat wiki <a href="https://github.com/bearcatnode/bearcat/wiki/IoC-container">IoC-Container</a></p>
 <p>chinese version is <a href="https://github.com/bearcatnode/bearcat/wiki/IoC%E5%AE%B9%E5%99%A8">IoC-Container-Chinese</a></p>
+<img src="resource/bearcat-logo.png">
 </section>
 
 <section class="slide">
 <h2>Framework -- Bearcat -- AOP</h2>
 <p>Aspect-Oriented Programming (AOP) complements Object-Oriented Programming (OOP) by providing another way of thinking about program structure. The key unit of modularity in OOP is the class, whereas in AOP the unit of modularity is the aspect. Aspects enable the modularization of concerns such as transaction management that cut across multiple types and objects.</p>
+<pre><code>var Car = function() {
+}
+
+Car.prototype.run = function() {
+  // pointcut
+  // ...
+  console.log('Car run...');
+  // pointcut
+  // ...
+}</code></pre>
 </section>
 
 <section class="slide">
@@ -1009,7 +1036,7 @@ module.exports = {
   <h2>Framework -- Bearcat -- Practice</h2>
   
   <ul><li>simple web todo</li>
-    <h3>How set up mysql configuration ?</h3>
+    <h3>How to set up mysql configuration ?</h3>
     <p>magic is in context.json</p>
     <pre><code>{
   "name": "bearcat-todo",
