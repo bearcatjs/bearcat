@@ -49,6 +49,7 @@
 </ul>
 
 <img src="resource/pomelo.jpg">
+<img src="resource/netease_logo.gif">
 </section>
 
 <section class="slide">
@@ -58,6 +59,7 @@
 <li>Overview</li>
 <li>Framework</li>
 <li>Practice</li>
+<li>Conclusion</li>
 </ul>
 
 </section>
@@ -767,7 +769,17 @@ in Bearcat, the placeHolder can be like this:</p>
 <p>then in config.json file you can define car.num with the specific value</p>
 <pre><code>{
     "car.num": 100
-}</code></pre></ul>
+}</code></pre>
+<pre><code>var Car = function() {
+  this.num = null;
+}
+
+Car.prototype.run = function() {
+  console.log('run car' + this.num);
+  return 'car' + this.num;
+}
+
+module.exports = Car;</code></pre></ul>
 </section>
 
 <section class="slide">
@@ -777,6 +789,17 @@ in Bearcat, the placeHolder can be like this:</p>
     <p>In Bearcat, you can write different environment configurations in the following structure:</p>
     <img src="resource/configuration-structure.png">
 <p>in directory named config, you put dev and prod sub-directory named by specific envrioment, and then write the specific configurations in these directory corresponding to each environment.</p>
+<pre><code>{
+  "name": "simple",
+  "beans": [{
+    "id": "car",
+    "func": "car",
+    "props": [{
+      "name": "num",
+      "value": "${car.num}"
+    }]
+  }]
+}</code></pre>
 </ul>
 </section>
 
@@ -793,8 +816,305 @@ in Bearcat, the placeHolder can be like this:</p>
 </section>
 
 <section class="slide">
-<h1>QA</h1></section>
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+  <p>the whole repository is <a href="https://github.com/bearcatnode/todo">bearcat-todo</a></p>
+  <p>forked from <a href="https://github.com/fengmk2/todo">fengmk2-todo</a></p>
+  <img src="resource/bearcat-todo.png">
+</ul>
+</section>
 
+<section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+
+<p>project code structure</p>
+<pre><code>├─┬ app/
+│ ├─┬ controller/
+│ │ └── todoController.js
+│ ├─┬ dao/
+│ │ └── todoDao.js
+│ ├─┬ domain/
+│ │ └── todoDomain.js
+│ ├─┬ service/
+│ │ └── todoService.js
+├─┬ config/
+│ ├─┬ dev/
+│ │ └── mysql.json
+│ ├─┬ prod/
+│ │ └── mysql.json
+├── views/
+├── public/
+├── server.js
+├── package.json
+├── context.json
+└── RERAME.md</code></pre>
+</ul></section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <p>todoController.js -- simple POJO</p>
+    <pre><code>var TodoController = function() {
+  this.todoService = null;
+}
+
+TodoController.prototype.index = function(req, res, next) {
+    res.render('index.html', {});
+}
+
+module.exports = {
+  id: "todoController",
+  func: TodoController,
+  props: [{
+    name: "todoService",
+    ref: "todoService"
+  }]
+}</code></pre>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <p>setup Bearcat and add route</p>
+    <pre><code>var contextPath = require.resolve('./context.json');
+
+var bearcat = Bearcat.createApp([contextPath]);
+
+bearcat.start(function() {
+  /**
+   * Routing
+   */
+  var router = urlrouter(function(app) {
+    app.get('/', bearcat.getRoute("todoController", "index"));
+  });
+  app.use(router);
+
+  // start app
+  app.listen(config.port);
+  console.log('Server start on ' + config.port);
+});</code></pre>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <p>setup Bearcat and add route</p>
+    <p>context.json setup scan path to enable auto-scan POJOs</p>
+    <pre><code>{
+  "name": "bearcat-todo",
+  "scan": "app"
+}</code></pre>
+  </ul>
+</section>
+ 
+ <section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <p>add todoService and todoDao</p>
+    <p>todoService.js</p>
+    <pre><code>var TodoService = function() {
+  this.todoDao = null;
+}
+
+TodoService.prototype.getList = function(params, cb) {
+  return this.todoDao.getList(params, cb);
+}
+
+module.exports = {
+  id: "todoService",
+  func: TodoService,
+  props: [{
+    name: "todoDao",
+    ref: "todoDao"
+  }]
+}</code></pre>
+  </ul>
+</section>
+ 
+ <section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <p>add todoService and todoDao</p>
+    <p>todoDao.js</p>
+    <pre><code>var TodoDomain = require('../domain/todoDomain');
+
+var TodoDao = function() {
+  this.domainDaoSupport = null;
+}
+
+TodoDao.prototype.init = function() {
+  this.domainDaoSupport.initConfig(TodoDomain);
+}
+
+TodoDao.prototype.getList = function(params, cb) {
+  var sql = ' 1=1 order by finished asc, id asc limit ?,?';
+  return this.domainDaoSupport.getListByWhere(sql, params, null, cb);
+}
+
+module.exports = {
+  id: "todoDao",
+  func: TodoDao,
+  props: [{
+    name: "domainDaoSupport",
+    ref: "domainDaoSupport"
+  }],
+  "init": "init"
+}
+</code></pre>
+  </ul>
+</section>
+
+ <section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <p>update todoController</p>
+    <p>todoController.js</p>
+    <pre><code>TodoController.prototype.index = function(req, res, next) {
+  this.todoService.getList([0, 50], function(err, results) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    res.render('index.html', {
+      todos: results
+    });
+  });
+}
+</code></pre>
+  </ul>
+</section>
+
+ <section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <p>just run it</p>
+    <pre><code>node server.js</code></pre>
+    <img src="resource/bearcat-todo.png">
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <h3>How set up mysql configuration ?</h3>
+    <p>magic is in context.json</p>
+    <pre><code>{
+  "name": "bearcat-todo",
+  "dependencies": {
+    "bearcat-dao": "*"
+  },
+  "scan": "app",
+  "beans": [{
+    "id": "mysqlConnectionManager",
+    "func": "node_modules.bearcat-dao.lib.connection.sql.mysqlConnectionManager",
+    "props": [{
+      "name": "port",
+      "value": "${mysql.port}"
+    }, {
+      "name": "host",
+      "value": "${mysql.host}"
+    }, {
+      "name": "user",
+      "value": "${mysql.user}"
+    }, {
+      "name": "password",
+      "value": "${mysql.password}"
+    }, {
+      "name": "database",
+      "value": "${mysql.database}"
+    }]
+  }]
+}</code></pre>
+  </ul>
+</section>
+
+ <section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <p>set up mysql configuration</p>
+    <p>mysql.json in dev</p>
+    <pre><code>{
+  "mysql.port": 3306,
+  "mysql.host": "localhost",
+  "mysql.user": "root",
+  "mysql.password": "test",
+  "mysql.database": "bearcat_test"
+}</code></pre>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <p>Swith to production env ?</p>
+    <p>mysql.json in prod</p>
+    <pre><code>{
+  "mysql.port": 3306,
+  "mysql.host": "10.123.22.3",
+  "mysql.user": "todo_online",
+  "mysql.password": "todo_online_aqz",
+  "mysql.database": "bearcat_todo_online"
+}</code></pre>
+  </ul>
+</section>
+
+ <section class="slide">
+  <h2>Framework -- Bearcat -- Practice</h2>
+  
+  <ul><li>simple web todo</li>
+    <p>just run it</p>
+    <pre><code>node server.js</code></pre>
+    <pre><code>node server.js env=prod</code></pre>
+  </ul>
+</section>
+
+ <section class="slide">
+  <h2>Framework -- Bearcat -- Conclusion</h2>
+ <h3>Bearcat -- lightweight container</h3>
+ <ul>
+  <li>Dependency injection implementated Inversion of Control (IoC) to manage POJOs</li>
+  <li>AOP based declarative middleware services</li>
+  <li>Consistent development and configuration</li>
+</ul> 
+<h3>Brings to node</h3>
+  <ul>
+    <li>Simple meta configuration and POJOs</li>
+    <li>Reuseable: POJOs can be used to any development environment</li>
+    <li>Invasive: there's no dependence on a container API</li>
+    <li>Modular: you just use only those parts that you need</li>
+    <li>One stop shop: no need for a dedicated Singleton or factory for every object etc</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- Conclusion</h2>
+  <blockquote>Simple POJOs + Configuration metadatas = Elastic, maintainable system</blockquote>
+  <ul>
+    <li>Homepage: <a href="http://bearcatnode.github.io/bearcat/">http://bearcatnode.github.io/bearcat/</a></li>
+    <li>Mailing list: <a href="https://groups.google.com/group/bearcatnode/">https://groups.google.com/group/bearcatnode/</a></li>
+    <li>Wiki: <a href="https://github.com/bearcatnode/bearcat/wiki/">https://github.com/bearcatnode/bearcat/wiki/</a></li>
+    <li>Issues: <a href="https://github.com/bearcatnode/bearcat/issues/">https://github.com/bearcatnode/bearcat/issues</a></li>
+    <li>Tags: nodejs, POJO, IoC, AOP, consistent configuration</li>
+  </ul>
+  <img src="resource/bearcat-logo.png">
+</section>
+
+<section class="slide"><h1>QA</h1></section>
 
 <p class="deck-status">
   <span class="deck-status-current"></span>

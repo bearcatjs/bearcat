@@ -256,6 +256,11 @@ html {
 .slide p, .slide blockquote, .slide iframe, .slide img, .slide ul, .slide ol, .slide pre, .slide video {
   margin-bottom: 1em;
 }
+
+.slide p {
+  font-size: 1.2em;
+}
+
 .slide pre {
   white-space: pre;
   white-space: pre-wrap;
@@ -269,6 +274,7 @@ html {
 .slide li {
   padding: .25em 0;
   vertical-align: middle;
+  font-size: 1.8em;
 }
 
 .deck-before, .deck-previous, .deck-next, .deck-after {
