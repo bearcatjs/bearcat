@@ -12,6 +12,18 @@ describe('PlaceHolderResolver', function() {
 
 			placeHolderResolver.doReplace("${host}");
 
+			placeHolderResolver.resolveStringValue(1);
+
+			placeHolderResolver.resolveStringValue("aaa");
+
+			placeHolderResolver.doReplace("aaa");
+
+			placeHolderResolver.setProperties({
+				host: "aaa"
+			});
+
+			placeHolderResolver.resolveStringValue("${aaa}aaa")
+			placeHolderResolver.resolveStringValue("aaaaaa")
 			done();
 		});
 	});

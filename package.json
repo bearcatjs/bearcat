@@ -1,6 +1,6 @@
 {
   "name": "bearcat",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "a POJOs based application framework for node.js",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "url": "https://github.com/bearcatnode/bearcat.git"
   },
   "keywords": [
+    "IoC",
     "dependency",
     "injection",
     "AOP",
@@ -25,7 +26,6 @@
   "devDependencies": {
     "should": ">=0.0.1",
     "mocha": ">=0.0.1",
-    "socket.io-client": ">=0.0.1",
     "jscoverage": "0.3.3",
     "muk": ">=0.0.1",
     "grunt": "~0.4.2",
