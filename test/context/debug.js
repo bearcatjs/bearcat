@@ -8,14 +8,23 @@ var ApplicationContext = require('../../lib/context/applicationContext');
 
 // var car = applicationContext.getBean('car');
 // var r = car.run();
-var simplepath = require.resolve('../../examples/simple_async_init/context.json');
+var simplepath = require.resolve('../../examples/simple_inject/context.json');
 var paths = [simplepath];
 
-var applicationContext = new ApplicationContext(paths);
-applicationContext.on('finishRefresh', function() {
-	var car = applicationContext.getBean('car');
+// var applicationContext = new ApplicationContext(paths);
+// applicationContext.on('finishRefresh', function() {
+// 	var car = applicationContext.getBean('car');
+// 	var r = car.run();
+
+// });
+
+// applicationContext.refresh();
+
+var Bearcat = require('../../lib/bearcat');
+
+var bearcat = Bearcat.createApp([simplepath]);
+
+bearcat.start(function() {
+	var car = bearcat.getBean('car');
 	var r = car.run();
-
 });
-
-applicationContext.refresh();
