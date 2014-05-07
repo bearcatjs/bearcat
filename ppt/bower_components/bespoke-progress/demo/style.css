@@ -1,0 +1,86 @@
+/* bespoke-progress styles */
+
+.bespoke-progress-parent {
+  position: absolute;
+  top: 270px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.bespoke-progress-bar {
+  -webkit-transition: width .6s ease;
+  -moz-transition: width .6s ease;
+  -ms-transition: width .6s ease;
+  -o-transition: width .6s ease;
+  transition: width .6s ease;
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+  background: #0089f3;
+}
+
+/* other styles */
+
+body {
+  font-family: helvetica, arial, sans-serif;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: #303030;
+}
+
+h1 {
+  height: 25px;
+  width: 640px;
+  position: absolute;
+  z-index: 2;
+  top: 100px;
+  left: 10%;
+  font-size: 32px;
+  letter-spacing: -1px;
+}
+
+section {
+  display: none;
+}
+
+.bespoke-parent {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.bespoke-slide {
+  width: 640px;
+  height: 480px;
+  position: absolute;
+  z-index: 2;
+  top: 150px;
+  left: 10%;
+}
+
+section.bespoke-slide {
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+  display: block;
+}
+
+.bespoke-inactive {
+  opacity: 0;
+}
+
+.bespoke-active {
+  opacity: 1;
+}

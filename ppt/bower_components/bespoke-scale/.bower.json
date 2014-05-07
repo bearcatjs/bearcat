@@ -1,0 +1,17 @@
+{
+  "name": "bespoke-scale",
+  "version": "0.2.0",
+  "dependencies": {
+    "bespoke.js": ">=0.3.0"
+  },
+  "homepage": "https://github.com/markdalgleish/bespoke-scale",
+  "_release": "0.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.0",
+    "commit": "72f5d024df71aa10608c222604ef17f3c149ec5c"
+  },
+  "_source": "git://github.com/markdalgleish/bespoke-scale.git",
+  "_target": "~0.2.0",
+  "_originalSource": "bespoke-scale"
+}

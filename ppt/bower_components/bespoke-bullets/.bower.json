@@ -1,0 +1,21 @@
+{
+  "name": "bespoke-bullets",
+  "version": "0.2.1",
+  "main": "./dist/bespoke-bullets.min.js",
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "bespoke.js": ">=0.2.0"
+  },
+  "homepage": "https://github.com/markdalgleish/bespoke-bullets",
+  "_release": "0.2.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.1",
+    "commit": "7c8b31719ef731e43c4f2aa44f40cb8113b3e3d2"
+  },
+  "_source": "git://github.com/markdalgleish/bespoke-bullets.git",
+  "_target": "~0.2.0",
+  "_originalSource": "bespoke-bullets"
+}

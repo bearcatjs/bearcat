@@ -1,0 +1,7 @@
+{
+  "name": "bespoke-keys",
+  "version": "0.1.0",
+  "dependencies": {
+    "bespoke.js": ">=0.3.0"
+  }
+}

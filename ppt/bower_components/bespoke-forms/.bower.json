@@ -1,0 +1,17 @@
+{
+  "name": "bespoke-forms",
+  "version": "0.1.0",
+  "dependencies": {
+    "bespoke.js": ">=0.3.0"
+  },
+  "homepage": "https://github.com/markdalgleish/bespoke-forms",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.0",
+    "commit": "ac45a90055d6dadbc02a6fdc31931a028146199a"
+  },
+  "_source": "git://github.com/markdalgleish/bespoke-forms.git",
+  "_target": "~0.1.0",
+  "_originalSource": "bespoke-forms"
+}

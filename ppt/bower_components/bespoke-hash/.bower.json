@@ -1,0 +1,21 @@
+{
+  "name": "bespoke-hash",
+  "version": "0.1.2",
+  "main": "./dist/bespoke-hash.min.js",
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "bespoke.js": ">=0.2.0"
+  },
+  "homepage": "https://github.com/markdalgleish/bespoke-hash",
+  "_release": "0.1.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.2",
+    "commit": "dfee2911dc5009aba3212990548d41191b4061db"
+  },
+  "_source": "git://github.com/markdalgleish/bespoke-hash.git",
+  "_target": "~0.1.0",
+  "_originalSource": "bespoke-hash"
+}

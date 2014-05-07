@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="./deck.js/extensions/navigation/deck.navigation.css">
   <link rel="stylesheet" href="./deck.js/extensions/status/deck.status.css">
   <link rel="stylesheet" href="./deck.js/extensions/hash/deck.hash.css">
+  <link rel="stylesheet" type="text/css" href="all.css">
   
   <!-- Theme CSS files (menu swaps these out) -->
   <link rel="stylesheet" id="style-theme-link" href="./deck.js/themes/style/swiss.css">
@@ -36,7 +37,6 @@
 
 
 <section class="slide"><h1>Write simple, maintainable Nodejs</h1>
-
 </section>
 
 <section class="slide">
@@ -67,9 +67,18 @@
 </section>
 
 <section class="slide">
-<h2>Overview -- Node.js development</h2>
+<h2>Overview -- What is Node.js</h2>
 
-<p>Node.js is a platform built on <a href="https://code.google.com/p/v8/">Chrome's JavaScript runtime</a> for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.</p>
+<ul>
+  <li>In a nutshell: server-side javaScript</li>
+  <li>Used to build fast, scalable network applications</li>
+  <li>Built on Google's v8 javaScript engine</li>
+  <li>Event-driven, non-blocking(asynchronous) I/O</li>
+</ul>
+
+<img src="resource/node.svg" style="width:50%">
+
+<!--p>Node.js is a platform built on <a href="https://code.google.com/p/v8/">Chrome's JavaScript runtime</a> for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.</p>
 <h3>node development is easy</h3>
 
 <pre><code>var http = require('http');
@@ -78,11 +87,44 @@ http.createServer(function (req, res) {
   res.end('Hello World\n');
 }).listen(1337, '127.0.0.1');
 console.log('Server running at http://127.0.0.1:1337/');
-</code></pre>
+</code></pre-->
 
 </section>
 
 <section class="slide">
+<h2>Overview -- What is Node.js</h2>
+<ul>
+  <li>Small core, vibrant community</li>
+  <li>Extreme modularity</li>
+  <li>Reimplement everything in Javascript</li>
+</ul>
+<img src="resource/node.svg" style="width:50%">
+</section>
+
+<section class="slide">
+<h2>Overview -- Node.js in the industry</h2>
+
+<img src="resource/node_industry.png">
+
+</section>
+
+<section class="slide">
+<h2>Overview -- Node.js in the industry</h2>
+<h3><a href="https://github.com/NetEase/pomelo/wiki/Pomelo%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B">Pomelo industry</a></h3>
+<img src="resource/pomelo_industry.png">
+
+</section>
+<section class="slide">
+
+<h2>Overview -- Node.js in the industry</h2>
+<ul>
+  <li>Everything seems to be fine, but can be done <span class="highlight">better</span></li>
+  <li>What is the <span class="highlight">problem</span> and <span class="highlight">pain</span> in current node.js development ?</li>
+</ul>
+ <h1>Goal: Simple and Maintainable</h1>
+</section>
+
+<!--section class="slide">
 <h2>Overview -- Node.js development</h2>
 
 <p>With <a href="https://npmjs.org/">npm</a>, a lot of modules and frameworks make node development easier</p>
@@ -114,15 +156,15 @@ Handler.prototype.entry = function(msg, session, next) {
 
 <h3>things seem to be good, however coding a lot, pains will come</h3>
 
-</section>
+</section-->
 
 <section class="slide">
 <h2>Overview -- Node.js development</h2>
 
-<h3>require, exports is not good enough</h3>
+<h3><span class="highlight">require</span>  <span class="highlight">exports</span> is not good enough</h3>
 
 <ul>
-  <li>you have to know where the file is, and what it is really exported and then do a lot everytime after require</li>
+  <li>you have to know <span class="highlight">where</span> the file is, and what it is really <span class="highlight">exported</span> and then do a lot <span class="highlight">everytime</span> after require</li>
   <p>require a constructor function</p>
 <pre><code>var B = require('b');
 var b = new B();
@@ -143,6 +185,13 @@ B.run();
 </section>
 
 <section class="slide">
+  <h2>Overview -- Node.js development</h2>
+  <h3><span class="highlight">require</span> <span class="highlight">exports</span> is not good enough</h3>
+<p>With simple require and exports, caller and callee are tightly coupled, developers have to deal with it everytime</p>
+
+<img src="resource/without_di_pain.png">
+</section>
+<!--section class="slide">
 <h2>Overview -- Node.js development</h2>
 
 <h3>require, exports is not good enough</h3>
@@ -189,14 +238,14 @@ var EventProxy = require('eventproxy');
 var Util = require('../libs/util');</code></pre>
 
 <p>you have to deal with it everytime...</p>
-</section>
+</section-->
 
 <section class="slide">
 <h2>Overview -- Node.js development</h2>
 
-<h3>consistent development and configuration needs to be improved</h3>
+<h3>Consistent development</h3>
 
-<p>Node is quite flexible, developers can write several styles of code, like callback, promise, generator with koa</p>
+<p>Node is quite flexible, developers can write several styles of code, like callback, promise, generator with koa, function programming, OOP programming etc...</p>
 <pre><code>app.get('/', function(req, res){
   res.send('Hello World');
 });
@@ -212,22 +261,15 @@ app.use(function *(){
 });
 
 app.listen(3000);</code></pre>
-<p>However, you are strong enough to write these codes, how about others ? </p>
-<p>Especially, when you are working for a team work project, developers can be flexible too</p>
-<p>an old developer leave the project, a new one joins it</p>
-<p>codes need to be familiar again and again, and anyone can jump to same hole again</p>
 
-<h3>Consistance is important for a team work project</h3>
-<h3>just choose one style, and go thoughout with it</h3>
+<p>Inconsistent code stypes, makes it hard to <span class="highlight">maintain</span> especially in large team work projects</p>
 </section>
 
 <section class="slide">
 
 <h2>Overview -- Node.js development</h2>
 
-<h3>consistent development and configuration needs to be improved</h3>
-
-<p>consistent configuration</p>
+<h3>Consistent configuration</h3>
 
 <pre><code>var serverConfig = require('../../config/server');
 var redis = require("redis");
@@ -244,7 +286,7 @@ client.on("ready", function() {
 module.exports = client;</code></pre>
 
 <p>you require a config file, and set the redis connection</p>
-<p>however, when you switch environments which means serverConfig may be changed, you can not do well with it</p>
+<p>however, when you switch <span class="highlight">environments</span> which means serverConfig may be changed, you can not do well with it</p>
 
 </section>
 
@@ -252,10 +294,11 @@ module.exports = client;</code></pre>
 
 <h2>Overview -- Node.js development</h2>
 
-<h3>How to solve these ? If not, it must be too painful...</h3>
+<h3>How to avoid these ?</h3> 
+<h3>How to make node.js development <span class="highlight">simple</span> and <span class="highlight">maintainable</span> ? </h3>
 
 <img src="resource/too_complicated.png">
-<h3>solution:  framework</h3>
+<h3 style="font-size:3em; color:black; text-align: center">Solution:  framework</h3>
 
 </section>
 
@@ -263,11 +306,18 @@ module.exports = client;</code></pre>
 
 <h2>Framework -- Bearcat</h2>
 
-<p><a href="https://github.com/bearcatnode/bearcat">Bearcat</a> is a POJOs based application framework which provides a lightweight container for writing simple, maintainable node.js, it is designed to solve all of these painful things. Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJO) and to apply enterprise services non-invasively to POJOs.</p>
+<p><a href="https://github.com/bearcatnode/bearcat">Bearcat</a> is a <span class="highlight">POJOs</span> based application framework which provides a lightweight container for writing <span class="highlight">simple</span>, <span class="highlight">maintainable</span> node.js, it is designed to solve all of these painful things.</p>
 
 <blockquote>Simple POJOs + Configuration metadatas = Elastic, maintainable system</blockquote>
 
   <img src="resource/bearcat-logo.png">
+
+
+</section>
+
+<section class="slide">
+
+<h2>Framework -- Bearcat</h2>
 <h3>the main concept of Bearcat is: </h3>
 <ul>
   <li>POJO</li>
@@ -275,18 +325,15 @@ module.exports = client;</code></pre>
   <li>AOP</li>
   <li>Consistent configuration</li>
 </ul>
-
 </section>
-
 <section class="slide">
 
 <h2>Framework -- Bearcat -- POJO</h2>
-<h3>What is POJO</h3>
-<p>POJO is an acronym for Plain Old Java Object, you can refer to <a href="http://en.wikipedia.org/wiki/Plain_Old_Java_Object">POJO wikipedia</a>. It is mostly used in Java Platform which is used to emphasize that a given object is an ordinary Java Object, not a special object.
-In Node, what is POJO ?
-It must be Plain Old JavaScript Object, which is simple, ordinary, and not anonymous.
-To be not anonymous, it must have Constructor function.
-So POJO can be like this:</p>
+<h3>What is POJO ?</h3>
+<ul>
+  <li>POJO === Plain Old <span class="highlight">Java</span> Object in java Platform, </li>
+  <li>POJO === Plain Old <span class="highlight">JavaScript</span> Object in node.js Platform</li>
+</ul>
 <pre><code>var POJO = function() {
     this.props = null;
 }
@@ -299,9 +346,9 @@ module.exports = POJO;</code></pre>
 
 <h3>Why should we use POJO ?</h3>
 <ul>
-  <li>POJO is simple, everyone can write it</li>
-  <li>POJO makes development consistently, all your codes is POJOs</li>
-  <li>POJO makes it friendly to document</li>
+  <li>POJO is <span class="highlight">simple</span>, everyone can write it</li>
+  <li>POJO makes development <span class="highlight">consistently</span>, all your codes is POJOs</li>
+  <li>POJO makes it <span class="highlight">friendly</span> to document</li>
 </ul>
 
 </section>
@@ -309,11 +356,12 @@ module.exports = POJO;</code></pre>
 <section class="slide">
 
 <h2>Framework -- Bearcat -- IoC</h2>
-<p>Inversion of Control (IoC) is a design pattern that addresses a component's dependency resolution, configuration and lifecycle. IoC is best understood through the Hollywood Principle: "Dont's call us, we'll call you". Bearcat implements IoC with dependency injection (DI). That is components do not look up, they provide plain simple configuration metadata enabling the container to resolve dependencies. The container is wholly responsible for wiring up components, passing resolved objects into JavaScript Object properties or constructors.</p>
+<ul>
+  <li>Inversion of Control (IoC) is a design pattern that addresses a component's <span class="highlight">dependency resolution</span>, <span class="highlight">configuration</span> and <span class="highlight">lifecycle</span>.</li>
+  <li>IoC is best understood through the Hollywood Principle: "Dont's call us, we'll call you".</li>
+  <li>Dependency injection (DI), components do not look up, they provide plain simple <span class="highlight">configuration metadata</span> enabling the container to resolve dependencies.</li>
+</ul>
 
-<p>With simple require and exports, caller and callee are tightly coupled, developers have to deal with it everytime</p>
-
-<img src="resource/without_di_pain.png">
 </section>
 
 <section class="slide">
@@ -337,7 +385,7 @@ Car.prototype.run = function() {
 
 module.exports = Car;</code></pre>
 
-<h3>car have to require engine and wheel, and then instantiate with constructor functions, it is tightly coupled</h3>
+<h3>car have to require engine and wheel, and then instantiate with constructor functions, it is tightly <span class="highlight">coupled</span></h3>
 </section>
 <section class="slide">
 
@@ -600,14 +648,18 @@ module.exports = Wheel;</code></pre>
 <section class="slide">
 <h2>Framework -- Bearcat -- IoC</h2>
 <h3>More details abount Bearcat IoC</h3>
-<p>visit Bearcat wiki <a href="https://github.com/bearcatnode/bearcat/wiki/IoC-container">IoC-Container</a></p>
-<p>chinese version is <a href="https://github.com/bearcatnode/bearcat/wiki/IoC%E5%AE%B9%E5%99%A8">IoC-Container-Chinese</a></p>
+<ul>
+  <li>Visit Bearcat wiki <a href="https://github.com/bearcatnode/bearcat/wiki/IoC-container">IoC-Container</a></li>
+  <li>Chinese version is <a href="https://github.com/bearcatnode/bearcat/wiki/IoC%E5%AE%B9%E5%99%A8">IoC-Container-Chinese</a></li>
+</ul>
 <img src="resource/bearcat-logo.png">
 </section>
 
 <section class="slide">
 <h2>Framework -- Bearcat -- AOP</h2>
-<p>Aspect-Oriented Programming (AOP) complements Object-Oriented Programming (OOP) by providing another way of thinking about program structure. The key unit of modularity in OOP is the class, whereas in AOP the unit of modularity is the aspect. Aspects enable the modularization of concerns such as transaction management that cut across multiple types and objects.</p>
+<p>Aspect-Oriented Programming (AOP) -- key unit -- <span class="highlight">aspect</span>. </p>
+<p>Object-Oriented Programming (OOP) -- key unit -- <span class="highlight">class</span>. </p>
+<p>Aspects enable the modularization of concerns such as <span class="highlight">transaction management</span> that cut across multiple types and objects.</p>
 <pre><code>var Car = function() {
 }
 
@@ -735,34 +787,24 @@ run car...</code></pre>
  <p>Transaction management is a good example of a AOP crosscutting concern in enterprise Node.js applications</p> 
  <p><a href="https://github.com/felixge/node-mysql">node-mysql</a> provides simple transaction support at the connection level:</p>
  <pre><code>connection.beginTransaction(function(err) {
-  if (err) { throw err; }
   connection.query('INSERT INTO posts SET title=?', title, function(err, result) {
     if (err) { 
-      connection.rollback(function() {
-        throw err;
-      });
+      return connection.rollback(function() {});
     }
-
     var log = 'Post ' + result.insertId + ' added';
-
     connection.query('INSERT INTO log SET data=?', log, function(err, result) {
       if (err) { 
-        connection.rollback(function() {
-          throw err;
-        });
+        return connection.rollback(function() {});
       }  
       connection.commit(function(err) {
         if (err) { 
-          connection.rollback(function() {
-            throw err;
-          });
+          return connection.rollback(function() {});
         }
         console.log('success!');
       });
     });
   });
 });</code></pre>
-<h3>it is quite original, your business codes coupled with transaction actions</h3>
 </section>
 
 <section class="slide">
@@ -789,17 +831,8 @@ run car...</code></pre>
 
 <section class="slide">
   <h2>Framework -- Bearcat -- Consistent configuration</h2>
-  <p>In Node.js development, it is common that there are serveral envrionments like development, test, production and so. Corresponding to these envrioments are configurations differed from each other. Therefore, it is necessary to make these configuration consistently.</p>
-
-  <ul><li>Using placeHolders</li>
-    <p>placeHolder is a signature indicating the place to be replaced by the specific envrioment value
-in Bearcat, the placeHolder can be like this:</p>
-<pre><code>${car.num}</code></pre>
-<p>then in config.json file you can define car.num with the specific value</p>
-<pre><code>{
-    "car.num": 100
-}</code></pre>
-<pre><code>var Car = function() {
+  <p>Configurations are actually <span class="highlight">properties</span> in POJO, therefore, you can use <span class="highlight">DI</span> to solve it</p>
+  <pre><code>var Car = function() {
   this.num = null;
 }
 
@@ -808,16 +841,19 @@ Car.prototype.run = function() {
   return 'car' + this.num;
 }
 
-module.exports = Car;</code></pre></ul>
+module.exports = Car;</code></pre>
+  
 </section>
 
 <section class="slide">
-  <h2>Framework -- Bearcat -- Consistent configuration</h2>
-  
-  <ul><li>Environment configuration</li>
-    <p>In Bearcat, you can write different environment configurations in the following structure:</p>
-    <img src="resource/configuration-structure.png">
-<p>in directory named config, you put dev and prod sub-directory named by specific envrioment, and then write the specific configurations in these directory corresponding to each environment.</p>
+<h2>Framework -- Bearcat -- Consistent configuration</h2>
+<ul><li>Using placeHolders</li>
+    <p>placeHolder to be replaced by the specific <span class="highlight">envrioment value</span></p>
+<pre><code>${car.num}</code></pre>
+<p>then in config.json file you can define car.num with the specific value</p>
+<pre><code>{
+    "car.num": 100
+}</code></pre>
 <pre><code>{
   "name": "simple",
   "beans": [{
@@ -831,12 +867,32 @@ module.exports = Car;</code></pre></ul>
 }</code></pre>
 </ul>
 </section>
+<section class="slide">
+  <h2>Framework -- Bearcat -- Consistent configuration</h2>
+  
+  <ul><li>Environment configuration</li>
+    <p>Different environment configurations:</p>
+    <pre><code>├─┬ placeholderSample/
+│ ├─┬ config/
+│ │ └─┬ dev/
+│ │ │ └── car.json
+│ │ └─┬ prod/
+│ │   └── car.json
+│ └── car.js
+└── context.json</code></pre>
+<ul>
+  <li><span class="highlight">dev</span> sub-directory -- development envrioment configurations</li>
+  <li><span class="highlight">prod</span> sub-directory -- production envrioment configurations</li>
+</ul>
+</ul>
+
+</section>
 
 <section class="slide">
   <h2>Framework -- Bearcat -- Consistent configuration</h2>
   
   <ul><li>Switching environment</li>
-    <p>In Bearcat, you can switch different environment in the following ways:</p>
+    <p>Setup env at the startup command, by default the env is <span class="highlight">dev</span></p>
     <p>Run with env or --env args</p>
 <pre><code>node app.js env=prod</code></pre>
 <p>Run with NODE_ENV</p>
@@ -847,9 +903,8 @@ module.exports = Car;</code></pre></ul>
 <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
-  <p>the whole repository is <a href="https://github.com/bearcatnode/todo">bearcat-todo</a></p>
-  <p>forked from <a href="https://github.com/fengmk2/todo">fengmk2-todo</a></p>
+  <ul><li>Simple web todo</li>
+  <p>the whole repository is <a href="https://github.com/bearcatnode/todo">bearcat-todo</a>, forked from <a href="https://github.com/fengmk2/todo">fengmk2-todo</a></p>
   <img src="resource/bearcat-todo.png">
 </ul>
 </section>
@@ -857,9 +912,9 @@ module.exports = Car;</code></pre></ul>
 <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
+  <ul><li>Simple web todo</li>
 
-<p>project code structure</p>
+<p>Project code structure -- MVC driven</p>
 <pre><code>├─┬ app/
 │ ├─┬ controller/
 │ │ └── todoController.js
@@ -885,7 +940,7 @@ module.exports = Car;</code></pre></ul>
 <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
+  <ul><li>Simple web todo</li>
     <p>todoController.js -- simple POJO</p>
     <pre><code>var TodoController = function() {
   this.todoService = null;
@@ -909,8 +964,8 @@ module.exports = {
 <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
-    <p>setup Bearcat and add route</p>
+  <ul><li>Simple web todo</li>
+    <p>Setup Bearcat and add route</p>
     <pre><code>var contextPath = require.resolve('./context.json');
 
 var bearcat = Bearcat.createApp([contextPath]);
@@ -934,8 +989,8 @@ bearcat.start(function() {
 <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
-    <p>setup Bearcat and add route</p>
+  <ul><li>Simple web todo</li>
+    <p>Setup Bearcat and add route</p>
     <p>context.json setup scan path to enable auto-scan POJOs</p>
     <pre><code>{
   "name": "bearcat-todo",
@@ -947,8 +1002,8 @@ bearcat.start(function() {
  <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
-    <p>add todoService and todoDao</p>
+  <ul><li>Simple web todo</li>
+    <p>Add todoService and todoDao</p>
     <p>todoService.js</p>
     <pre><code>var TodoService = function() {
   this.todoDao = null;
@@ -972,8 +1027,8 @@ module.exports = {
  <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
-    <p>add todoService and todoDao</p>
+  <ul><li>Simple web todo</li>
+    <p>Add todoService and todoDao</p>
     <p>todoDao.js</p>
     <pre><code>var TodoDomain = require('../domain/todoDomain');
 
@@ -1006,8 +1061,8 @@ module.exports = {
  <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
-    <p>update todoController</p>
+  <ul><li>Simple web todo</li>
+    <p>Update todoController</p>
     <p>todoController.js</p>
     <pre><code>TodoController.prototype.index = function(req, res, next) {
   this.todoService.getList([0, 50], function(err, results) {
@@ -1027,8 +1082,8 @@ module.exports = {
  <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
-    <p>just run it</p>
+  <ul><li>Simple web todo</li>
+    <p>Just run it</p>
     <pre><code>node server.js</code></pre>
     <img src="resource/bearcat-todo.png">
   </ul>
@@ -1037,9 +1092,9 @@ module.exports = {
 <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
+  <ul><li>Simple web todo</li>
     <h3>How to set up mysql configuration ?</h3>
-    <p>magic is in context.json</p>
+    <p>magic is also in <span class="highlight">context.json</span></p>
     <pre><code>{
   "name": "bearcat-todo",
   "dependencies": {
@@ -1073,8 +1128,8 @@ module.exports = {
  <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
-    <p>set up mysql configuration</p>
+  <ul><li>Simple web todo</li>
+    <p>Set up mysql configuration</p>
     <p>mysql.json in dev</p>
     <pre><code>{
   "mysql.port": 3306,
@@ -1089,7 +1144,7 @@ module.exports = {
 <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
+  <ul><li>Simple web todo</li>
     <p>Swith to production env ?</p>
     <p>mysql.json in prod</p>
     <pre><code>{
@@ -1105,8 +1160,8 @@ module.exports = {
  <section class="slide">
   <h2>Framework -- Bearcat -- Practice</h2>
   
-  <ul><li>simple web todo</li>
-    <p>just run it</p>
+  <ul><li>Simple web todo</li>
+    <p>Just run it</p>
     <pre><code>node server.js</code></pre>
     <pre><code>node server.js env=prod</code></pre>
   </ul>
@@ -1116,11 +1171,16 @@ module.exports = {
   <h2>Framework -- Bearcat -- Conclusion</h2>
  <h3>Bearcat -- lightweight container</h3>
  <ul>
-  <li>Dependency injection implementated Inversion of Control (IoC) to manage POJOs</li>
-  <li>AOP based declarative middleware services</li>
-  <li>Consistent development and configuration</li>
+  <li><span class="highlight">Dependency injection</span> implementated Inversion of Control (IoC) to manage POJOs</li>
+  <li><span class="highlight">AOP</span> based declarative middleware services</li>
+  <li><span class="highlight">Consistent</span> development and configuration</li>
 </ul> 
-<h3>Brings to node</h3>
+<img src="resource/bearcat-logo.png">
+</section>
+
+<section class="slide">
+  <h2>Framework -- Bearcat -- Conclusion</h2>
+  <h3>Brings to node</h3>
   <ul>
     <li>Simple meta configuration and POJOs</li>
     <li>Reuseable: POJOs can be used to any development environment</li>

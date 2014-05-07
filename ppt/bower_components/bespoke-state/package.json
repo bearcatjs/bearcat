@@ -1,0 +1,34 @@
+{
+  "name": "bespoke-state",
+  "title": "bespoke-state",
+  "version": "0.2.2",
+  "description": "Slide-Specific Deck Styles for Bespoke.js",
+  "author": {
+    "name": "Mark Dalgleish",
+    "url": "http://markdalgleish.com"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/markdalgleish/bespoke-state.git"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.17",
+    "grunt-jasmine-runner": "~0.6.0",
+    "temporary": "0.0.5"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://mit-license.org/markdalgleish"
+    }
+  ],
+  "keywords": [
+    "bespoke.js-plugin"
+  ]
+}

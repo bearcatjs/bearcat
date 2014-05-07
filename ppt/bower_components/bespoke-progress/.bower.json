@@ -1,0 +1,17 @@
+{
+  "name": "bespoke-progress",
+  "version": "0.1.0",
+  "dependencies": {
+    "bespoke.js": ">=0.3.0"
+  },
+  "homepage": "https://github.com/markdalgleish/bespoke-progress",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.0",
+    "commit": "3a0a5b07663e471bbd495df7f148aa58122f441f"
+  },
+  "_source": "git://github.com/markdalgleish/bespoke-progress.git",
+  "_target": "~0.1.0",
+  "_originalSource": "bespoke-progress"
+}

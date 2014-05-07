@@ -1,0 +1,83 @@
+/* bespoke-state rules */
+.bespoke-parent.blue   { background-color: #96C0FF; }
+.bespoke-parent.green  { background-color: #96FFC8; }
+.bespoke-parent.orange { background-color: #FFC896; }
+
+/* normal bespoke rules */
+body {
+	font-family: helvetica, arial, sans-serif;
+	font-size: 16px;
+	line-height: 28px;
+}
+
+* {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	color: #303030;
+}
+
+h1 {
+	height: 25px;
+	width: 640px;
+	position: absolute;
+	z-index: 1;
+	top: 50%;
+	left: 50%;
+	margin-left: -322px;
+	margin-top: -290px;
+	font-size: 32px;
+	letter-spacing: -1px;
+	color: #fff;
+	text-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+section {
+	display: none;
+}
+
+.bespoke-parent {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.bespoke-slide {
+	background: white;
+	width: 640px;
+	height: 480px;
+	position: absolute;
+	top: 50%;
+	margin-top: -240px;
+	left: 50%;
+	margin-left: -320px;
+	font-size: 160px;
+	line-height: 160px;
+	text-align: center;
+	padding-top: 150px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+section.bespoke-slide {
+	-webkit-transition: all .3s ease;
+	-moz-transition: all .3s ease;
+	-ms-transition: all .3s ease;
+	-o-transition: all .3s ease;
+	transition: all .3s ease;
+	display: block;
+}
+
+.bespoke-inactive {
+	opacity: 0;
+}
+
+.bespoke-active {
+	opacity: 1;
+}
+
+ul {
+	list-style: none;
+}

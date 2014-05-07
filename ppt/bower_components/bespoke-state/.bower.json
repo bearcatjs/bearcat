@@ -1,0 +1,21 @@
+{
+  "name": "bespoke-state",
+  "version": "0.2.2",
+  "main": "./dist/bespoke-state.min.js",
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "bespoke.js": ">=0.2.0"
+  },
+  "homepage": "https://github.com/markdalgleish/bespoke-state",
+  "_release": "0.2.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.2",
+    "commit": "56e22fdcb386532ec0362815eebf0cdaf17067e7"
+  },
+  "_source": "git://github.com/markdalgleish/bespoke-state.git",
+  "_target": "~0.2.0",
+  "_originalSource": "bespoke-state"
+}

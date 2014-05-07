@@ -1,0 +1,11 @@
+{
+  "name": "bespoke-state",
+  "version": "0.2.2",
+  "main": "./dist/bespoke-state.min.js",
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "bespoke.js": ">=0.2.0"
+  }
+}
