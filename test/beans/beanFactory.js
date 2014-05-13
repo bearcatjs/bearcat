@@ -15,9 +15,11 @@ describe('BeanFactory', function() {
 			beanFactory.invokeInitMethods('car');
 			beanFactory.getDependsApplyArgs('');
 			beanFactory.setParentBean('car');
-			beanFactory.getDependsBeans('car');
+			// beanFactory.getDependsBeans('car');
 			beanFactory.isSingleton('car');
 			beanFactory.isPrototype('car');
+			beanFactory.destroySingleton();
+			beanFactory.destroyBean();
 
 			var beanDefinition = new BeanDefinition();
 			beanDefinition.setBeanName('car');
