@@ -514,4 +514,22 @@ describe('applicationContext', function() {
 			done();
 		});
 	});
+
+	describe('simple_abstract_parent', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/simple_abstract_parent/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.refresh();
+
+			var bus = applicationContext.getBean('bus');
+			var Car = applicationContext.getBean('car');
+			Car.call(bus);
+			bus.run();
+			bus.fly();
+
+			done();
+		});
+	});
 });
