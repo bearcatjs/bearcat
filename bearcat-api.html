@@ -119,6 +119,8 @@
               </li>
               <li><a href="#getBean"><i class="alert alert-info"></i><span>getBean</span></a>
               </li>
+              <li><a href="#getFunction"><i class="alert alert-info"></i><span>getFunction</span></a>
+              </li>
               <li><a href="#getRoute"><i class="alert alert-info"></i><span>getRoute</span></a>
               </li>
             </ul>
@@ -221,7 +223,7 @@ module.exports = Bearcat;</code></pre>
   this.applicationContext = new ApplicationContext(configLocations);
   this.applicationContext.on('finishRefresh', function() {
     self.state = STATE_STARTED;
-    logger.info('Bearcat startup in %s ms', Date.now() - self.startTime);
+    logger.info('Bearcat startup in %s with %s ms', self.applicationContext.getEnv(), Date.now() - self.startTime);
     cb();
   });
 
@@ -319,7 +321,7 @@ module.exports = Bearcat;</code></pre>
             <h1>getBean</h1>
             <h5 class="subheader"></h5>
             <p>
-              <div class="label label-info radius ctx-type">method</div><span>Bearcat.getBean()</span>
+              <div class="label label-info radius ctx-type">method</div><span>Bearcat.getBean()</span> -><span>Object</span>
             </p>
           </section>
           <table class="table table-bordered table-striped">
@@ -368,6 +370,44 @@ module.exports = Bearcat;</code></pre>
     logger.error('Bearcat application unsupported getBean arguments for %j', &quot;getBean&quot;);
   }
 }</code></pre>
+          <section id="getFunction">
+            <h1>getFunction</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Bearcat.getFunction()</span> -><span>Function</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>beanName</td>
+                <td>String</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Bearcat get bean constructor function from IoC container through beanName.</p>
+
+<p>Examples:</p>
+
+<pre><code>  // through beanName
+  var Car = bearcat.getFunction("car");
+</code></pre> </div>
+          <pre><code class="language-javascript">Bearcat.getFunction = function(beanName) {
+  if (this.state !== STATE_STARTED) {
+    logger.warn('Bearcat application is not running now for %j %j', &quot;getFunction&quot;, this.state);
+    return;
+  }
+
+  return Bearcat.getBeanFactory().getBeanFunction(beanName);
+}</code></pre>
           <section id="getRoute">
             <h1>getRoute</h1>
             <h5 class="subheader"></h5>
@@ -410,7 +450,7 @@ module.exports = Bearcat;</code></pre>
     </div>
     <footer class="footer">
       <div class="container">
-        <!--p>Documentation generated with<a href="https://github.com/FGRibreau/doxx">Doxx</a>created by<a href="https://twitter.com/FGRibreau" data-show-count="false" class="twitter-follow-button">Francois-Guillaume Ribreau</a></p>
+        <!--p>Documentation generated with<a href="https://github.com/FGRibreau/doxx"></a>created by<a href="https://twitter.com/FGRibreau" data-show-count="false" class="twitter-follow-button">Francois-Guillaume Ribreau</a></p>
         <p>Doxx is sponsored by<a href="http://bringr.net/?btt" title="Outil d'analyse des réseaux sociaux" class="bringr">Bringr</a>and<a href="https://redsmin.com/?btt" title="Full Redis GUI" class="redsmin">Redsmin</a></p>
         <p>Theme borrowed from Twitter Bootstrap</p-->
       </div>
