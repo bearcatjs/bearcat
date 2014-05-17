@@ -438,7 +438,12 @@ module.exports = Bearcat;</code></pre>
           </table>
           <div class="description"><p>Bearcat convenient function for using in MVC route mapping.</p>
 
-<p>Examples:<br />   // express<br />   var app = express();<br />   app.get('/', bearcat.getRoute('bearController', 'index'));</p> </div>
+<p>Examples:</p>
+
+<pre><code>  // express
+  var app = express();
+  app.get('/', bearcat.getRoute('bearController', 'index'));
+</code></pre> </div>
           <pre><code class="language-javascript">Bearcat.getRoute = function(beanName, fnName) {
   var bean = Bearcat.getBean(beanName);
   return function(req, res, next) {
