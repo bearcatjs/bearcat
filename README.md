@@ -3,6 +3,7 @@ Bearcat is a POJOs based application framework which provides a lightweight cont
 
 > ###Simple POJOs + Configuration metadatas = Elastic, maintainable system 
   
+![](http://bearcatnode.github.io/bearcat/images/bearcat-logo.png)
 [![Build Status](https://travis-ci.org/bearcatnode/bearcat.svg?branch=master)](https://travis-ci.org/bearcatnode/bearcat)
 
  * Homepage: <http://bearcatnode.github.io/bearcat/>
