@@ -13,12 +13,30 @@ var ApplicationContext = require('../../lib/context/applicationContext');
 // })
 // applicationContext.refresh();
 
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
+// var simplepath = require.resolve('../../examples/aop/context.json');
+// var paths = [simplepath];
 
-var ProxyFactory = require('../../' + lib + '/aop/framework/proxyFactory');
+// var applicationContext = new ApplicationContext(paths);
+// applicationContext.refresh();
 
-var should = require('should');
+// var car = applicationContext.getBean('car');
+// var r = car.runBeforeSync();
+// console.log(r);
+// var simplepath = require.resolve('../../examples/aop/context.json');
+// var paths = [simplepath];
 
-var Car = function() {}
+// var applicationContext = new ApplicationContext(paths);
+// applicationContext.refresh();
 
-var proxyFactory = new ProxyFactory(new Car(), ['run', 'runxx']);
+// var car = applicationContext.getBean('car');
+// var r = car.doRun(100);
+
+var simplepath = require.resolve('../../examples/aop/context.json');
+var paths = [simplepath];
+
+var applicationContext = new ApplicationContext(paths);
+applicationContext.refresh();
+
+var car = applicationContext.getBean('car');
+
+var r = car.doRunAfterSync();

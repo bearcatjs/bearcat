@@ -9,6 +9,11 @@ Aspect.prototype.doBefore = function(next) {
 	next();
 }
 
+Aspect.prototype.doBeforeOrder = function(next) {
+	console.log('Aspect doBeforeOrder');
+	next();
+}
+
 Aspect.prototype.doBeforeError = function(next) {
 	console.log('Aspect doBeforeError');
 	next(new Error('doBeforeError'));
@@ -21,6 +26,11 @@ Aspect.prototype.doBeforeRuntime = function(num, next) {
 
 Aspect.prototype.doAfter = function(err, r, next) {
 	console.log('Aspect doAfter ' + r);
+	next();
+}
+
+Aspect.prototype.doRunAfter = function(r, next) {
+	console.log('Aspect doRunAfter ' + r);
 	next();
 }
 
