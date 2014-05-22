@@ -120,4 +120,54 @@ describe('aop', function() {
 			done();
 		});
 	});
+
+	describe('no advice', function() {
+		it('should do no advice object right', function(done) {
+			var simplepath = require.resolve('../../examples/aop/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.refresh();
+
+			var car = applicationContext.getBean('car');
+			var obj = {
+				test: 1
+			};
+
+			var r = car.doRunObj(obj);
+			console.log(obj);
+			done();
+		});
+	});
+
+	describe('sync target method after advice', function() {
+		it('should do sync target method after advice right', function(done) {
+			var simplepath = require.resolve('../../examples/aop/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.refresh();
+
+			var car = applicationContext.getBean('car');
+
+			var r = car.doRunAfterSync();
+			done();
+		});
+	});
+
+	describe('sync target method', function() {
+		it('should do sync target method right', function(done) {
+			var simplepath = require.resolve('../../examples/aop/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.refresh();
+
+			var car = applicationContext.getBean('car');
+			var r = car.runBeforeSync();
+			// r.should.eql('runBeforeSync');
+
+			done();
+		});
+	});
 });

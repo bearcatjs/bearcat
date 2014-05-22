@@ -15,7 +15,12 @@
 		"func": "aspect",
 		"aop": [{
 			"pointcut": "before:.*?runBefore",
-			"advice": "doBefore"
+			"advice": "doBefore",
+			"order": 10
+		}, {
+			"pointcut": "before:.*?runBefore",
+			"advice": "doBeforeOrder",
+			"order": 100
 		}, {
 			"pointcut": "before:.*?runBeforeError",
 			"advice": "doBeforeError"
@@ -27,12 +32,18 @@
 			"pointcut": "after:.*?runAfter",
 			"advice": "doAfter"
 		}, {
+			"pointcut": "after:.*?doRunAfter",
+			"advice": "doRunAfter"
+		}, {
 			"pointcut": "around:.*?runAround",
 			"advice": "doAround"
 		}, {
 			"pointcut": "around:.*?runTimeAround",
 			"advice": "doAroundRuntime",
 			"runtime": true
+		}, {
+			"pointcut": "before:.*?runBeforeSync",
+			"advice": "doBefore"
 		}]
 	}]
 }
