@@ -31,6 +31,16 @@ var ApplicationContext = require('../../lib/context/applicationContext');
 // var car = applicationContext.getBean('car');
 // var r = car.doRun(100);
 
+// var simplepath = require.resolve('../../examples/aop/context.json');
+// var paths = [simplepath];
+
+// var applicationContext = new ApplicationContext(paths);
+// applicationContext.refresh();
+
+// var car = applicationContext.getBean('car');
+
+// var r = car.doRunAfterSync();
+
 var simplepath = require.resolve('../../examples/aop/context.json');
 var paths = [simplepath];
 
@@ -38,5 +48,10 @@ var applicationContext = new ApplicationContext(paths);
 applicationContext.refresh();
 
 var car = applicationContext.getBean('car');
+car.runAround(function(err, r) {
+	console.log(r);
+});
 
-var r = car.doRunAfterSync();
+setTimeout(function() {
+
+}, 1000000);
