@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var BeanDefinitionVisitor = require('../../../' + lib + '/beans/support/beanDefinitionVisitor');
+var BeanDefinitionVisitor = require('../../../lib/beans/support/beanDefinitionVisitor');
 
 var should = require('should');
 

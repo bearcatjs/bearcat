@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var DynamicAopProxy = require('../../../' + lib + '/aop/framework/dynamicAopProxy');
+var DynamicAopProxy = require('../../../lib/aop/framework/dynamicAopProxy');
 
 var should = require('should');
 

@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var Pointcut = require('../../' + lib + '/aop/pointcut');
+var Pointcut = require('../../lib/aop/pointcut');
 
 var should = require('should');
 

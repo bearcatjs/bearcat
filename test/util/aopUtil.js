@@ -1,7 +1,5 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var AopUtil = require('../../' + lib + '/util/aopUtil');
-var BeanDefinition = require('../../' + lib + '/beans/support/beanDefinition');
+var AopUtil = require('../../lib/util/aopUtil');
+var BeanDefinition = require('../../lib/beans/support/beanDefinition');
 
 var should = require('should');
 

@@ -1,8 +1,6 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var BeanDefinition = require('../../../' + lib + '/beans/support/beanDefinition');
-var BeanWrapper = require('../../../' + lib + '/beans/support/beanWrapper');
-var Constant = require('../../../' + lib + '/util/constant');
+var BeanDefinition = require('../../../lib/beans/support/beanDefinition');
+var BeanWrapper = require('../../../lib/beans/support/beanWrapper');
+var Constant = require('../../../lib/util/constant');
 var should = require('should');
 
 describe('beanDefinition', function() {
