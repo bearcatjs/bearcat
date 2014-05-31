@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var ProxyFactory = require('../../../' + lib + '/aop/framework/proxyFactory');
+var ProxyFactory = require('../../../lib/aop/framework/proxyFactory');
 
 var should = require('should');
 

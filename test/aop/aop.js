@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var ApplicationContext = require('../../' + lib + '/context/applicationContext');
+var ApplicationContext = require('../../lib/context/applicationContext');
 
 var should = require('should');
 

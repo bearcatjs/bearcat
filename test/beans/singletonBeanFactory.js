@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var SingletonBeanFactory = require('../../' + lib + '/beans/singletonBeanFactory');
+var SingletonBeanFactory = require('../../lib/beans/singletonBeanFactory');
 var should = require('should');
 
 describe('SingletonBeanFactory', function() {

@@ -1,9 +1,7 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var beanWrapper = require('../../' + lib + '/beans/support/beanWrapper');
+var beanWrapper = require('../../lib/beans/support/beanWrapper');
 var mock_args = require('../mock-base/mock-arg-props');
-var beanUtil = require('../../' + lib + '/util/beanUtil');
-var constant = require('../../' + lib + '/util/constant');
+var beanUtil = require('../../lib/util/beanUtil');
+var constant = require('../../lib/util/constant');
 var should = require('should');
 
 describe('beanUtil', function() {

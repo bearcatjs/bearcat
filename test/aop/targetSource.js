@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var TargetSource = require('../../' + lib + '/aop/targetSource');
+var TargetSource = require('../../lib/aop/targetSource');
 
 var should = require('should');
 

@@ -1,8 +1,6 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
 var mock_args = require('../mock-base/mock-arg-props');
-var utils = require('../../' + lib + '/util/utils');
-var constant = require('../../' + lib + '/util/constant');
+var utils = require('../../lib/util/utils');
+var constant = require('../../lib/util/constant');
 var should = require('should');
 
 describe('utils', function() {
@@ -187,12 +185,36 @@ describe('utils', function() {
 			car2.setOrder(0);
 
 			var r = utils.compareByOrder(car1, car2);
+
+			r.should.equal(-1);
+
+			r = utils.compareBeans(car1, car2);
+
+			r.should.equal(-1);
+
+			var car3 = new Car();
+			car3.aspect = 1;
+			r = utils.compareBeans(car3, car1);
+
 			r.should.equal(-1);
 
 			done();
 		});
 
 		it('should parseArgs right', function(done) {
+			var argv = ['node', 'app', 'env=test'];
+			var args = utils.parseArgs(argv);
+			args.should.eql({
+				main: 'app',
+				env: 'test'
+			});
+
+			argv = ['node', 'app', '--env=test'];
+			var args = utils.parseArgs(argv);
+			args.should.eql({
+				main: 'app',
+				'--env': 'test'
+			});
 
 			done();
 		});

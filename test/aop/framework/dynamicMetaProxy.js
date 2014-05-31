@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var DynamicMetaProxy = require('../../../' + lib + '/aop/framework/dynamicMetaProxy');
+var DynamicMetaProxy = require('../../../lib/aop/framework/dynamicMetaProxy');
 
 var should = require('should');
 

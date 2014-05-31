@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var PlaceHolderConfigurer = require('../../../' + lib + '/beans/support/placeHolderConfigurer');
+var PlaceHolderConfigurer = require('../../../lib/beans/support/placeHolderConfigurer');
 
 var should = require('should');
 

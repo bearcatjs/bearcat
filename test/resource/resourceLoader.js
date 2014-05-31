@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var ResourceLoader = require('../../' + lib + '/resource/resourceLoader');
+var ResourceLoader = require('../../lib/resource/resourceLoader');
 var should = require('should');
 
 describe('resourceLoader', function() {

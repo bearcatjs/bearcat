@@ -1,6 +1,4 @@
-var lib = process.env.BEARCAT_COV ? 'lib-cov' : 'lib';
-
-var Advisor = require('../../' + lib + '/aop/advisor');
+var Advisor = require('../../lib/aop/advisor');
 
 var should = require('should');
 

@@ -1,6 +1,6 @@
 {
   "name": "bearcat",
-  "version": "0.1.28",
+  "version": "0.1.29",
   "description": "a POJOs based application framework for node.js",
   "main": "index.js",
   "scripts": {
@@ -26,11 +26,9 @@
   "devDependencies": {
     "should": ">=0.0.1",
     "mocha": ">=0.0.1",
-    "jscoverage": "0.3.3",
-    "muk": ">=0.0.1",
     "grunt": "~0.4.2",
     "grunt-mocha-test": "0.8.x",
-    "grunt-jscoverage": "0.0.3",
-    "grunt-contrib-clean": "0.5.x"
+    "grunt-contrib-clean": "0.5.x",
+    "blanket": "1.1.x"
   }
 }
