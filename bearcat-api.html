@@ -139,8 +139,7 @@
   configLocations: null,
   applicationContext: null,
   state: STATE_INITED,
-  startTime: null,
-  app: null
+  startTime: null
 };
 
 module.exports = Bearcat;</code></pre>
@@ -172,12 +171,6 @@ module.exports = Bearcat;</code></pre>
   this.configLocations = configLocations;
   return Bearcat;
 }</code></pre>
-          <div class="description"><p>Get application</p> </div>
-          <pre><code class="language-javascript">Object.defineProperty(Bearcat, 'app', {
-  get: function() {
-    return Bearcat;
-  }
-});</code></pre>
           <section id="start">
             <h1>start</h1>
             <h5 class="subheader"></h5>
@@ -203,21 +196,22 @@ module.exports = Bearcat;</code></pre>
           </table>
           <div class="description"><p>Bearcat start app.</p> </div>
           <pre><code class="language-javascript">Bearcat.start = function(cb) {
+  if (this.state &gt; STATE_INITED) {
+    logger.warn('Bearcat has already start, run bearcat.stop to start again.');
+    return cb();
+  }
+
   if (!Utils.checkFunction(cb)) {
     cb = function() {}
   }
 
   this.startTime = Date.now();
   var self = this;
-  if (this.state &gt; STATE_INITED) {
-    cb(new Error('application has already start.'));
-    return;
-  }
+
   this.state = STATE_START;
   var configLocations = this.configLocations;
   if (!configLocations) {
-    cb(new Error('Bearcat start error, configLocations null'));
-    return;
+    return cb(new Error('Bearcat start error, configLocations null'));
   }
 
   this.applicationContext = new ApplicationContext(configLocations);
@@ -238,12 +232,13 @@ module.exports = Bearcat;</code></pre>
           </section>
           <div class="description"><p>Bearcat stop app.<br />it will stop internal applicationContext, destroy all singletonBeans</p> </div>
           <pre><code class="language-javascript">Bearcat.stop = function() {
-  if (this.state &gt; STATE_STARTED) {
-    logger.warn('Bearcat application is not running now.');
-    return;
+  if (this.applicationContext) {
+    this.applicationContext.destroy();
   }
-  this.applicationContext.destroy();
-  this.state = STATE_STOPED;
+  this.applicationContext = null;
+  this.configLocations = null;
+  this.startTime = null;
+  this.state = STATE_INITED;
 }</code></pre>
           <section id="getBeanFactory">
             <h1>getBeanFactory</h1>
@@ -455,9 +450,6 @@ module.exports = Bearcat;</code></pre>
     </div>
     <footer class="footer">
       <div class="container">
-        <!--p>Documentation generated with<a href="https://github.com/FGRibreau/doxx"></a>created by<a href="https://twitter.com/FGRibreau" data-show-count="false" class="twitter-follow-button">Francois-Guillaume Ribreau</a></p>
-        <p>Doxx is sponsored by<a href="http://bringr.net/?btt" title="Outil d'analyse des réseaux sociaux" class="bringr">Bringr</a>and<a href="https://redsmin.com/?btt" title="Full Redis GUI" class="redsmin">Redsmin</a></p>
-        <p>Theme borrowed from Twitter Bootstrap</p-->
       </div>
     </footer>
     <script src="javascripts/widgets.js"></script>
