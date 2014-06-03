@@ -1,5 +1,7 @@
 var ApplicationContext = require('../../lib/context/applicationContext');
 var should = require('should');
+var path = require('path');
+var fs = require('fs');
 
 describe('applicationContext', function() {
 	describe('simple', function() {
@@ -528,6 +530,34 @@ describe('applicationContext', function() {
 			bus.fly();
 
 			done();
+		});
+	});
+
+	describe('simple_abstract_parent', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/hot_reload/context.json');
+			var hotPath = path.dirname(simplepath) + '/hot';
+			var paths = [simplepath];
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.setHotPath(hotPath);
+			applicationContext.refresh(function() {
+				var car = applicationContext.getBean('car');
+				var r = car.run();
+
+				r.should.exist;
+				r.should.eql('car');
+
+				var hotCarPath = require.resolve('../../examples/hot_reload/hot/car.js');
+				fs.appendFileSync(hotCarPath, "\n");
+
+				setTimeout(function() {
+					r = car.run();
+					r.should.exist;
+					r.should.eql('car hot');
+
+					done();
+				}, 2000);
+			});
 		});
 	});
 });
