@@ -1,0 +1,7 @@
+{
+	"name": "simple",
+	"beans": [{
+		"id": "car",
+		"func": "car"
+	}]
+}

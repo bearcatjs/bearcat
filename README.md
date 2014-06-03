@@ -28,6 +28,7 @@ Bearcat is a POJOs based application framework which provides a lightweight cont
 * Modular: you just use only those parts that you need
 * One stop shop: no need for a dedicated Singleton or factory for every object etc
 * Easy to mock objects for unit test based on IoC
+* Hot reload prototype function nicely
 
 ### Powerful
 
