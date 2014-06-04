@@ -79,6 +79,23 @@ Codes written by simple POJOs and simple configuration metadatas can be run with
 
 more bearcat apis can be refered to [bearcat-api](http://bearcatnode.github.io/bearcat/bearcat-api.html)
 
+## Generator
+[generator-bearcat](https://github.com/bearcatnode/generator-bearcat) is provided for quick startup  
+```
+npm install -g yo
+```
+
+```
+npm install -g generator-bearcat
+```
+
+```
+yo bearcat
+```
+
+you can choose to generate bearcat-app, bearcat-webapp, bearcat-library for your application needs 
+![](http://bearcatnode.github.io/bearcat/images/yeoman_bearcat.png)
+
 ## License
 
 (The MIT License)
