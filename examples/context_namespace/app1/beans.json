@@ -1,6 +1,6 @@
 {
 	"name": "beans",
-	"namespace": "app",
+	"namespace": "app1",
 	"beans": [{
 		"id": "car",
 		"func": "car"
