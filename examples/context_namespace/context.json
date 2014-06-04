@@ -1,0 +1,4 @@
+{
+	"name": "simple_imports_context",
+	"imports": ["app/beans.json", "app1/beans.json"]
+}

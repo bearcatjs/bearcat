@@ -105,6 +105,7 @@ describe('utils', function() {
 	describe('#file', function() {
 		it('should get myRequire right', function(done) {
 			var beanUtil = require('../../lib/util/beanUtil');
+			utils.myRequire(1);
 			var myBeanUtil = utils.myRequire('../../lib/util/beanUtil');
 			myBeanUtil.should.be.exist;
 

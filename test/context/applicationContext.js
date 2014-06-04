@@ -533,7 +533,7 @@ describe('applicationContext', function() {
 		});
 	});
 
-	describe('simple_abstract_parent', function() {
+	describe('hot_reload', function() {
 		it('should get bean right', function(done) {
 			var simplepath = require.resolve('../../examples/hot_reload/context.json');
 			var hotPath = path.dirname(simplepath) + '/hot';
@@ -557,6 +557,23 @@ describe('applicationContext', function() {
 
 					done();
 				}, 2000);
+			});
+		});
+	});
+
+	describe('context_namespace', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/context_namespace/context.json');
+			var paths = [simplepath];
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.refresh(function() {
+				var car = applicationContext.getBean('app:car');
+				var r = car.run();
+
+				r.should.exist;
+				r.should.eql('car');
+
+				done();
 			});
 		});
 	});
