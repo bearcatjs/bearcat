@@ -556,7 +556,7 @@ describe('applicationContext', function() {
 					r.should.eql('car hot');
 
 					done();
-				}, 2000);
+				}, 6000);
 			});
 		});
 	});
