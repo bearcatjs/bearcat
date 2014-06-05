@@ -1,6 +1,6 @@
 {
   "name": "bearcat",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "a POJOs based application framework for node.js",
   "main": "index.js",
   "scripts": {
