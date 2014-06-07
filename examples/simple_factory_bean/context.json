@@ -7,6 +7,13 @@
 		"factoryMethod": "createCar"
 	}, {
 		"id": "carFactory",
-		"func": "carFactory"
+		"func": "carFactory",
+		"props": [{
+			"name": "wheel",
+			"ref": "wheel"
+		}]
+	}, {
+		"id": "wheel",
+		"func": "wheel"
 	}]
 }
