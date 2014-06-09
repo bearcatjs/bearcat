@@ -1,3 +1,7 @@
+0.2.11 / 2014-6-9
+=================
+* fix bearcat load require rm cache bug
+
 0.2.10 / 2014-6-9
 =================
 * add $ based function annotation support for DI [Function annotation di ](https://github.com/bearcatnode/bearcat/wiki/Function-annotation-di)
