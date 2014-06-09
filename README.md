@@ -64,6 +64,7 @@ module.exports = POJO;
 ## Usage
 Running bearcat is quite simple, all you have to do is to write simple POJOs and simple configuration metadatas like context.json, after this, passing context.json paths to bearcat, and run it, then all your POJOs will be magicly turned into an elastic, maintainable system.  
 
+[helloBearcat](https://github.com/bearcatnode/bearcat/wiki/HelloWorld-of-Bearcat) example  
 ```
 var Bearcat = require('bearcat');
 var contextPath = require.resolve('./context.json');
