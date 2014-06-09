@@ -72,6 +72,8 @@
 <li>Invasive: there's no dependence on a container API</li>
 <li>Modular: you just use only those parts that you need</li>
 <li>One stop shop: no need for a dedicated Singleton or factory for every object etc</li>
+<li>Easy to mock objects for unit test based on IoC</li>
+<li>Hot reload prototype function nicely</li>
 </ul><h3>
 <a name="powerful" class="anchor" href="#powerful"><span class="octicon octicon-link"></span></a>Powerful</h3>
 
@@ -132,6 +134,23 @@ bearcat.start(function(){
 <p>Codes written by simple POJOs and simple configuration metadatas can be run without Bearcat, however, in this case, you should have to do a lot of things by yourself, like handling dependency, configuration  </p>
 
 <p>more bearcat apis can be refered to <a href="http://bearcatnode.github.io/bearcat/bearcat-api.html">bearcat-api</a></p>
+
+<h2>
+<a name="generator" class="anchor" href="#generator"><span class="octicon octicon-link"></span></a>Generator</h2>
+
+<p><a href="https://github.com/bearcatnode/generator-bearcat">generator-bearcat</a> is provided for quick startup  </p>
+
+<pre><code>npm install -g yo
+</code></pre>
+
+<pre><code>npm install -g generator-bearcat
+</code></pre>
+
+<pre><code>yo bearcat
+</code></pre>
+
+<p>you can choose to generate bearcat-app, bearcat-webapp, bearcat-library for your application needs 
+<img src="http://bearcatnode.github.io/bearcat/images/yeoman_bearcat.png" alt=""></p>
 
 <h2>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
