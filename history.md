@@ -1,3 +1,7 @@
+0.2.9 / 2014-6-9
+================
+* update readme, add helloBearcat example link
+
 0.2.8 / 2014-6-7
 ================
 * fix factoryBean run factoryMethod inject other beans bug, fix [examples](https://github.com/bearcatnode/bearcat/tree/master/examples/simple_factory_bean)
