@@ -29,6 +29,7 @@ Bearcat is a POJOs based application framework which provides a lightweight cont
 * One stop shop: no need for a dedicated Singleton or factory for every object etc
 * Easy to mock objects for unit test based on IoC
 * Hot reload prototype function nicely
+* Function annotation based on $ named parameters, no need to update json files
 
 ### Powerful
 
@@ -64,7 +65,7 @@ module.exports = POJO;
 ## Usage
 Running bearcat is quite simple, all you have to do is to write simple POJOs and simple configuration metadatas like context.json, after this, passing context.json paths to bearcat, and run it, then all your POJOs will be magicly turned into an elastic, maintainable system.  
 
-[helloBearcat](https://github.com/bearcatnode/bearcat/wiki/HelloWorld-of-Bearcat) example  
+[helloBearcat](https://github.com/bearcatnode/bearcat/wiki/HelloWorld-of-Bearcat) example 
 ```
 var Bearcat = require('bearcat');
 var contextPath = require.resolve('./context.json');
