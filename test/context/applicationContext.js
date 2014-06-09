@@ -582,4 +582,23 @@ describe('applicationContext', function() {
 			});
 		});
 	});
+
+	describe('simple_function_annotation', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/simple_function_annotation/context.json');
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.on('finishRefresh', function() {
+				var car = applicationContext.getBean('car');
+				var r = car.run();
+
+				r.should.exist;
+				r.should.eql('car wheel');
+
+				done();
+			})
+			applicationContext.refresh();
+		});
+	});
 });
