@@ -111,6 +111,10 @@ describe('utils', function() {
 
 			var a = utils.myRequire('a');
 
+			utils.myRequireHot('xxx');
+
+			utils.requireUncached(1);
+
 			done();
 		});
 
