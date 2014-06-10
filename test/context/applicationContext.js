@@ -548,6 +548,7 @@ describe('applicationContext', function() {
 				r.should.eql('car');
 
 				var hotCarPath = require.resolve('../../examples/hot_reload/hot/car.js');
+				require(hotCarPath);
 				fs.appendFileSync(hotCarPath, "\n");
 
 				setTimeout(function() {
