@@ -1,3 +1,7 @@
+0.2.13 / 2014-6-10
+==================
+fix hot reload only reload js files bug
+
 0.2.12 / 2014-6-10
 =================
 * add $ function annotation namespace bean support
