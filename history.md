@@ -1,3 +1,7 @@
+0.2.12 / 2014-6-10
+=================
+* add $ function annotation namespace bean support
+
 0.2.11 / 2014-6-9
 =================
 * fix bearcat load require rm cache bug
