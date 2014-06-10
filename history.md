@@ -1,6 +1,10 @@
+0.2.14 / 2014-6-10
+==================
+* bearcat fix require uncached bug
+
 0.2.13 / 2014-6-10
 ==================
-fix hot reload only reload js files bug
+* fix hot reload only reload js files bug
 
 0.2.12 / 2014-6-10
 =================
