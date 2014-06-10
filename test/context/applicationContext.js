@@ -578,6 +578,11 @@ describe('applicationContext', function() {
 				r.should.exist;
 				r.should.eql('car');
 
+				var car2 = applicationContext.getBean('car2');
+				r = car2.run();
+				r.should.exist;
+				r.should.eql('car car');
+
 				done();
 			});
 		});
