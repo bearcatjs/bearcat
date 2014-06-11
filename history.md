@@ -1,3 +1,7 @@
+0.2.15 / 2014-6-10
+==================
+* fix placeholder only load json files
+
 0.2.14 / 2014-6-10
 ==================
 * bearcat fix require uncached bug
