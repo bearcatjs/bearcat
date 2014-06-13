@@ -1,4 +1,8 @@
-0.2.15 / 2014-6-10
+0.2.16 / 2014-6-13
+==================
+* fix fs.watch windows emit filename null bug check
+
+0.2.15 / 2014-6-11
 ==================
 * fix placeholder only load json files
 
