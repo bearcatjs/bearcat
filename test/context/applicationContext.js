@@ -525,6 +525,8 @@ describe('applicationContext', function() {
 
 			var bus = applicationContext.getBean('bus');
 			var Car = applicationContext.getBean('car');
+			var tank = applicationContext.getBean('tank');
+			tank.run();
 			Car.call(bus);
 			bus.run();
 			bus.fly();
@@ -542,19 +544,31 @@ describe('applicationContext', function() {
 			applicationContext.setHotPath(hotPath);
 			applicationContext.refresh(function() {
 				var car = applicationContext.getBean('car');
+				var bus = applicationContext.getBean('bus');
 				var r = car.run();
 
 				r.should.exist;
 				r.should.eql('car');
 
+				r = bus.run();
+				r.should.exist;
+				r.should.eql('bus');
+
 				var hotCarPath = require.resolve('../../examples/hot_reload/hot/car.js');
+				var hotBusPath = require.resolve('../../examples/hot_reload/hot/bus.js');
 				require(hotCarPath);
+				require(hotBusPath);
 				fs.appendFileSync(hotCarPath, "\n");
+				fs.appendFileSync(hotBusPath, "\n");
 
 				setTimeout(function() {
 					r = car.run();
 					r.should.exist;
 					r.should.eql('car hot');
+
+					r = bus.run();
+					r.should.exist;
+					r.should.eql('bus hot');
 
 					done();
 				}, 6000);

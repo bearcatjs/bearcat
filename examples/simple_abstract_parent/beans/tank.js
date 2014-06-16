@@ -5,6 +5,7 @@ var Tank = function(engine, wheel, num) {
 }
 
 Tank.prototype.run = function() {
+	this.fly();
 	return 'tank ' + this.num;
 }
 

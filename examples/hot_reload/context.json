@@ -3,5 +3,8 @@
 	"beans": [{
 		"id": "car",
 		"func": "car"
+	}, {
+		"id": "bus",
+		"func": "bus"
 	}]
 }
