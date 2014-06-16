@@ -1,3 +1,7 @@
+0.2.17 / 2014-6-16
+==================
+* add aop, hot reload $ annotation support
+
 0.2.16 / 2014-6-13
 ==================
 * fix fs.watch windows emit filename null bug check
