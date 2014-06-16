@@ -117,6 +117,8 @@
               </li>
               <li><a href="#getBeanByMeta"><i class="alert alert-info"></i><span>getBeanByMeta</span></a>
               </li>
+              <li><a href="#getBeanByFunc"><i class="alert alert-info"></i><span>getBeanByFunc</span></a>
+              </li>
               <li><a href="#getBean"><i class="alert alert-info"></i><span>getBean</span></a>
               </li>
               <li><a href="#getFunction"><i class="alert alert-info"></i><span>getFunction</span></a>
@@ -312,6 +314,46 @@ module.exports = Bearcat;</code></pre>
 
   return this.applicationContext.getBeanByMeta(meta);
 }</code></pre>
+          <section id="getBeanByFunc">
+            <h1>getBeanByFunc</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>Bearcat.getBeanByFunc()</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>func</td>
+                <td>Function</td>
+                <td>$ annotation function</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Bearcat get bean from IoC container through $ annotation function.</p>
+
+<p>Examples:</p>
+
+<pre><code>  bearcat.getBeanByFunc(function() {
+     this.$id = "car";
+     this.$scope = "prototype";
+  });
+</code></pre> </div>
+          <pre><code class="language-javascript">Bearcat.getBeanByFunc = function(func) {
+  if (this.state !== STATE_STARTED) {
+    logger.warn('Bearcat application is not running now for %j', &quot;getBeanByFunc&quot;);
+    return;
+  }
+
+  return this.applicationContext.getBeanByFunc(func);
+}</code></pre>
           <section id="getBean">
             <h1>getBean</h1>
             <h5 class="subheader"></h5>
@@ -347,6 +389,12 @@ module.exports = Bearcat;</code></pre>
      id: "car",
      func: Car // Car is a function constructor
   });
+
+  // through $ annotation func
+  var car = bearcat.getBean(function() {
+     this.$id = "car";
+     this.$scope = "prototype";
+  });
 </code></pre> </div>
           <pre><code class="language-javascript">Bearcat.getBean = function(beanName) {
   if (this.state !== STATE_STARTED) {
@@ -359,6 +407,8 @@ module.exports = Bearcat;</code></pre>
   var firstarg = arguments[0];
   if (typeof firstarg === 'object') {
     return this.applicationContext.getBeanByMeta(firstarg);
+  } else if (typeof firstarg === 'function') {
+    return this.applicationContext.getBeanByFunc(firstarg);
   } else if (typeof firstarg === 'string') {
     return this.applicationContext.getBean.apply(this.applicationContext, arguments);
   } else {
@@ -450,6 +500,9 @@ module.exports = Bearcat;</code></pre>
     </div>
     <footer class="footer">
       <div class="container">
+        <!--p>Documentation generated with<a href="https://github.com/FGRibreau/doxx">Doxx</a>created by<a href="https://twitter.com/FGRibreau" data-show-count="false" class="twitter-follow-button">Francois-Guillaume Ribreau</a></p>
+        <p>Doxx is sponsored by<a href="http://bringr.net/?btt" title="Outil d'analyse des réseaux sociaux" class="bringr">Bringr</a>and<a href="https://redsmin.com/?btt" title="Full Redis GUI" class="redsmin">Redsmin</a></p>
+        <p>Theme borrowed from Twitter Bootstrap</p-->
       </div>
     </footer>
     <script src="javascripts/widgets.js"></script>
