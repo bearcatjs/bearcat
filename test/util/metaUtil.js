@@ -188,4 +188,47 @@ describe('MetaUtil', function() {
 			done();
 		});
 	});
+
+	describe('MetaUtil', function() {
+		it('should MetaUtil t10 right', function(done) {
+			var func = MockAnnotationFunction.t10;
+			var meta = MetaUtil.resolveFuncAnnotation(func);
+
+			meta.should.exist;
+			meta.should.eql({
+				id: "t10",
+				aop: [{
+					"advice": "run",
+					"pointcut": "before:.*?runBefore"
+				}],
+				func: func
+			});
+
+			done();
+		});
+	});
+
+	describe('MetaUtil', function() {
+		it('should MetaUtil t11 right', function(done) {
+			var func = MockAnnotationFunction.t11;
+			var meta = MetaUtil.resolveFuncAnnotation(func);
+
+			meta.should.exist;
+			meta.should.eql({
+				id: "t11",
+				aop: [{
+					"advice": "fly",
+					"pointcut": "before:.*?runBefore",
+					"order": 1,
+					"runtime": true
+				}, {
+					"advice": "boot",
+					"pointcut": "after:.*?runBoot"
+				}],
+				func: func
+			});
+
+			done();
+		});
+	});
 });

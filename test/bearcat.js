@@ -64,4 +64,37 @@ describe('bearcat', function() {
 			});
 		})
 	});
+
+	describe('#bearcat handle error', function() {
+		it('should handle error right', function(done) {
+			var bearcat = require('../lib/bearcat');
+			var simplepath = require.resolve('../examples/simple/context.json');
+			var paths = [simplepath];
+			bearcat.getBeanByFunc();
+
+			bearcat.createApp(paths);
+			bearcat.start(function() {
+				var Bus = function() {
+					this.$id = "bus";
+				}
+
+				Bus.prototype.run = function() {
+					return 'bus';
+				}
+
+				var bus = bearcat.getBeanByFunc(Bus);
+				var r = bus.run();
+				r.should.exist;
+				r.should.eql('bus');
+
+				var bus1 = bearcat.getBean(Bus);
+				r = bus1.run();
+				r.should.exist;
+				r.should.eql('bus');
+
+				bearcat.getBean(function() {});
+				done();
+			});
+		})
+	});
 });

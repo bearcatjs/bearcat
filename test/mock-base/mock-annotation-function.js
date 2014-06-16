@@ -61,3 +61,41 @@ mock.t9 = function() {
 	this.$car = null;
 	this.$bus = null;
 }
+
+var t10 = function() {
+	this.$id = "t10";
+	this.$aop = true;
+}
+
+t10.prototype.run = function() {
+	var $pointcut = "before:.*?runBefore";
+}
+
+t10.prototype.fly = function() {
+	var $other = "test";
+}
+
+mock.t10 = t10;
+
+var t11 = function() {
+	this.$id = "t11";
+	this.$aop = true;
+}
+
+t11.prototype.run = function() {
+	var $pointcut = "before:.*?runBefore";
+
+	var $advice = "fly";
+	var $order = 1;
+	var $runtime = true;
+}
+
+t11.prototype.fly = function() {
+	console.log('fly');
+}
+
+t11.prototype.boot = function() {
+	var $pointcut = "after:.*?runBoot";
+}
+
+mock.t11 = t11;
