@@ -146,6 +146,9 @@ describe('utils', function() {
 			ret = utils.checkFileType('a.js', 'js');
 			ret.should.be.true;
 
+			ret = utils.checkFileType('a.jsbb', 'js');
+			ret.should.be.false;
+
 			done();
 		});
 
