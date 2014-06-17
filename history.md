@@ -1,3 +1,7 @@
+0.2.18 / 2014-6-17
+==================
+* fix bearcat getBean state check bug
+
 0.2.17 / 2014-6-16
 ==================
 * add aop, hot reload $ annotation support
