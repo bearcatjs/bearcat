@@ -1,3 +1,7 @@
+0.2.19 / 2014-6-25
+==================
+* fix function annotation comments bug
+
 0.2.18 / 2014-6-17
 ==================
 * fix bearcat getBean state check bug
