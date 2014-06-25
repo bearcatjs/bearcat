@@ -1,3 +1,7 @@
+0.2.20 / 2014-6-25
+==================
+* add examples run app.js
+
 0.2.19 / 2014-6-25
 ==================
 * fix function annotation comments bug
