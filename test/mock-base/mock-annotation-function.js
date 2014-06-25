@@ -99,3 +99,26 @@ t11.prototype.boot = function() {
 }
 
 mock.t11 = t11;
+
+var t12 = function() {
+	this.$id = "t12";
+	this.$scope = "prototype";
+	//this.$wheel = null;
+	/*this.$engine = null;
+		this.$car = null;
+	 */
+}
+
+mock.t12 = t12;
+
+var t13 = function() {
+	this.$id = "t13";
+	this.$aop = true;
+}
+
+t13.prototype.run = function() {
+	var $pointcut = "before:.*?run";
+	// var $runtime = true;
+}
+
+mock.t13 = t13;

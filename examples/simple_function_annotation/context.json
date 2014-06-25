@@ -1,4 +1,4 @@
 {
 	"name": "simple_inject",
-	"scan": ""
+	"scan": "app"
 }
