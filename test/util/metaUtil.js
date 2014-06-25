@@ -231,4 +231,39 @@ describe('MetaUtil', function() {
 			done();
 		});
 	});
+
+	describe('MetaUtil', function() {
+		it('should MetaUtil t12 right', function(done) {
+			var func = MockAnnotationFunction.t12;
+			var meta = MetaUtil.resolveFuncAnnotation(func);
+
+			meta.should.exist;
+			meta.should.eql({
+				id: "t12",
+				scope: "prototype",
+				func: func
+			});
+
+			done();
+		});
+	});
+
+	describe('MetaUtil', function() {
+		it('should MetaUtil t13 right', function(done) {
+			var func = MockAnnotationFunction.t13;
+			var meta = MetaUtil.resolveFuncAnnotation(func);
+
+			meta.should.exist;
+			meta.should.eql({
+				id: "t13",
+				aop: [{
+					"advice": "run",
+					"pointcut": "before:.*?run"
+				}],
+				func: func
+			});
+
+			done();
+		});
+	});
 });
