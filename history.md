@@ -1,3 +1,7 @@
+0.2.21 / 2014-6-26
+==================
+* fix getBean func annotation arguments support
+
 0.2.20 / 2014-6-25
 ==================
 * add examples run app.js
