@@ -93,8 +93,36 @@ describe('bearcat', function() {
 				r.should.eql('bus');
 
 				bearcat.getBean(function() {});
+				bearcat.stop();
 				done();
 			});
 		})
+	});
+
+	describe('#bearcat handle getBean meta func arguments', function() {
+		it('should handle getBean meta func arguments right', function(done) {
+			var bearcat = require('../lib/bearcat');
+			var simplepath = require.resolve('../examples/simple/context.json');
+			var paths = [simplepath];
+
+			var Bus = function(num) {
+				this.$id = "bus";
+				this.num = num;
+			}
+
+			Bus.prototype.run = function() {
+				return 'bus' + this.num;
+			}
+
+			bearcat.createApp(paths);
+			bearcat.start(function() {
+				var bus = bearcat.getBean(Bus, 100);
+				var r = bus.run();
+				r.should.exist;
+				r.should.eql('bus100');
+
+				done();
+			});
+		});
 	});
 });
