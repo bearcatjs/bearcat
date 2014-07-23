@@ -1,3 +1,7 @@
+0.2.22 / 2014-7-23
+==================
+* add BEARCAT_ANNOTAION env flag to disable $ function annotation
+
 0.2.21 / 2014-6-26
 ==================
 * fix getBean func annotation arguments support
