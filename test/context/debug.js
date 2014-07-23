@@ -51,12 +51,25 @@ var ApplicationContext = require('../../lib/context/applicationContext');
 // 	}, 2000);
 // });
 
-var simplepath = require.resolve('../../examples/simple_function_annotation/context.json');
+var simplepath = require.resolve('../../examples/context_namespace/context.json');
 var paths = [simplepath];
-
 var applicationContext = new ApplicationContext(paths);
-applicationContext.on('finishRefresh', function() {
-	var car = applicationContext.getBean('car');
+applicationContext.refresh(function() {
+	var car = applicationContext.getBean('app:car');
 	var r = car.run();
-})
-applicationContext.refresh();
+
+	// r.should.exist;
+	// r.should.eql('car');
+
+	var car1 = applicationContext.getBean('app1:car');
+	r = car1.run();
+	// r.should.exist;
+	// r.should.eql('car');
+
+	var car2 = applicationContext.getBean('car2');
+	r = car2.run();
+	// r.should.exist;
+	// r.should.eql('car car');
+
+	// done();
+});
