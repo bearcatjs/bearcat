@@ -1,3 +1,7 @@
+0.2.23 / 2014-8-1
+==================
+* update function annotation comment test case
+
 0.2.22 / 2014-7-23
 ==================
 * add BEARCAT_ANNOTAION env flag to disable $ function annotation
