@@ -266,4 +266,24 @@ describe('MetaUtil', function() {
 			done();
 		});
 	});
+
+	describe('MetaUtil', function() {
+		it('should MetaUtil t14 right', function(done) {
+			var func = MockAnnotationFunction.t14;
+			var meta = MetaUtil.resolveFuncAnnotation(func);
+
+			meta.should.exist;
+			meta.should.eql({
+				id: "t14",
+				init: "start",
+				props: [{
+					name: "$configService",
+					ref: "configService"
+				}],
+				func: func
+			});
+
+			done();
+		});
+	});
 });
