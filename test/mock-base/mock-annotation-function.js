@@ -122,3 +122,18 @@ t13.prototype.run = function() {
 }
 
 mock.t13 = t13;
+
+var t14 = function() {
+	this.$id = "t14";
+	this.$init = "start";
+	// this.$lazy = true;  
+	this.num = null;
+	this.$configService = null;
+	// this.$lazy = true;
+}
+
+t14.prototype.start = function() {
+
+}
+
+mock.t14 = t14;
