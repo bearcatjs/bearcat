@@ -1,3 +1,7 @@
+0.2.24 / 2014-8-11
+==================
+* fix bearcat.js logger msg bug
+
 0.2.23 / 2014-8-1
 ==================
 * update function annotation comment test case
