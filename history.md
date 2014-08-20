@@ -1,3 +1,7 @@
+0.2.25 / 2014-8-20
+==================
+* fix aop method conflit by rename dynamicAopProxy internal function name
+
 0.2.24 / 2014-8-11
 ==================
 * fix bearcat.js logger msg bug
