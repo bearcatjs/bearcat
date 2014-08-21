@@ -1,3 +1,7 @@
+0.2.26 / 2014-8-21
+==================
+* fix DynamicAopProxy null like argument aop problems
+
 0.2.25 / 2014-8-20
 ==================
 * fix aop method conflit by rename dynamicAopProxy internal function name
