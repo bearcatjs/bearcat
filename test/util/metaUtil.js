@@ -286,4 +286,29 @@ describe('MetaUtil', function() {
 			done();
 		});
 	});
+
+	describe('MetaUtil', function() {
+		it('should MetaUtil t15 right', function(done) {
+			var func = MockAnnotationFunction.t15;
+			var meta = MetaUtil.resolveFuncAnnotation(func);
+
+			meta.should.exist;
+			meta.should.eql({
+				func: func,
+				args: [{
+					name: "$engine",
+					ref: "engine"
+				}, {
+					name: "num",
+					type: "Object"
+				}],
+				props: [{
+					name: "$wheel",
+					ref: "wheel"
+				}]
+			});
+
+			done();
+		});
+	});
 });

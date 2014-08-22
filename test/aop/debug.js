@@ -62,21 +62,25 @@ var applicationContext = new ApplicationContext(paths);
 
 applicationContext.on('finishRefresh', function() {
 	var car = applicationContext.getBean('car');
-
-	var r = car.doRunAfterSync();
+	var cb = function(err, r) {
+		console.log(r);
+	};
+	var r = car.runTimeBefore(100, null, function() {
+		console.log('next called');
+	});
 	// done();
 
-	var simplepath = require.resolve('../../examples/aop/context.json');
-	var paths = [simplepath];
+	// var simplepath = require.resolve('../../examples/aop/context.json');
+	// var paths = [simplepath];
 
-	var applicationContext1 = new ApplicationContext(paths);
+	// var applicationContext1 = new ApplicationContext(paths);
 
-	applicationContext1.on('finishRefresh', function() {
-		var car = applicationContext1.getBean('car');
-		var r = car.runBeforeSync();
+	// applicationContext1.on('finishRefresh', function() {
+	// 	var car = applicationContext1.getBean('car');
+	// 	var r = car.runBeforeSync();
 
-	});
-	applicationContext1.refresh();
+	// });
+	// applicationContext1.refresh();
 });
 
 applicationContext.refresh();
