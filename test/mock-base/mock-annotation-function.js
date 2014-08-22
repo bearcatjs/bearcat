@@ -137,3 +137,11 @@ t14.prototype.start = function() {
 }
 
 mock.t14 = t14;
+
+function t15($engine, num) {
+	this.$engine = $engine;
+	this.$wheel = null;
+	this.num = num;
+}
+
+mock.t15 = t15;
