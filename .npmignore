@@ -11,3 +11,4 @@ design/
 express/
 node_modules/
 test_/
+test-generator
