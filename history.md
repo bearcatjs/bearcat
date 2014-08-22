@@ -1,3 +1,7 @@
+0.2.27 / 2014-8-22
+==================
+* fix function anntotation args resolve bug
+
 0.2.26 / 2014-8-21
 ==================
 * fix DynamicAopProxy null like argument aop problems
