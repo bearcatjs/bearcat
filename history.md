@@ -1,3 +1,7 @@
+0.2.28 / 2014-9-13
+==================
+* fix placeHolder single to support object
+
 0.2.27 / 2014-8-22
 ==================
 * fix function anntotation args resolve bug
