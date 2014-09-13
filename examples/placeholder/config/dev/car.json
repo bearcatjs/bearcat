@@ -1,5 +1,10 @@
 {
 	"car.num": 100,
+	"car.onum": {
+		"num": 100,
+		"x": 20,
+		"y": 30
+	},
 	"car.anum": 101,
 	"parent": "bus"
 }
