@@ -6,6 +6,9 @@
 		"props": [{
 			"name": "num",
 			"value": "${car.num}"
+		}, {
+			"name": "onum",
+			"value": "${car.onum}"
 		}],
 		"args": [{
 			"name": "anum",
