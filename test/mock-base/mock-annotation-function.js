@@ -145,3 +145,14 @@ function t15($engine, num) {
 }
 
 mock.t15 = t15;
+
+// var t16 = function() {
+// 	this.$id = "t16";
+// 	this.$aop = true;
+// }
+
+// t16.prototype.run = function() {
+// 	let $pointcut = "before:.*?run";
+// }
+
+// mock.t16 = t16;
