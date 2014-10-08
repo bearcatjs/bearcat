@@ -1,3 +1,7 @@
+0.2.29 / 2014-10-8
+==================
+* fix function annotation aop bug
+
 0.2.28 / 2014-9-13
 ==================
 * fix placeHolder single to support object
