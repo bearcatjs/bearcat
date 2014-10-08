@@ -1,3 +1,7 @@
+0.2.30 / 2014-10-8
+==================
+* fix getBeanByFunc value inject bug
+
 0.2.29 / 2014-10-8
 ==================
 * fix function annotation aop bug
