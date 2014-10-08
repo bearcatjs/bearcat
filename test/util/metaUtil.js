@@ -311,4 +311,23 @@ describe('MetaUtil', function() {
 			done();
 		});
 	});
+
+	describe('MetaUtil', function() {
+		it('should MetaUtil t16 right', function(done) {
+			// var func = MockAnnotationFunction.t16;
+			// var meta = MetaUtil.resolveFuncAnnotation(func);
+
+			// meta.should.exist;
+			// meta.should.eql({
+			// 	id: "t16",
+			// 	aop: [{
+			// 		"advice": "run",
+			// 		"pointcut": "before:.*?run"
+			// 	}],
+			// 	func: func
+			// });
+
+			done();
+		});
+	});
 });
