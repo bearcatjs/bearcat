@@ -673,7 +673,7 @@ module.exports = Car;</code></pre>
   <h3>aspect -- log -- without AOP</h3>
   <pre><code>var Engine = function() {
     this.log = null;
-  }
+}
 
 Engine.prototype.run = function() {
   this.log.info('log...');
@@ -689,7 +689,7 @@ module.exports = Engine;</code></pre>
   <h3>aspect -- log -- without AOP</h3>
   <pre><code>var Wheel = function() {
     this.log = null;
-  }
+}
 
 Wheel.prototype.run = function() {
   this.log.info('log...');
@@ -706,7 +706,8 @@ module.exports = Wheel;</code></pre>
 
   <ul><li>Declare an aspect</li>
     <pre><code>var Aspect = function() {
-
+  this.$id = "aspect";
+  this.$aop = true;
 }
 
 Aspect.prototype.doBefore = function(next) {
