@@ -47,7 +47,7 @@
 <li>github: <a href="https://github.com/fantasyni">@fantasyni</a></li>
 <li>yixin, wechat: fantasyni</li>
 <li>core member from <a href="http://pomelo.netease.com/">pomelo</a> at Netease</li>
-<li>node.js hacker, over 2 years node experience</li>
+<li>node.js hacker, over 3 years node experiences</li>
 <li>not just a code farmer, but a code poet</li>
 </ul>
 
@@ -399,14 +399,15 @@ module.exports = Car;</code></pre>
 <h2>Framework -- Bearcat -- IoC</h2>
 <h3>With IoC</h3>
 
-<pre><code>var Car = function(engine) {
-  this.engine = engine;
-  this.wheel = null;
+<pre><code>var Car = function($engine) {
+  this.$id = "car";
+  this.$engine = $engine;
+  this.$wheel = null;
 }
 
 Car.prototype.run = function() {
-  this.engine.run();
-  var res = this.wheel.run();
+  this.$engine.run();
+  var res = this.$wheel.run();
   console.log('run car...');
   return 'car ' + res;
 }
@@ -425,24 +426,7 @@ module.exports = Car;</code></pre>
 <p>just add a simple configuration metadata file context.json</p>
 <pre><code>{
   "name": "simple_inject",
-  "beans": [{
-    "id": "car",
-    "func": "car",
-    "props": [{
-      "name": "wheel",
-      "ref": "wheel"
-    }],
-    "args": [{
-      "name": "engine",
-      "ref": "engine"
-    }]
-  }, {
-    "id": "wheel",
-    "func": "wheel"
-  }, {
-    "id": "engine",
-    "func": "engine"
-  }]
+  "scan": ""
 }</code></pre>
 </section>
 
@@ -474,14 +458,21 @@ run car...
 
 <ul><li>Scopes</li>
 <p>By default, scope is singleton</p>
-<pre><code>{
-    "name": "simple",
-    "beans": [{
-        "id": "car",
-        "func": "car",
-        "scope": "singleton"
-    }]
-}</code></pre>
+<pre><code>var Car = function($engine) {
+  this.$id = "car";
+  this.$scope = "singleton";
+  this.$engine = $engine;
+  this.$wheel = null;
+}
+
+Car.prototype.run = function() {
+  this.$engine.run();
+  var res = this.$wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
 <pre><code>var car1 = bearcat.getBean('car');
 var car2 = bearcat.getBean('car');
 // car2 is exactly the same instance as car1</code></pre></ul>
@@ -495,14 +486,21 @@ var car2 = bearcat.getBean('car');
 
 <ul><li>Scopes</li>
 <p>you can set scope to prototype</p>
-<pre><code>{
-    "name": "simple",
-    "beans": [{
-        "id": "car",
-        "func": "car",
-        "scope": "prototype"
-    }]
-}</code></pre>
+<pre><code>var Car = function($engine) {
+  this.$id = "car";
+  this.$scope = "prototype";
+  this.$engine = $engine;
+  this.$wheel = null;
+}
+
+Car.prototype.run = function() {
+  this.$engine.run();
+  var res = this.$wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
 <pre><code>var car1 = bearcat.getBean('car');
 var car2 = bearcat.getBean('car');
 // car2 is not the same instance as car1</code></pre></ul>
@@ -517,6 +515,8 @@ var car2 = bearcat.getBean('car');
 <ul><li>Lifecycle callbacks</li>
 <p>Initialization method</p>
 <pre><code>var Car = function() {
+    this.$id = "car";
+    this.$init = "init";
     this.num = 0;
 }
 
@@ -532,15 +532,7 @@ Car.prototype.run = function() {
 }
 
 module.exports = Car;</code></pre>
-<pre><code>{
-    "name": "simple_init_method",
-    "beans": [{
-        "id": "car",
-        "func": "car",
-        "scope": "prototype",
-        "init": "init"
-    }]
-}</code></pre></ul>
+</ul>
 </section>
 
 <section class="slide">
@@ -551,7 +543,8 @@ module.exports = Car;</code></pre>
 <ul><li>Lifecycle callbacks</li>
 <p>Destruction method</p>
 <pre><code>var Car = function() {
-
+  this.$id = "car";
+  this.$destroy = "destroy";
 }
 
 Car.prototype.destroy = function() {
@@ -565,14 +558,7 @@ Car.prototype.run = function() {
 }
 
 module.exports = Car;</code></pre>
-<pre><code>{
-    "name": "simple_destroy_method",
-    "beans": [{
-        "id": "car",
-        "func": "car",
-        "destroy": "destroy"
-    }]
-}</code></pre></ul>
+</ul>
 </section>
 
 <section class="slide">
@@ -583,6 +569,9 @@ module.exports = Car;</code></pre>
 <ul><li>Lifecycle callbacks</li>
 <p>Async Initialization method</p>
 <pre><code>var Car = function() {
+    this.$id = "car";
+    this.$init = "init";
+    this.$order = 2;
     this.num = 0;
 }
 
@@ -608,7 +597,12 @@ module.exports = Car;</code></pre>
 
 <ul><li>Lifecycle callbacks</li>
 <p>Async Initialization method</p>
-<pre><code>var Wheel = function() {}
+<pre><code>var Wheel = function() {
+  this.$id = "wheel";
+  this.$init = "init";
+  this.$async = true;
+  this.$order = 1;
+}
 
 Wheel.prototype.init = function(cb) {
     console.log('init wheel...');
@@ -624,31 +618,6 @@ Wheel.prototype.run = function() {
 }
 
 module.exports = Wheel;</code></pre>
-</ul>
-</section>
-
-<section class="slide">
-
-<h2>Framework -- Bearcat -- IoC</h2>
-<h3>More magic in Bearcat IoC</h3>
-
-<ul><li>Lifecycle callbacks</li>
-<p>Async Initialization method</p>
-<pre><code>{
-    "name": "simple_async_init",
-    "beans": [{
-        "id": "car",
-        "func": "car",
-        "init": "init",
-        "order": 2
-    }, {
-        "id": "wheel",
-        "func": "wheel",
-        "async": true,
-        "init": "init",
-        "order": 1
-    }]
-}</code></pre>
 </ul>
 </section>
 
@@ -741,37 +710,12 @@ module.exports = Wheel;</code></pre>
 }
 
 Aspect.prototype.doBefore = function(next) {
+  var $pointcut = "before:.*?run";
   console.log('log...');
   next();
-}</code></pre>
-  </ul>
-</section>
+}
 
-<section class="slide">
-  <h2>Framework -- Bearcat -- AOP</h2>
-  <h3>aspect -- log -- with AOP</h3>
-
-  <ul><li>Declare a pointcut, advice in context.json</li>
-    <pre><code>{
-  "name": "simple",
-  "beans": [{
-    "id": "car",
-    "func": "car"
-  }, {
-    "id": "wheel",
-    "func": "wheel"
-  }, {
-    "id": "engine",
-    "func": "engine"
-  }, {
-    "id": "aspect",
-    "func": "aspect",
-    "aop": [{
-      "pointcut": "before:.*?run",
-      "advice": "doBefore"
-    }]
-  }]
-}</code></pre>
+module.exports = Aspect;</code></pre>
   </ul>
 </section>
 
@@ -840,12 +784,13 @@ run car...</code></pre>
   <h2>Framework -- Bearcat -- Consistent configuration</h2>
   <p>Configurations are actually <span class="highlight">properties</span> in POJO, therefore, you can use <span class="highlight">DI</span> to solve it</p>
   <pre><code>var Car = function() {
-  this.num = null;
+  this.$id = "car";
+  this.$Vnum = "${car.num}";
 }
 
 Car.prototype.run = function() {
-  console.log('run car' + this.num);
-  return 'car' + this.num;
+  console.log('run car' + this.$Vnum);
+  return 'car' + this.$Vnum;
 }
 
 module.exports = Car;</code></pre>
@@ -860,17 +805,6 @@ module.exports = Car;</code></pre>
 <p>then in config.json file you can define car.num with the specific value</p>
 <pre><code>{
     "car.num": 100
-}</code></pre>
-<pre><code>{
-  "name": "simple",
-  "beans": [{
-    "id": "car",
-    "func": "car",
-    "props": [{
-      "name": "num",
-      "value": "${car.num}"
-    }]
-  }]
 }</code></pre>
 </ul>
 </section>
@@ -950,21 +884,16 @@ module.exports = Car;</code></pre>
   <ul><li>Simple web todo</li>
     <p>todoController.js -- simple POJO</p>
     <pre><code>var TodoController = function() {
-  this.todoService = null;
+  this.$id = "todoController";
+  this.$todoService = null;
 }
 
 TodoController.prototype.index = function(req, res, next) {
     res.render('index.html', {});
 }
 
-module.exports = {
-  id: "todoController",
-  func: TodoController,
-  props: [{
-    name: "todoService",
-    ref: "todoService"
-  }]
-}</code></pre>
+module.exports = TodoController;
+</code></pre>
   </ul>
 </section>
 
@@ -1013,21 +942,16 @@ bearcat.start(function() {
     <p>Add todoService and todoDao</p>
     <p>todoService.js</p>
     <pre><code>var TodoService = function() {
-  this.todoDao = null;
+  this.$id = "todoService";    
+  this.$todoDao = null;
 }
 
 TodoService.prototype.getList = function(params, cb) {
-  return this.todoDao.getList(params, cb);
+  return this.$todoDao.getList(params, cb);
 }
 
-module.exports = {
-  id: "todoService",
-  func: TodoService,
-  props: [{
-    name: "todoDao",
-    ref: "todoDao"
-  }]
-}</code></pre>
+module.exports = TodoService;
+</code></pre>
   </ul>
 </section>
  
@@ -1040,27 +964,21 @@ module.exports = {
     <pre><code>var TodoDomain = require('../domain/todoDomain');
 
 var TodoDao = function() {
-  this.domainDaoSupport = null;
+  this.$id = "todoDao";
+  this.$init = "init";
+  this.$domainDaoSupport = null;
 }
 
 TodoDao.prototype.init = function() {
-  this.domainDaoSupport.initConfig(TodoDomain);
+  this.$domainDaoSupport.initConfig(TodoDomain);
 }
 
 TodoDao.prototype.getList = function(params, cb) {
   var sql = ' 1=1 order by finished asc, id asc limit ?,?';
-  return this.domainDaoSupport.getListByWhere(sql, params, null, cb);
+  return this.$domainDaoSupport.getListByWhere(sql, params, null, cb);
 }
 
-module.exports = {
-  id: "todoDao",
-  func: TodoDao,
-  props: [{
-    name: "domainDaoSupport",
-    ref: "domainDaoSupport"
-  }],
-  "init": "init"
-}
+module.exports = TodoDao;
 </code></pre>
   </ul>
 </section>
@@ -1072,7 +990,7 @@ module.exports = {
     <p>Update todoController</p>
     <p>todoController.js</p>
     <pre><code>TodoController.prototype.index = function(req, res, next) {
-  this.todoService.getList([0, 50], function(err, results) {
+  this.$todoService.getList([0, 50], function(err, results) {
     if (err) {
       console.log(err);
       return;
