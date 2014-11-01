@@ -518,6 +518,7 @@ var car2 = bearcat.getBean('car');
     this.$id = "car";
     this.$init = "init";
     this.num = 0;
+    this.$engine = null;
 }
 
 Car.prototype.init = function() {
@@ -527,6 +528,7 @@ Car.prototype.init = function() {
 }
 
 Car.prototype.run = function() {
+    this.$engine.run();
     console.log('run car...');
     return 'car ' + this.num;
 }
@@ -597,27 +599,27 @@ module.exports = Car;</code></pre>
 
 <ul><li>Lifecycle callbacks</li>
 <p>Async Initialization method</p>
-<pre><code>var Wheel = function() {
-  this.$id = "wheel";
+<pre><code>var Engine = function() {
+  this.$id = "engine";
   this.$init = "init";
   this.$async = true;
   this.$order = 1;
 }
 
-Wheel.prototype.init = function(cb) {
-    console.log('init wheel...');
+Engine.prototype.init = function(cb) {
+    console.log('init engine...');
     setTimeout(function() {
         console.log('asyncInit setTimeout');
         cb();
     }, 1000);
 }
 
-Wheel.prototype.run = function() {
-    console.log('run wheel...');
+Engine.prototype.run = function() {
+    console.log('run engine...');
     return 'wheel';
 }
 
-module.exports = Wheel;</code></pre>
+module.exports = Engine;</code></pre>
 </ul>
 </section>
 
