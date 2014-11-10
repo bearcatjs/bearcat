@@ -1,3 +1,7 @@
+0.2.31 / 2014-11-10
+===================
+* improve log4js configuration files with specific env
+
 0.2.30 / 2014-10-8
 ==================
 * fix getBeanByFunc value inject bug
