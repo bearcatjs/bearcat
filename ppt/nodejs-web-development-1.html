@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  
+  <title>Enterprise nodejs web development</title>
+  
+  <meta name="description" content="A jQuery library for modern HTML presentations">
+  <meta name="author" content="Caleb Troughton">
+  <!--meta name="viewport" content="width=1024, user-scalable=no"-->
+  <meta name="viewport" content="width=device-width, initial-scale=1，user-scalable=no"/>
+  
+  <!-- Core and extension CSS files -->
+  <link rel="stylesheet" href="./deck.js/core/deck.core.css">
+  <link rel="stylesheet" href="./deck.js/extensions/goto/deck.goto.css">
+  <link rel="stylesheet" href="./deck.js/extensions/menu/deck.menu.css">
+  <link rel="stylesheet" href="./deck.js/extensions/navigation/deck.navigation.css">
+  <link rel="stylesheet" href="./deck.js/extensions/status/deck.status.css">
+  <link rel="stylesheet" href="./deck.js/extensions/hash/deck.hash.css">
+  <link rel="stylesheet" type="text/css" href="all.css">
+  
+  <!-- Theme CSS files (menu swaps these out) -->
+  <link rel="stylesheet" id="style-theme-link" href="./deck.js/themes/style/swiss.css">
+  <link rel="stylesheet" id="transition-theme-link" href="./deck.js/themes/transition/horizontal-slide.css">
+  
+  <!-- Custom CSS just for this page -->
+  <link rel="stylesheet" href="./prettify.css">
+  
+  <script src="./deck.js/modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container">
+
+
+<section class="slide"><h1>Enterprise nodejs web development</h1>
+  <p style="position:absolute;top:70%; right:10%;"><a href="https://github.com/fantasyni">@fantasyni </a> from <a href="https://github.com/NetEase/pomelo">Pomelo</a> Netease</p>
+</section>
+
+<section class="slide">
+<h2>About me</h2>
+
+<ul>
+<li>github: <a href="https://github.com/fantasyni">@fantasyni</a></li>
+<li>yixin, wechat: fantasyni</li>
+<li>core member from <a href="http://pomelo.netease.com/">pomelo</a> at Netease</li>
+<li>node.js hacker, over 3 years node experiences</li>
+<li>not just a code farmer, but a code poet</li>
+</ul>
+
+<img src="resource/pomelo.jpg">
+<img src="resource/netease_logo.gif">
+</section>
+
+<section class="slide">
+<h2>Category</h2>
+
+<ul>
+<li>Overview</li>
+<li>Knowledge</li>
+<li>Practice</li>
+<li>Notes</li>
+<li>Discussion</li>
+</ul>
+
+</section>
+
+<section class="slide">
+<h2>Overview -- What is Node.js</h2>
+
+<ul>
+  <li>In a nutshell: server-side javaScript</li>
+  <li>Used to build fast, scalable network applications</li>
+  <li>Built on Google's v8 javaScript engine</li>
+  <li>Event-driven, non-blocking(asynchronous) I/O</li>
+</ul>
+
+<img src="resource/node.svg" style="width:50%">
+
+</section>
+
+<section class="slide">
+<h2>Overview -- What is Node.js</h2>
+<ul>
+  <li>Small core, vibrant community</li>
+  <li>Extreme modularity</li>
+  <li>Reimplement everything in Javascript</li>
+</ul>
+<img src="resource/node.svg" style="width:50%">
+</section>
+
+<section class="slide">
+<h2>Knowledge -- Node.js development</h2>
+
+<ul>
+  <li>cookie</li>
+  <li>session</li>
+  <li>mvc</li>
+  <li>express</li>
+  <li>bearcat</li>
+  <li>bearcat-dao</li>
+  <li>logs</li>
+  <li>cluster</li>
+  <li>request</li>
+  <li>forever</li>
+</ul>
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- cookie</h2>
+<p>http 无状态</p>
+<p>server 端通过与 browser 约定好 cookie 来记录一些信息（比如登录）</p>
+<p>browser 在http request请求header中通过 <span class="highlight">Cookie</span> 字段上传 cookie</p>
+<p>server 在http response中通过 <span class="highlight">Set-Cookie</span> 设置 cookie</p>
+<p>cookie 对应 domain, path, expires, max-age, httpOnly, secure</p>
+
+</section>
+
+</section-->
+
+<section class="slide">
+<h2>Knowledge -- cookie</h2>
+
+<h3>express 中设置 cookie（登录操作之后）</h3>
+<p>cookie 加密</p>
+<p>配置 cookie_key, cookie_secret</p>
+
+<pre><code>var cookieSecret = this.$configService.getCookieSecret();
+app.configure(function() {
+  app.use(express.cookieParser(cookieSecret));
+});
+</code></pre>
+<pre><code>CookieService.prototype.setCookie = function(res, val, opt) {
+  var cookieKey = this.$configService.getCookieKey();
+  var domain = this.$configService.getCurHost();
+
+  var options = {
+    domain: domain,
+    path: '/',
+    signed: true
+  };
+  opt = opt || options;
+
+  if (typeof val === 'object') {
+    val = JSON.stringify(val);
+  }
+
+  res.cookie(cookieKey, val, opt);
+}
+</code></pre>
+
+</section>
+
+<section class="slide">
+<h2>Knowledge -- cookie</h2>
+
+<h3>express 中操作 cookie（判断是否登录）</h3>
+
+<pre><code>var signedCookies = req.signedCookies;
+var user = this.$cookieService.getCookieUser(signedCookies);
+
+if (user) {
+    req.session.user = user;
+    res.locals.user = user;
+    return next();
+} else {
+    // 跳转到 login 页面
+    res.redirect('/login');
+}</code></pre>
+<pre><code>CookieService.prototype.getCookieUser = function(cookies) {
+  var cookieKey = this.$configService.getCookieKey();
+
+  if (cookies && typeof cookies === 'object') {
+    var user = cookies[cookieKey];
+    if (user) {
+      user = JSON.parse(user);
+    }
+    return user;
+  } else {
+    return null;
+  }
+}
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- cookie</h2>
+
+<h3>express 中清除 cookie（退出登录）</h3>
+
+<pre><code>CookieService.prototype.clearCookie = function(req, res) {
+  var cookieKey = this.$configService.getCookieKey();
+  var domain = this.$configService.getCurHost();
+
+  req.session.destroy(function() {});
+  res.clearCookie(cookieKey, {
+    domain: domain,
+    path: '/',
+  });
+}
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- session</h2>
+
+<h3>server 端会话</h3>
+<p>session基于cookie</p>
+<br>
+<p>内存session</p>
+<p>集中式session</p>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- session</h2>
+
+<h3>内存session</h3>
+<p>session 存储在node内存中</p>
+<p>node有状态</p>
+<p>不能使用 cluster</p>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- session</h2>
+
+<h3>集中式session</h3>
+<p>session 存储在<a href="http://redis.io/">redis</a>中</p>
+<p>node无状态</p>
+<p>可以使用 cluster</p>
+<pre><code>var RedisStore = require('connect-redis')(express);
+app.use(express.session({
+    secret: cookieSecret,
+    key: sessionKey,
+    store: new RedisStore({
+       host: redisSessionHost,
+       port: redisSessionPort
+    })
+}));
+</code></pre>
+<p>session store 默认是 MemoryStore</p>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- mvc</h2>
+<p>mvc -- model view controller</p>
+<p>spring mvc</p>
+<img src="resource/mvc.jpg">
+
+</section>
+<section class="slide">
+
+<h2>Knowledge -- mvc</h2>
+<p>model</p>
+<p>数据层 -- POJO -- 简单js对象，数据的实体</p>
+<br>
+<p>view</p>
+<p>展示层 -- ejs dust 等模板</p>
+<br>
+<p>controller</p>
+<p>控制层 -- 负责从依赖的service获取model并render到对应的view中</p>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- mvc</h2>
+<p>controller</p>
+<p>controller -- service -- dao</p>
+<br>
+<p>为了更好的分层解偶进行团队协作</p>
+<p>controller 依赖于service</p>
+<p>service 是对业务操作的具体封装</p>
+<p>service 依赖于dao，也可以依赖其它service</p>
+<p>dao -- 对数据库操作的封装</p>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>Fast, unopinionated, minimalist web framework for Node.js</p>
+<p>web 开发框架</p>
+<pre><code>var express = require('express');
+var app = express();
+
+app.get('/', function(req, res){
+  res.send('hello world');
+});
+
+app.listen(3000);</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>application</p>
+<p>app.configure</p>
+<pre><code>// all environments
+app.configure(function(){
+  app.set('title', 'My Application');
+})
+
+// development only
+app.configure('development', function(){
+  app.set('db uri', 'localhost/dev');
+})
+
+// production only
+app.configure('production', function(){
+  app.set('db uri', 'n.n.n.n/prod');
+})
+</code></pre>
+
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>application</p>
+<p>app.use</p>
+<p>middleware 中间件</p>
+<pre><code>var express = require('express');
+var app = express();
+
+// simple logger
+app.use(function(req, res, next){
+  console.log('%s %s', req.method, req.url);
+  next();
+});
+
+// respond
+app.use(function(req, res, next){
+  res.send('Hello World');
+});
+
+app.listen(3000);
+</code></pre>
+
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>application</p>
+<p>app route</p>
+<p>请求路由控制</p>
+<pre><code>app.get('/', function(req, res){
+  res.send('hello world');
+});
+</code></pre>
+<p>app.get</p>
+<p>app.post</p>
+<p>app.delete</p>
+<p>app.head</p>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>request</p>
+<pre><code>app.get('/', function(req, res){
+  res.send('hello world');
+});
+</code></pre>
+<p>request 就是 route 控制回调里面的 req</p>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>req.params</p>
+<p>路由参数</p>
+<pre><code>app.get('/user/:name', function(req, res){
+  res.send('hello world');
+});
+</code></pre>
+<pre><code>// GET /user/tj
+req.params.name
+// => "tj"
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>req.query</p>
+<p>查询参数</p>
+<pre><code>// GET /search?q=tobi+ferret
+req.query.q
+// => "tobi ferret"
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>req.body</p>
+<p>请求体参数</p>
+<pre><code>var app = require('express')();
+var bodyParser = require('body-parser');
+var multer = require('multer'); 
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(multer); // for parsing multipart/form-data
+
+app.post('/', function (req, res) {
+
+  console.log(req.body);
+  res.json(req.body);
+
+})
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>req.cookies, req.signedCookies</p>
+<p>请求cookie</p>
+<pre><code>// Cookie: name=tj
+req.cookies.name
+// => "tj"
+</code></pre>
+<pre><code>// Cookie: user=tobi.CP7AWaXDfAKIRfH49dQzKJx7sKzzSoPq7/AcBBRVwlI3
+req.signedCookies.user
+// => "tobi"</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>req.path</p>
+<p>请求path</p>
+<pre><code>// example.com/users?sort=desc
+req.path
+// => "/users"
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>response</p>
+<pre><code>app.get('/', function(req, res){
+  res.send('hello world');
+});
+</code></pre>
+<p>response 就是 route 控制回调里面的 res</p>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>res.cookie</p>
+<p>设置浏览器cookie</p>
+<pre><code>res.cookie('name', 'tobi', { domain: '.example.com', path: '/admin', secure: true });
+res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
+res.cookie('name', 'tobi', { signed: true });
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>res.clearCookie</p>
+<p>清理浏览器cookie</p>
+<pre><code>res.cookie('name', 'tobi', { path: '/admin' });
+res.clearCookie('name', { path: '/admin' });
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>res.redirect</p>
+<p>重定向到url</p>
+<pre><code>res.redirect('/foo/bar');
+res.redirect('http://example.com');
+res.redirect(301, 'http://example.com');
+res.redirect('../login');
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>res.send</p>
+<p>send 一个 response</p>
+<pre><code>res.send(new Buffer('whoop'));
+res.send({ some: 'json' });
+res.send('<p>some html</p>');
+res.status(404).send('Sorry, we cannot find that!');
+res.status(500).send({ error: 'something blew up' });
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>res.json</p>
+<p>send 一个 json response</p>
+<pre><code>res.json(null)
+res.json({ user: 'tobi' })
+res.status(500).json({ error: 'message' })
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>res.render</p>
+<p>返回一个模板render后的html</p>
+<pre><code>res.render('user', { name: 'Tobi' }, function(err, html){
+  // ...
+});
+</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- express</h2>
+<p>middleware</p>
+<p>一个express执行其实是一系列middleware的调用</p>
+<p>请求链</p>
+<pre><code>var express = require('express');
+var app = express();
+var cookieParser = require('cookie-parser');
+
+// load the cookie parsing middleware
+app.use(cookieParser());</code></pre>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- Bearcat</h2>
+
+<p><a href="https://github.com/bearcatnode/bearcat">Bearcat</a> is a <span class="highlight">POJOs</span> based application framework which provides a lightweight container for writing <span class="highlight">simple</span>, <span class="highlight">mintainable</span> node.js, it is designed to solve all of these painful things.</p>
+
+<blockquote>Simple POJOs + Configuration metadatas = Elastic, maintainable system</blockquote>
+
+  <img src="resource/bearcat-logo.png">
+
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat</h2>
+<h3>the main concept of Bearcat is: </h3>
+<ul>
+  <li>POJO</li>
+  <li>IoC</li>
+  <li>AOP</li>
+  <li>Consistent configuration</li>
+</ul>
+</section>
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- POJO</h2>
+<h3>What is POJO ?</h3>
+<ul>
+  <li>POJO === Plain Old <span class="highlight">Java</span> Object in java Platform</li>
+  <li>POJO === Plain Old <span class="highlight">JavaScript</span> Object in node.js Platform</li>
+</ul>
+<pre><code>var POJO = function() {
+    this.props = null;
+}
+
+POJO.prototype.method = function() {
+
+}
+
+module.exports = POJO;</code></pre>
+
+<h3>Why should we use POJO ?</h3>
+<ul>
+  <li>POJO is <span class="highlight">simple</span>, everyone can write it</li>
+  <li>POJO makes development <span class="highlight">consistently</span>, all your codes is POJOs</li>
+  <li>POJO makes it <span class="highlight">friendly</span> to document</li>
+</ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<ul>
+  <li>Inversion of Control (IoC) is a design pattern that addresses a component's <span class="highlight">dependency resolution</span>, <span class="highlight">configuration</span> and <span class="highlight">lifecycle</span>.</li>
+  <li>IoC is best understood through the Hollywood Principle: "Dont's call us, we'll call you".</li>
+  <li>Dependency injection (DI), components do not look up, they provide plain simple <span class="highlight">configuration metadata</span> enabling the container to resolve dependencies.</li>
+</ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>Without IoC</h3>
+<pre><code>var Engine = require('./engine');
+var Wheel = require('./wheel');
+
+var Car = function() {
+  this.engine = new Engine();
+  this.wheel = new Wheel();
+}
+
+Car.prototype.run = function() {
+  this.engine.run();
+  var res = this.wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+
+<h3>car have to require engine and wheel, and then instantiate with constructor functions, it is tightly <span class="highlight">coupled</span></h3>
+</section>
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>With IoC</h3>
+
+<pre><code>var Car = function($engine) {
+  this.$id = "car";
+  this.$engine = $engine;
+  this.$wheel = null;
+}
+
+Car.prototype.run = function() {
+  this.$engine.run();
+  var res = this.$wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+
+<h3>car do not have to know where engine, wheel are from, and how they are being instantiated</h3>
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>How to make IoC work ?</h3>
+
+<p>just add a simple configuration metadata file context.json</p>
+<pre><code>{
+  "name": "simple_inject",
+  "scan": ""
+}</code></pre>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>Bearcat Startup</h3>
+
+<pre><code>var Bearcat = require('bearcat');
+var contextPath = require.resolve('./context.json');
+
+var bearcat = Bearcat.createApp([contextPath]);
+bearcat.start(function(){
+   var car = bearcat.getBean('car'); // get bean
+   car.run(); // call the method
+});</code></pre>
+
+<pre><code>[2014-05-04 18:50:41.996] [INFO] bearcat - [app] Bearcat startup in 6 ms
+run engine...
+run wheel...
+run car...
+</code></pre>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Scopes</li>
+<p>By default, scope is singleton</p>
+<pre><code>var Car = function($engine) {
+  this.$id = "car";
+  this.$scope = "singleton";
+  this.$engine = $engine;
+  this.$wheel = null;
+}
+
+Car.prototype.run = function() {
+  this.$engine.run();
+  var res = this.$wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+<pre><code>var car1 = bearcat.getBean('car');
+var car2 = bearcat.getBean('car');
+// car2 is exactly the same instance as car1</code></pre></ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Scopes</li>
+<p>you can set scope to prototype</p>
+<pre><code>var Car = function($engine) {
+  this.$id = "car";
+  this.$scope = "prototype";
+  this.$engine = $engine;
+  this.$wheel = null;
+}
+
+Car.prototype.run = function() {
+  this.$engine.run();
+  var res = this.$wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+<pre><code>var car1 = bearcat.getBean('car');
+var car2 = bearcat.getBean('car');
+// car2 is not the same instance as car1</code></pre></ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Lifecycle callbacks</li>
+<p>Initialization method</p>
+<pre><code>var Car = function() {
+    this.$id = "car";
+    this.$init = "init";
+    this.num = 0;
+    this.$engine = null;
+}
+
+Car.prototype.init = function() {
+    console.log('init car...');
+    this.num = 1;
+    return 'init car';
+}
+
+Car.prototype.run = function() {
+    this.$engine.run();
+    console.log('run car...');
+    return 'car ' + this.num;
+}
+
+module.exports = Car;</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Lifecycle callbacks</li>
+<p>Destruction method</p>
+<pre><code>var Car = function() {
+  this.$id = "car";
+  this.$destroy = "destroy";
+}
+
+Car.prototype.destroy = function() {
+    console.log('destroy car...');
+    return 'destroy car';
+}
+
+Car.prototype.run = function() {
+    console.log('run car...');
+    return 'car';
+}
+
+module.exports = Car;</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Lifecycle callbacks</li>
+<p>Async Initialization method</p>
+<pre><code>var Car = function() {
+    this.$id = "car";
+    this.$init = "init";
+    this.$order = 2;
+    this.num = 0;
+}
+
+Car.prototype.init = function() {
+    console.log('init car...');
+    this.num = 1;
+    return 'init car';
+}
+
+Car.prototype.run = function() {
+    console.log('run car...');
+    return 'car ' + this.num;
+}
+
+module.exports = Car;</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Lifecycle callbacks</li>
+<p>Async Initialization method</p>
+<pre><code>var Engine = function() {
+  this.$id = "engine";
+  this.$init = "init";
+  this.$async = true;
+  this.$order = 1;
+}
+
+Engine.prototype.init = function(cb) {
+    console.log('init engine...');
+    setTimeout(function() {
+        console.log('asyncInit setTimeout');
+        cb();
+    }, 1000);
+}
+
+Engine.prototype.run = function() {
+    console.log('run engine...');
+    return 'wheel';
+}
+
+module.exports = Engine;</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- Bearcat -- IoC</h2>
+<h3>More details abount Bearcat IoC</h3>
+<ul>
+  <li>Visit Bearcat wiki <a href="https://github.com/bearcatnode/bearcat/wiki/IoC-container">IoC-Container</a></li>
+  <li>Chinese version is <a href="https://github.com/bearcatnode/bearcat/wiki/IoC%E5%AE%B9%E5%99%A8">IoC-Container-Chinese</a></li>
+</ul>
+<img src="resource/bearcat-logo.png">
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- Bearcat -- Consistent configuration</h2>
+  <p>Configurations are actually <span class="highlight">properties</span> in POJO, therefore, you can use <span class="highlight">DI</span> to solve it</p>
+  <pre><code>var Car = function() {
+  this.$id = "car";
+  this.$Vnum = "${car.num}";
+}
+
+Car.prototype.run = function() {
+  console.log('run car' + this.$Vnum);
+  return 'car' + this.$Vnum;
+}
+
+module.exports = Car;</code></pre>
+  
+</section>
+
+<section class="slide">
+<h2>Knowledge -- Bearcat -- Consistent configuration</h2>
+<ul><li>Using placeHolders</li>
+    <p>placeHolder to be replaced by the specific <span class="highlight">envrioment value</span></p>
+<pre><code>${car.num}</code></pre>
+<p>then in config.json file you can define car.num with the specific value</p>
+<pre><code>{
+    "car.num": 100
+}</code></pre>
+</ul>
+</section>
+<section class="slide">
+  <h2>Knowledge -- Bearcat -- Consistent configuration</h2>
+  
+  <ul><li>Environment configuration</li>
+    <p>Different environment configurations:</p>
+    <pre><code>├─┬ placeholderSample/
+│ ├─┬ config/
+│ │ └─┬ dev/
+│ │ │ └── car.json
+│ │ └─┬ prod/
+│ │   └── car.json
+│ └── car.js
+└── context.json</code></pre>
+<ul>
+  <li><span class="highlight">dev</span> sub-directory -- development envrioment configurations</li>
+  <li><span class="highlight">prod</span> sub-directory -- production envrioment configurations</li>
+</ul>
+</ul>
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- Bearcat -- Consistent configuration</h2>
+  
+  <ul><li>Switching environment</li>
+    <p>Setup env at the startup command, by default the env is <span class="highlight">dev</span></p>
+    <p>Run with env or --env args</p>
+<pre><code>node app.js env=prod</code></pre>
+<p>Run with NODE_ENV</p>
+<pre><code>NODE_ENV=prod node app.js</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- Bearcat-dao</h2>
+  <p>一个node.js ORM dao框架</p>
+  <p>为了更方便的进行数据库操作</p>
+  <p>封装了底层细节, 使得开发者无需担心处理连接的申请和释放等问题</p>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- Bearcat-dao</h2>
+  <p>Domain 定义</p>
+  <p>Domain 是一个 POJO, 描述了表和对象之间的关系</p>
+  <pre><code>var simpleDomain = function() {
+    this.id = 0;
+    this.name = null;
+}
+
+module.exports = {
+    func: Domain,
+    primary: [{
+        name: "id",
+        type: "Long"
+    }],
+    fields: ["name"],
+    tableName: "BEARCAT_TEST"
+}</code></pre>
+<pre><code> /* nscheduler IDGenerator table */
+DROP TABLE IF EXISTS BEARCAT_TEST;
+create table BEARCAT_TEST(
+    id bigint(20) NOT NULL DEFAULT 0,
+    name varchar(50) NOT NULL,
+    
+    PRIMARY KEY (id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- Bearcat-dao</h2>
+  <p>编写 dao</p>
+  <p>Bearcat-dao 提供了封装基本sql和cache操作的 domainDaoSupport</p>
+  <p>通过依赖注入可以很方便的使用, init domainDaoSupport的时候调用 initConfig 方法来进行 domain O/R mapping 的初始化配置</p>
+  <p>之后你可以使用domainDaoSupport来很方便的封装你自己的daos</p>
+  <pre><code>var SimpleDomain = require('simpleDomain');
+var SimpleDao = function() {
+    this.$id = "simpleDao";
+    this.$init = "init";
+    this.$domainDaoSupport = null;
+    this.tableName = null;
+}
+
+SimpleDao.prototype.init = function() {
+    // init with SimpleDomain to set up O/R mapping
+    this.$domainDaoSupport.initConfig(SimpleDomain);
+    this.tableName = this.$domainDaoSupport.getTableConfig().getTableName();
+}
+
+// query list all
+// callback return mapped SimpleDomain array results
+SimpleDao.prototype.getList = function(cb) {
+    var sql = ' 1 = 1';
+    return this.$domainDaoSupport.getListByWhere(sql, null, null, cb);
+}
+module.exports = SimpleDao;</code></pre>
+<p>详细的 api 文档在<a href="http://bearcatnode.github.io/bearcat-dao/domainDaoSupport.js.html">domainDaoSupport</a></p>
+</section>
+
+<section class="slide">
+   <h2>Knowledge -- Bearcat-dao</h2>
+  <p>bearcat 中使用 bearcat-dao</p>
+  <p>在context.json中加入</p>
+  <pre><code>"dependencies": {
+    "bearcat-dao": "*"
+},
+"beans": [{
+        "id": "mysqlConnectionManager",
+        "func": "node_modules.bearcat-dao.lib.connection.sql.mysqlConnectionManager",
+        "props": [{
+            "name": "port",
+            "value": "${mysql.port}"
+        }, {
+            "name": "host",
+            "value": "${mysql.host}"
+        }, {
+            "name": "user",
+            "value": "${mysql.user}"
+        }, {
+            "name": "password",
+            "value": "${mysql.password}"
+        }, {
+            "name": "database",
+            "value": "${mysql.database}"
+        }]
+    }, {
+        "id": "redisConnectionManager",
+        "func": "node_modules.bearcat-dao.lib.connection.cache.redisConnectionManager",
+        "props": [{
+            "name": "port",
+            "value": "${redis.port}"
+        }, {
+            "name": "host",
+            "value": "${redis.host}"
+        }]
+    }]</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- logs</h2>
+  <p>日志通过 <a href="https://github.com/NetEase/pomelo-logger">pomelo-logger</a>模块来处理</p>
+  <p>pomelo-logger 是对 log4js 的简单封装，并提供了一些非常有用的 feature</p>
+  <pre><code>var logger = require('pomelo-logger').getLogger('bearcat-test', 'AgentService');
+  </code></pre>
+  <p>getLogger 第一个参数是 category，日志都是与 category 进行对应输出到指定的文件中</p>
+  <p>getLogger 第二个之后的参数在打印日志的时候，会添加到日志开头，一般建议为当前POJO名，以便根据日志进行定位</p>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- logs</h2>
+  <p>日志的配置 log4js.json</p>
+  <p>bearcat 开发下该文件放在 config/env 下面</p>
+  <pre><code>{
+  "appenders": [{
+    "type": "console"
+  }, {
+    "type": "file",
+    "filename": "logs/bearcat.log",
+    "maxLogSize": 104857600,
+    "layout": {
+      "type": "basic"
+    },
+    "backups": 5,
+    "category": "bearcat"
+  }, {
+    "type": "file",
+    "filename": "logs/bearcat-dao.log",
+    "maxLogSize": 104857600,
+    "layout": {
+      "type": "basic"
+    },
+    "backups": 5,
+    "category": "bearcat-dao"
+  }, {
+    "type": "file",
+    "filename": "logs/nscheduler.log",
+    "maxLogSize": 104857600,
+    "layout": {
+      "type": "basic"
+    },
+    "backups": 5,
+    "category": "nscheduler"
+  }],
+
+  "levels": {
+    "bearcat": "DEBUG",
+    "bearcat-dao": "DEBUG",
+    "nscheduler": "DEBUG",
+    "pomelo": "ERROR",
+    "pomelo-rpc": "ERROR",
+    "pomelo-admin": "ERROR"
+  },
+
+  "replaceConsole": false,
+
+  "lineDebug": true
+}</code></pre>
+<p>具体配置可以参照<a href="https://github.com/NetEase/pomelo/wiki/pomelo%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86">pomelo-logger配置</a></p>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- cluster</h2>
+  <p>node.js 单线程</p>
+  <p>一个node进程（一般）只能使用到一个cpu</p> 
+  <pre><code>var cluster = require('cluster');
+var http = require('http');
+var numCPUs = require('os').cpus().length;
+
+if (cluster.isMaster) {
+  // Fork workers.
+  for (var i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', function(worker, code, signal) {
+    console.log('worker ' + worker.process.pid + ' died');
+  });
+} else {
+  // Workers can share any TCP connection
+  // In this case its a HTTP server
+  http.createServer(function(req, res) {
+    res.writeHead(200);
+    res.end("hello world\n");
+  }).listen(8000);
+}</code></pre> 
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- request</h2>
+  <p>http request module</p>
+  <br>
+  <a href="https://github.com/request/request">https://github.com/request/request</a> 
+  <pre><code>var request = require('request');
+request('http://www.google.com', function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body) // Print the google web page.
+  }
+})</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- request</h2>
+  <p>streaming</p>
+  <pre><code>request('http://google.com/doodle.png').pipe(fs.createWriteStream('doodle.png'))</code></pre>
+  <pre><code>fs.createReadStream('file.json').pipe(request.put('http://mysite.com/obj.json'))</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- request</h2>
+  <p>form 提交</p>
+  <p>application/x-www-form-urlencoded</p>
+  <pre><code>request.post('http://service.com/upload', {form:{key:'value'}})
+  </code></pre>
+  <p>multipart/form-data</p>
+  <pre><code>var r = request.post('http://service.com/upload', function optionalCallback(err, httpResponse, body) {});
+
+var form = r.form();
+form.append('my_field', 'my_value');
+form.append('my_buffer', new Buffer([1, 2, 3]));
+form.append('custom_file', fs.createReadStream(__dirname + '/unicycle.jpg'), {filename: 'unicycle.jpg'});
+  </code></pre>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- request</h2>
+  <p>request(options, callback)</p>
+  <a href="https://github.com/request/request#requestoptions-callback">https://github.com/request/request#requestoptions-callback</a>
+  <p>headers</p>
+  <p>timeout</p>
+  <p>pool</p>
+  <p>proxy</p>
+  <p>localAddress</p>
+  <p>...</p>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- forever</h2>
+  <p>一个守护进程可以保证进程forever运行</p>
+  <a href="https://github.com/nodejitsu/forever">https://github.com/nodejitsu/forever</a> 
+  <pre><code>npm install forever -g</code></pre>
+  <pre><code>forever start app.js</code></pre>
+  <pre><code>forever list</code></pre>
+  <pre><code>forever restartall</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+  <p>the whole repository is <a href="https://github.com/bearcatnode/todo">bearcat-todo</a>, forked from <a href="https://github.com/fengmk2/todo">fengmk2-todo</a></p>
+  <img src="resource/bearcat-todo.png">
+</ul>
+</section>
+
+<section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+
+<p>Project code structure -- MVC driven</p>
+<pre><code>├─┬ app/
+│ ├─┬ controller/
+│ │ └── todoController.js
+│ ├─┬ dao/
+│ │ └── todoDao.js
+│ ├─┬ domain/
+│ │ └── todoDomain.js
+│ ├─┬ service/
+│ │ └── todoService.js
+├─┬ config/
+│ ├─┬ dev/
+│ │ └── mysql.json
+│ ├─┬ prod/
+│ │ └── mysql.json
+├── views/
+├── public/
+├── server.js
+├── package.json
+├── context.json
+└── RERAME.md</code></pre>
+</ul></section>
+
+<section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <p>todoController.js -- simple POJO</p>
+    <pre><code>var TodoController = function() {
+  this.$id = "todoController";
+  this.$todoService = null;
+}
+
+TodoController.prototype.index = function(req, res, next) {
+    res.render('index.html', {});
+}
+
+module.exports = TodoController;
+</code></pre>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <p>Setup Bearcat and add route</p>
+    <pre><code>var contextPath = require.resolve('./context.json');
+
+var bearcat = Bearcat.createApp([contextPath]);
+
+bearcat.start(function() {
+  /**
+   * Routing
+   */
+  var router = urlrouter(function(app) {
+    app.get('/', bearcat.getRoute("todoController", "index"));
+  });
+  app.use(router);
+
+  // start app
+  app.listen(config.port);
+  console.log('Server start on ' + config.port);
+});</code></pre>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <p>Setup Bearcat and add route</p>
+    <p>context.json setup scan path to enable auto-scan POJOs</p>
+    <pre><code>{
+  "name": "bearcat-todo",
+  "scan": "app"
+}</code></pre>
+  </ul>
+</section>
+ 
+ <section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <p>Add todoService and todoDao</p>
+    <p>todoService.js</p>
+    <pre><code>var TodoService = function() {
+  this.$id = "todoService";    
+  this.$todoDao = null;
+}
+
+TodoService.prototype.getList = function(params, cb) {
+  return this.$todoDao.getList(params, cb);
+}
+
+module.exports = TodoService;
+</code></pre>
+  </ul>
+</section>
+ 
+ <section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <p>Add todoService and todoDao</p>
+    <p>todoDao.js</p>
+    <pre><code>var TodoDomain = require('../domain/todoDomain');
+
+var TodoDao = function() {
+  this.$id = "todoDao";
+  this.$init = "init";
+  this.$domainDaoSupport = null;
+}
+
+TodoDao.prototype.init = function() {
+  this.$domainDaoSupport.initConfig(TodoDomain);
+}
+
+TodoDao.prototype.getList = function(params, cb) {
+  var sql = ' 1=1 order by finished asc, id asc limit ?,?';
+  return this.$domainDaoSupport.getListByWhere(sql, params, null, cb);
+}
+
+module.exports = TodoDao;
+</code></pre>
+  </ul>
+</section>
+
+ <section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <p>Update todoController</p>
+    <p>todoController.js</p>
+    <pre><code>TodoController.prototype.index = function(req, res, next) {
+  this.$todoService.getList([0, 50], function(err, results) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    res.render('index.html', {
+      todos: results
+    });
+  });
+}
+</code></pre>
+  </ul>
+</section>
+
+ <section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <p>Just run it</p>
+    <pre><code>node server.js</code></pre>
+    <img src="resource/bearcat-todo.png">
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <h3>How to set up mysql configuration ?</h3>
+    <p>magic is also in <span class="highlight">context.json</span></p>
+    <pre><code>{
+  "name": "bearcat-todo",
+  "dependencies": {
+    "bearcat-dao": "*"
+  },
+  "scan": "app",
+  "beans": [{
+    "id": "mysqlConnectionManager",
+    "func": "node_modules.bearcat-dao.lib.connection.sql.mysqlConnectionManager",
+    "props": [{
+      "name": "port",
+      "value": "${mysql.port}"
+    }, {
+      "name": "host",
+      "value": "${mysql.host}"
+    }, {
+      "name": "user",
+      "value": "${mysql.user}"
+    }, {
+      "name": "password",
+      "value": "${mysql.password}"
+    }, {
+      "name": "database",
+      "value": "${mysql.database}"
+    }]
+  }]
+}</code></pre>
+  </ul>
+</section>
+
+ <section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <p>Set up mysql configuration</p>
+    <p>mysql.json in dev</p>
+    <pre><code>{
+  "mysql.port": 3306,
+  "mysql.host": "localhost",
+  "mysql.user": "root",
+  "mysql.password": "test",
+  "mysql.database": "bearcat_test"
+}</code></pre>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <p>Swith to production env ?</p>
+    <p>mysql.json in prod</p>
+    <pre><code>{
+  "mysql.port": 3306,
+  "mysql.host": "10.123.22.3",
+  "mysql.user": "todo_online",
+  "mysql.password": "todo_online_aqz",
+  "mysql.database": "bearcat_todo_online"
+}</code></pre>
+  </ul>
+</section>
+
+ <section class="slide">
+  <h2>Practice</h2>
+  
+  <ul><li>Simple web todo</li>
+    <p>Just run it</p>
+    <pre><code>node server.js</code></pre>
+    <pre><code>node server.js env=prod</code></pre>
+  </ul>
+</section>
+
+ <section class="slide">
+  <h2>Notes</h2>
+ <ul>
+  <li>异步控制流处理</li>
+  <p>node.js 中绝大多数 api 都是异步的，流程控制要在异步回调中处理</p>
+  <a href="https://github.com/caolan/async">https://github.com/caolan/async</a>
+  <li>异常的处理</li>
+  <p>异步方法，在回调第一个参数err处理，底层方法直接cb(err)往上抛即可，上层调用方再去判断异常是否存在并打日志 <span class="highlight">err.stack</span></p>
+  <p>不要试图用 try catch 去捕获一个异步方法的异常</p>
+  <p>全局异常捕获要加上以免进程退出</p>
+  <pre><code>// Uncaught exception handler
+process.on('uncaughtException', function(e) {
+  logger.error('Caught exception: ' + e.stack);
+});</code></pre>
+</ul> 
+</section>
+
+<section class="slide">
+  <h2>Discussion</h2>
+  <p>为什么前端需要了解node.js开发？</p>
+  <ul>
+    <li>能者多劳？</li>
+    <li>不再只是切页面仔？</li>
+    <li>代替java等后端技术？</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Discussion</h2>
+  <p>为什么前端需要了解node.js开发？</p>
+  <ul>
+    <li>快速开发一些小项目</li>
+    <li>ajax之后再一次改变web开发格局</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Discussion</h2>
+  <ul>
+    <li>full stack development with nodejs</li>
+    <p>前后端开发分离，前后端各自专注于各自擅长的事儿，提高开发效率和维护成本</p>
+    <a href="http://www.nczonline.net/blog/2013/10/07/node-js-and-the-new-web-front-end/">http://www.nczonline.net/blog/2013/10/07/node-js-and-the-new-web-front-end/</a>
+    <img src="resource/full-stack-nodejs.png">
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Discussion</h2>
+  <h4>传统认知的前后端</h4>
+  <img src="resource/tranditional-front-end.png">
+  <p>问题</p>
+  <ul>
+    <li>前端依赖于开发环境以及后端接口数据</li>
+    <p>后端服务不稳定, 前端效率就大大降低</p>
+    <p>前端也不方便mock数据，也就不好做单元测试</p>
+    <p>即使是基于rest开发，前端也需要依赖后端</p>
+    <p>全rest开发的app也有缺点，代码无法复用（比如校验），不利于seo，性能不能通过 bigpiper 等技术进行优化，除非和后端进行沟通</p>
+    <li>前后端职责纠缠不清</li>
+    <p>route 本来是前端关注的，却是后端在controller里面写的</p>
+    <p>这又需要前后端进行沟通</p>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Discussion</h2>
+  <h4>重新定义的前后端</h4>
+  <img src="resource/new-front-end.png">
+  <ul>
+    <li>node.js 在这里相当于是一个中间层</li>
+  </ul>
+  <img src="resource/role-front-end.png">
+</section>
+
+<section class="slide">
+  <h2>Discussion</h2>
+  <h4>需要解决的问题</h4>
+  <ul>
+    <li>node.js 中间层高效的与java进行通信</li>
+    <p>序列化协议，mq，pub/sub</p>
+    <li>node.js 中间层给开发提供简单易用的接口</li>
+    <p>配置简单，可以多种选择</p>
+    <li>安全问题</li>
+    <li>会话存储</li>
+    <p>比如登录状态，是在node.js中间层保持还是后端服务保持，需要由具体业务决定</p>
+    <li>部署发布</li>
+    <li>...</li>
+  </ul>
+</section>
+
+<section class="slide"><h1>QA</h1></section>
+
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<form action="." method="get" class="goto-form">
+  <label for="goto-slide">Go to slide:</label>
+  <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+  <datalist id="goto-datalist"></datalist>
+  <input type="submit" value="Go">
+</form>
+
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+
+<!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+<script>window.jQuery || document.write('<script src="./deck.js/jquery-1.7.min.js"><\/script>')</script>
+<script src="./prettify.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="./deck.js/core/deck.core.js"></script>
+<script src="./deck.js/extensions/hash/deck.hash.js"></script>
+<script src="./deck.js/extensions/menu/deck.menu.js"></script>
+<script src="./deck.js/extensions/goto/deck.goto.js"></script>
+<script src="./deck.js/extensions/status/deck.status.js"></script>
+<script src="./deck.js/extensions/navigation/deck.navigation.js"></script>
+
+<!-- Specific to this page -->
+<script>
+$(function() {
+  // Deck initialization
+  $.deck('.slide');
+  $('pre code').parent().addClass('prettyprint');
+  prettyPrint();
+});
+</script>
+
+</body>
+</html>
