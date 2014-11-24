@@ -1,3 +1,7 @@
+0.2.32 / 2014-11-24
+===================
+* add modify config path by NODE_CPATH env
+
 0.2.31 / 2014-11-10
 ===================
 * improve log4js configuration files with specific env
