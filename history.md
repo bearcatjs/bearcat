@@ -1,3 +1,7 @@
+0.2.33 / 2014-11-27
+===================
+* fix scan load relative path bug && fix context.json load dependency merge meta bug
+
 0.2.32 / 2014-11-24
 ===================
 * add modify config path by NODE_CPATH env
