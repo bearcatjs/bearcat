@@ -1,3 +1,7 @@
+0.2.34 / 2014-11-30
+===================
+* review codes && fix some problems
+
 0.2.33 / 2014-11-27
 ===================
 * fix scan load relative path bug && fix context.json load dependency merge meta bug
