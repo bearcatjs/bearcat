@@ -9,7 +9,9 @@ describe('applicationContext', function() {
 			var simplepath = require.resolve('../../examples/simple/context.json');
 			var paths = [simplepath];
 
-			var applicationContext = new ApplicationContext(paths);
+			var applicationContext = new ApplicationContext(paths, {
+				BEARCAT_LOGGER: 'off'
+			});
 			applicationContext.refresh();
 
 			var car = applicationContext.getBean('car');
