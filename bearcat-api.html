@@ -71,35 +71,6 @@
       <div class="row">
         <div class="span3 bs-docs-sidebar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
-            <!--li><a href="index.html">Main</a></li>
-            <li><a href="aop/advisor.js.html">aop/advisor.js</a></li>
-            <li><a href="aop/aspect.js.html">aop/aspect.js</a></li>
-            <li><a href="aop/autoproxy/autoProxyCreator.js.html">aop/autoproxy/autoProxyCreator.js</a></li>
-            <li><a href="aop/framework/advisedSupport.js.html">aop/framework/advisedSupport.js</a></li>
-            <li><a href="aop/framework/dynamicAopProxy.js.html">aop/framework/dynamicAopProxy.js</a></li>
-            <li><a href="aop/framework/dynamicMetaProxy.js.html">aop/framework/dynamicMetaProxy.js</a></li>
-            <li><a href="aop/framework/proxyFactory.js.html">aop/framework/proxyFactory.js</a></li>
-            <li><a href="aop/pointcut.js.html">aop/pointcut.js</a></li>
-            <li><a href="aop/targetSource.js.html">aop/targetSource.js</a></li>
-            <li><a href="beans/beanFactory.js.html">beans/beanFactory.js</a></li>
-            <li><a href="beans/singletonBeanFactory.js.html">beans/singletonBeanFactory.js</a></li>
-            <li><a href="beans/support/beanDefinition.js.html">beans/support/beanDefinition.js</a></li>
-            <li><a href="beans/support/beanDefinitionVisitor.js.html">beans/support/beanDefinitionVisitor.js</a></li>
-            <li><a href="beans/support/beanWrapper.js.html">beans/support/beanWrapper.js</a></li>
-            <li><a href="beans/support/placeHolderConfigurer.js.html">beans/support/placeHolderConfigurer.js</a></li>
-            <li><a href="beans/support/placeHolderResolver.js.html">beans/support/placeHolderResolver.js</a></li>
-            <li class="active"><a href="bearcat.js.html">bearcat.js</a></li>
-            <li><a href="context/applicationContext.js.html">context/applicationContext.js</a></li>
-            <li><a href="resource/configLoader.js.html">resource/configLoader.js</a></li>
-            <li><a href="resource/metaLoader.js.html">resource/metaLoader.js</a></li>
-            <li><a href="resource/propertiesLoader.js.html">resource/propertiesLoader.js</a></li>
-            <li><a href="resource/resourceLoader.js.html">resource/resourceLoader.js</a></li>
-            <li><a href="util/aopUtil.js.html">util/aopUtil.js</a></li>
-            <li><a href="util/beanUtil.js.html">util/beanUtil.js</a></li>
-            <li><a href="util/constant.js.html">util/constant.js</a></li>
-            <li><a href="util/metaUtil.js.html">util/metaUtil.js</a></li>
-            <li><a href="util/utils.js.html">util/utils.js</a></li>
-            <li><a href="util/validatorUtil.js.html">util/validatorUtil.js</a></li-->
           </ul>
           <div class="scrollspy">
             <ul class="nav nav-list bs-docs-sidenav affix-top">
@@ -138,6 +109,7 @@
           </section>
           <div class="description"><p>Bearcat app object.</p> </div>
           <pre><code class="language-javascript">var Bearcat = {
+  opts: null,
   configLocations: null,
   applicationContext: null,
   state: STATE_INITED,
@@ -166,10 +138,51 @@ module.exports = Bearcat;</code></pre>
                 <td>Array</td>
                 <td>context path array</td>
               </tr>
+              <tr>
+                <td>opts</td>
+                <td>Object</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>opts.NODE_ENV</td>
+                <td>String</td>
+                <td>setup env</td>
+              </tr>
+              <tr>
+                <td>opts.BEARCAT_ENV</td>
+                <td>String</td>
+                <td>setup env</td>
+              </tr>
+              <tr>
+                <td>opts.NODE_CPATH</td>
+                <td>String</td>
+                <td>setup config path</td>
+              </tr>
+              <tr>
+                <td>opts.BEARCAT_CPATH</td>
+                <td>String</td>
+                <td>setup config path</td>
+              </tr>
+              <tr>
+                <td>opts.BEARCAT_LOGGER</td>
+                <td>String</td>
+                <td>setup 'off' to turn off bearcat logger configuration</td>
+              </tr>
+              <tr>
+                <td>opts.BEARCAT_HOT</td>
+                <td>String</td>
+                <td>setup 'off' to turn off bearcat hot code reloading</td>
+              </tr>
+              <tr>
+                <td>opts.BEARCAT_ANNOTATION</td>
+                <td>String</td>
+                <td>setup 'off' to turn off bearcat $ based annotation </td>
+              </tr>
             </tbody>
           </table>
           <div class="description"><p>Bearcat createApp constructor function.</p> </div>
-          <pre><code class="language-javascript">Bearcat.createApp = function(configLocations) {
+          <pre><code class="language-javascript">Bearcat.createApp = function(configLocations, opts) {
+  this.opts = opts || {};
   this.configLocations = configLocations;
   return Bearcat;
 }</code></pre>
@@ -210,13 +223,19 @@ module.exports = Bearcat;</code></pre>
   this.startTime = Date.now();
   var self = this;
 
-  this.state = STATE_START;
   var configLocations = this.configLocations;
   if (!configLocations) {
     return cb(new Error('Bearcat start error, configLocations null'));
   }
 
-  this.applicationContext = new ApplicationContext(configLocations);
+  var opts = this.opts;
+  if (!Utils.checkObject(opts)) {
+    logger.warn('Bearcat start opts must be object...');
+    return;
+  }
+
+  this.applicationContext = new ApplicationContext(configLocations, opts);
+  this.state = STATE_START;
   this.applicationContext.on('finishRefresh', function() {
     self.state = STATE_STARTED;
     logger.info('Bearcat startup in %s with %s ms', self.applicationContext.getEnv(), Date.now() - self.startTime);
@@ -251,7 +270,7 @@ module.exports = Bearcat;</code></pre>
           </section>
           <div class="description"><p>Bearcat get beanFactory instance.</p> </div>
           <pre><code class="language-javascript">Bearcat.getBeanFactory = function() {
-  if (this.state !== STATE_STARTED) {
+  if (this.state === STATE_INITED) {
     logger.warn('Bearcat application is not running now for %j', &quot;getBeanFactory&quot;);
     return;
   }
@@ -267,7 +286,7 @@ module.exports = Bearcat;</code></pre>
           </section>
           <div class="description"><p>Bearcat get applicationContext.</p> </div>
           <pre><code class="language-javascript">Bearcat.getApplicationContext = function() {
-  if (this.state !== STATE_STARTED) {
+  if (this.state === STATE_INITED) {
     logger.warn('Bearcat application is not running now for %j', &quot;getApplicationContext&quot;);
     return;
   }
@@ -307,7 +326,7 @@ module.exports = Bearcat;</code></pre>
   });
 </code></pre> </div>
           <pre><code class="language-javascript">Bearcat.getBeanByMeta = function(meta) {
-  if (this.state !== STATE_STARTED) {
+  if (this.state === STATE_INITED) {
     logger.warn('Bearcat application is not running now for %j', &quot;getBeanByMeta&quot;);
     return;
   }
@@ -347,7 +366,7 @@ module.exports = Bearcat;</code></pre>
   });
 </code></pre> </div>
           <pre><code class="language-javascript">Bearcat.getBeanByFunc = function(func) {
-  if (this.state !== STATE_STARTED) {
+  if (this.state === STATE_INITED) {
     logger.warn('Bearcat application is not running now for %j', &quot;getBeanByFunc&quot;);
     return;
   }
@@ -397,7 +416,7 @@ module.exports = Bearcat;</code></pre>
   });
 </code></pre> </div>
           <pre><code class="language-javascript">Bearcat.getBean = function(beanName) {
-  if (this.state !== STATE_STARTED) {
+  if (this.state === STATE_INITED) {
     logger.warn('Bearcat application is not running now for %j %j', &quot;getBean&quot;, this.state);
     return;
   }
@@ -405,15 +424,19 @@ module.exports = Bearcat;</code></pre>
   arguments = Array.prototype.slice.apply(arguments);
 
   var firstarg = arguments[0];
+  var func = &quot;&quot;;
   if (typeof firstarg === 'object') {
-    return this.applicationContext.getBeanByMeta(firstarg);
+    func = &quot;getBeanByMeta&quot;;
   } else if (typeof firstarg === 'function') {
-    return this.applicationContext.getBeanByFunc(firstarg);
+    func = &quot;getBeanByFunc&quot;;
   } else if (typeof firstarg === 'string') {
-    return this.applicationContext.getBean.apply(this.applicationContext, arguments);
+    func = &quot;getBean&quot;;
   } else {
-    logger.error('Bearcat application unsupported getBean arguments for %j', &quot;getBean&quot;);
+    logger.error('Bearcat application unsupported getBean arguments for %s', beanName);
+    return;
   }
+
+  return this.applicationContext[func].apply(this.applicationContext, arguments);
 }</code></pre>
           <section id="getFunction">
             <h1>getFunction</h1>
@@ -446,7 +469,7 @@ module.exports = Bearcat;</code></pre>
   var Car = bearcat.getFunction("car");
 </code></pre> </div>
           <pre><code class="language-javascript">Bearcat.getFunction = function(beanName) {
-  if (this.state !== STATE_STARTED) {
+  if (this.state === STATE_INITED) {
     logger.warn('Bearcat application is not running now for %j %j', &quot;getFunction&quot;, this.state);
     return;
   }
