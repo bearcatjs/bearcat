@@ -3,6 +3,7 @@
   "version": "0.2.34",
   "description": "a POJOs based application framework for node.js",
   "main": "index.js",
+  "bin": "./bin/bearcat.js",
   "scripts": {
     "test": "grunt"
   },
@@ -21,6 +22,9 @@
   ],
   "dependencies": {
     "pomelo-logger": "0.1.x"
+  },
+  "browser": {
+    "pomelo-logger": "./shim/logger.js"
   },
   "author": "fantasyni",
   "license": "MIT",
