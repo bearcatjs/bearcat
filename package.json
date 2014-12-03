@@ -1,6 +1,6 @@
 {
   "name": "bearcat",
-  "version": "0.2.34",
+  "version": "0.2.35",
   "description": "a POJOs based application framework for node.js",
   "main": "index.js",
   "bin": "./bin/bearcat.js",

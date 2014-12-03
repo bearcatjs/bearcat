@@ -1,3 +1,7 @@
+0.2.35 / 2014-12-2
+===================
+* add createApp opts [createApp](http://bearcatnode.github.io/bearcat/bearcat-api.html#createApp)
+
 0.2.34 / 2014-11-30
 ===================
 * review codes && fix some problems

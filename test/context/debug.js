@@ -74,18 +74,33 @@ var ApplicationContext = require('../../lib/context/applicationContext');
 // 	// done();
 // });
 
-var simplepath = require.resolve('../../examples/relative_scan/context.json');
+// var simplepath = require.resolve('../../examples/relative_scan/context.json');
+// var paths = [simplepath];
+
+// var applicationContext = new ApplicationContext(paths);
+// applicationContext.on('finishRefresh', function() {
+// 	var car = applicationContext.getBean('car');
+// 	var r = car.run();
+
+// 	console.log(r);
+// 	// r.should.exist;
+// 	// r.should.eql('car wheel');
+
+// 	// done();
+// })
+// applicationContext.refresh();
+
+var simplepath = require.resolve('../../examples/simple/context.json');
 var paths = [simplepath];
 
-var applicationContext = new ApplicationContext(paths);
-applicationContext.on('finishRefresh', function() {
-	var car = applicationContext.getBean('car');
-	var r = car.run();
-
-	console.log(r);
-	// r.should.exist;
-	// r.should.eql('car wheel');
-
-	// done();
-})
+var applicationContext = new ApplicationContext(paths, {
+	BEARCAT_LOGGER: 'off'
+});
 applicationContext.refresh();
+
+var car = applicationContext.getBean('car');
+var r = car.run();
+// r.should.exist;
+// r.should.eql('car');
+
+// done();
