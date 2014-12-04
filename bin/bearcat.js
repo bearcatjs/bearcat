@@ -17,7 +17,6 @@ var PropertiesLoader = require('../lib/resource/propertiesLoader');
 var ResourceLoader = require('../lib/resource/resourceLoader');
 var Version = require('../package.json').version;
 var Commander = require('commander');
-
 var fs = require('fs');
 
 var resourceLoader = new ResourceLoader();
