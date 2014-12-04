@@ -1,6 +1,6 @@
 {
   "name": "bearcat",
-  "version": "0.2.35",
+  "version": "0.3.0",
   "description": "a POJOs based application framework for node.js",
   "main": "index.js",
   "bin": "./bin/bearcat.js",
@@ -21,7 +21,22 @@
     "hot reload"
   ],
   "dependencies": {
-    "pomelo-logger": "0.1.x"
+    "pomelo-logger": "0.1.x",
+    "commander": "2.x"
+  },
+  "spm": {
+    "main": "index.js",
+    "dependencies": {
+      "pomelo-logger": "0.1.7",
+      "fs": "0.0.0",
+      "path": "0.0.0",
+      "util": "0.10.3",
+      "os": "0.0.0",
+      "events": "1.0.1"
+    },
+    "devDependencies": {
+      "expect.js": "0.3.1"
+    }
   },
   "browser": {
     "pomelo-logger": "./shim/logger.js"
