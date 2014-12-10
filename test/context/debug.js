@@ -90,17 +90,47 @@ var ApplicationContext = require('../../lib/context/applicationContext');
 // })
 // applicationContext.refresh();
 
-var simplepath = require.resolve('../../examples/simple/context.json');
+// var path = require('path');
+// var simplepath = require.resolve('../../examples/hot_reload/context.json');
+// var hotPath = path.dirname(simplepath) + '/hot';
+// var paths = [simplepath];
+// var applicationContext = new ApplicationContext(paths);
+// applicationContext.setHotPath(hotPath);
+// applicationContext.refresh(function() {
+// 	var car = applicationContext.getBean('car');
+// 	var bus = applicationContext.getBean('bus');
+// 	var r = car.run();
+
+
+// 	r = bus.run();
+
+// 	var hotCarPath = require.resolve('../../examples/hot_reload/hot/car.js');
+// 	var hotBusPath = require.resolve('../../examples/hot_reload/hot/bus.js');
+// 	require(hotCarPath);
+// 	require(hotBusPath);
+// 	fs.appendFileSync(hotCarPath, "\n");
+// 	fs.appendFileSync(hotBusPath, "\n");
+
+// 	setTimeout(function() {
+// 		r = car.run();
+// 		r = bus.run();
+// 	}, 6000);
+// });
+
+function isBrowser() {
+	return typeof window !== 'undefined';
+}
+
+var simplepath = require.resolve('../../examples/simple_meta_merge/context.json');
+if (isBrowser()) {
+	require('../../examples/simple_meta_merge/bearcat-bootstrap.js');
+}
 var paths = [simplepath];
 
-var applicationContext = new ApplicationContext(paths, {
-	BEARCAT_LOGGER: 'off'
-});
+var applicationContext = new ApplicationContext(paths);
 applicationContext.refresh();
 
 var car = applicationContext.getBean('car');
 var r = car.run();
-// r.should.exist;
-// r.should.eql('car');
-
-// done();
+console.log(r);
+// expect(r).to.eql('car wheel');

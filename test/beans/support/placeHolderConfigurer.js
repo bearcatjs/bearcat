@@ -1,7 +1,5 @@
 var PlaceHolderConfigurer = require('../../../lib/beans/support/placeHolderConfigurer');
 
-var should = require('should');
-
 describe('PlaceHolderConfigurer', function() {
 	describe('placeHolderConfigurer', function() {
 		it('should advice right', function(done) {

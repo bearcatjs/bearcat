@@ -1,9 +1,24 @@
-var should = require('should');
+var expect = require('expect.js');
+
+function isBrowser() {
+	return typeof window !== 'undefined';
+}
+
+if (isBrowser()) {
+	require.resolve = noop;
+
+	function noop() {
+
+	}
+}
 
 describe('bearcat', function() {
 	describe('#getBeanFactory', function() {
 		it('should get BeanFactory from bearcat', function(done) {
 			var bearcat = require('../lib/bearcat');
+			if (isBrowser()) {
+				require('../examples/simple/bearcat-bootstrap.js');
+			}
 			var simplepath = require.resolve('../examples/simple/context.json');
 			var paths = [simplepath];
 
@@ -12,8 +27,7 @@ describe('bearcat', function() {
 				var car = bearcat.getBean('car');
 				var r = car.run();
 
-				r.should.exist;
-				r.should.be.eql('car');
+				expect(r).to.eql('car');
 
 				bearcat.stop();
 				done();
@@ -24,6 +38,9 @@ describe('bearcat', function() {
 	describe('#bearcat handle error', function() {
 		it('should handle error right', function(done) {
 			var bearcat = require('../lib/bearcat');
+			if (isBrowser()) {
+				require('../examples/simple/bearcat-bootstrap.js');
+			}
 			var simplepath = require.resolve('../examples/simple/context.json');
 			var paths = [simplepath];
 
@@ -68,6 +85,9 @@ describe('bearcat', function() {
 	describe('#bearcat handle error', function() {
 		it('should handle error right', function(done) {
 			var bearcat = require('../lib/bearcat');
+			if (isBrowser()) {
+				require('../examples/simple/bearcat-bootstrap.js');
+			}
 			var simplepath = require.resolve('../examples/simple/context.json');
 			var paths = [simplepath];
 			bearcat.getBeanByFunc();
@@ -84,13 +104,11 @@ describe('bearcat', function() {
 
 				var bus = bearcat.getBeanByFunc(Bus);
 				var r = bus.run();
-				r.should.exist;
-				r.should.eql('bus');
+				expect(r).to.eql('bus');
 
 				var bus1 = bearcat.getBean(Bus);
 				r = bus1.run();
-				r.should.exist;
-				r.should.eql('bus');
+				expect(r).to.eql('bus');
 
 				bearcat.getBean(function() {});
 				bearcat.stop();
@@ -102,6 +120,9 @@ describe('bearcat', function() {
 	describe('#bearcat handle getBean meta func arguments', function() {
 		it('should handle getBean meta func arguments right', function(done) {
 			var bearcat = require('../lib/bearcat');
+			if (isBrowser()) {
+				require('../examples/simple/bearcat-bootstrap.js');
+			}
 			var simplepath = require.resolve('../examples/simple/context.json');
 			var paths = [simplepath];
 
@@ -118,8 +139,7 @@ describe('bearcat', function() {
 			bearcat.start(function() {
 				var bus = bearcat.getBean(Bus, 100);
 				var r = bus.run();
-				r.should.exist;
-				r.should.eql('bus100');
+				expect(r).to.eql('bus100');
 
 				done();
 			});

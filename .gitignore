@@ -18,3 +18,8 @@ coverage.html
 .idea/*
 test_/*
 design/*
+_design/*
+examples/*/bearcat-bootstrap.js
+dist/bearcat/*
+spm_modules/*
+docs/

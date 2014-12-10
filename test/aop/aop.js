@@ -1,11 +1,26 @@
 var ApplicationContext = require('../../lib/context/applicationContext');
 
-var should = require('should');
+var expect = require('expect.js');
+
+function isBrowser() {
+	return typeof window !== 'undefined';
+}
+
+if (isBrowser()) {
+	require.resolve = noop;
+
+	function noop() {
+
+	}
+}
 
 describe('aop', function() {
 	describe('before advice', function() {
 		it('should do before advice right', function(done) {
 			var simplepath = require.resolve('../../examples/aop/context.json');
+			if (isBrowser()) {
+				require('../../examples/aop/bearcat-bootstrap.js');
+			}
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -13,8 +28,7 @@ describe('aop', function() {
 
 			var car = applicationContext.getBean('car');
 			car.runBefore(function(err, r) {
-				r.should.exist;
-				r.should.eql('car');
+				expect(r).to.eql('car');
 
 				done();
 			});
@@ -22,6 +36,9 @@ describe('aop', function() {
 
 		it('should do before runtime advice right', function(done) {
 			var simplepath = require.resolve('../../examples/aop/context.json');
+			if (isBrowser()) {
+				require('../../examples/aop/bearcat-bootstrap.js');
+			}
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -29,8 +46,7 @@ describe('aop', function() {
 
 			var car = applicationContext.getBean('car');
 			car.runTimeBefore(100, function(err, r) {
-				r.should.exist;
-				r.should.eql('car' + 100);
+				expect(r).to.eql('car' + 100);
 
 				done();
 			});
@@ -38,6 +54,9 @@ describe('aop', function() {
 
 		it('should do before error advice right', function(done) {
 			var simplepath = require.resolve('../../examples/aop/context.json');
+			if (isBrowser()) {
+				require('../../examples/aop/bearcat-bootstrap.js');
+			}
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -45,7 +64,7 @@ describe('aop', function() {
 
 			var car = applicationContext.getBean('car');
 			car.runBeforeError(function(err, r) {
-				err.should.exist;
+				// expect(err).to.not.be.empty();
 
 				done();
 			});
@@ -55,6 +74,9 @@ describe('aop', function() {
 	describe('after advice', function() {
 		it('should do after advice right', function(done) {
 			var simplepath = require.resolve('../../examples/aop/context.json');
+			if (isBrowser()) {
+				require('../../examples/aop/bearcat-bootstrap.js');
+			}
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -62,8 +84,7 @@ describe('aop', function() {
 
 			var car = applicationContext.getBean('car');
 			car.runAfter(100, function(err, r) {
-				r.should.exist;
-				r.should.eql('car' + 100);
+				expect(r).to.eql('car' + 100);
 
 				done();
 			});
@@ -73,6 +94,9 @@ describe('aop', function() {
 	describe('around advice', function() {
 		it('should do around advice right', function(done) {
 			var simplepath = require.resolve('../../examples/aop/context.json');
+			if (isBrowser()) {
+				require('../../examples/aop/bearcat-bootstrap.js');
+			}
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -80,8 +104,7 @@ describe('aop', function() {
 
 			var car = applicationContext.getBean('car');
 			car.runAround(function(err, r) {
-				r.should.exist;
-				r.should.eql('car' + 100);
+				expect(r).to.eql('car' + 100);
 
 				done();
 			});
@@ -89,6 +112,9 @@ describe('aop', function() {
 
 		it('should do around runtime advice right', function(done) {
 			var simplepath = require.resolve('../../examples/aop/context.json');
+			if (isBrowser()) {
+				require('../../examples/aop/bearcat-bootstrap.js');
+			}
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -96,8 +122,7 @@ describe('aop', function() {
 
 			var car = applicationContext.getBean('car');
 			car.runTimeAround(100, function(err, r) {
-				r.should.exist;
-				r.should.eql('car100' + 100);
+				expect(r).to.eql('car100' + 100);
 
 				done();
 			});
@@ -107,6 +132,9 @@ describe('aop', function() {
 	describe('no advice', function() {
 		it('should do no advice right', function(done) {
 			var simplepath = require.resolve('../../examples/aop/context.json');
+			if (isBrowser()) {
+				require('../../examples/aop/bearcat-bootstrap.js');
+			}
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -122,6 +150,9 @@ describe('aop', function() {
 	describe('no advice', function() {
 		it('should do no advice object right', function(done) {
 			var simplepath = require.resolve('../../examples/aop/context.json');
+			if (isBrowser()) {
+				require('../../examples/aop/bearcat-bootstrap.js');
+			}
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -141,6 +172,9 @@ describe('aop', function() {
 	describe('sync target method after advice', function() {
 		it('should do sync target method after advice right', function(done) {
 			var simplepath = require.resolve('../../examples/aop/context.json');
+			if (isBrowser()) {
+				require('../../examples/aop/bearcat-bootstrap.js');
+			}
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -156,6 +190,9 @@ describe('aop', function() {
 	describe('sync target method', function() {
 		it('should do sync target method right', function(done) {
 			var simplepath = require.resolve('../../examples/aop/context.json');
+			if (isBrowser()) {
+				require('../../examples/aop/bearcat-bootstrap.js');
+			}
 			var paths = [simplepath];
 
 			var applicationContext = new ApplicationContext(paths);
@@ -163,7 +200,6 @@ describe('aop', function() {
 
 			var car = applicationContext.getBean('car');
 			var r = car.runBeforeSync();
-			// r.should.eql('runBeforeSync');
 
 			done();
 		});

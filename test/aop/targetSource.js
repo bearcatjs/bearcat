@@ -1,7 +1,5 @@
 var TargetSource = require('../../lib/aop/targetSource');
 
-var should = require('should');
-
 describe('TargetSource', function() {
 	describe('TargetSource', function() {
 		it('should do TargetSource right', function(done) {

@@ -1,9 +1,16 @@
 var MetaLoader = require('../../lib/resource/metaLoader');
-var should = require('should');
+
+function isBrowser() {
+	return typeof window !== 'undefined';
+}
 
 describe('metaLoader', function() {
 	describe('#getResources', function() {
 		it('should getResources right', function(done) {
+			if (isBrowser()) {
+				return done();
+			}
+
 			var metaLoader = new MetaLoader();
 			metaLoader.load();
 			metaLoader.load(require.resolve('./configLoader'));

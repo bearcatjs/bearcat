@@ -2,6 +2,7 @@
 
 module.exports = function(grunt) {
 
+  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-clean');
 
@@ -36,9 +37,15 @@ module.exports = function(grunt) {
       "coverage.html": {
         src: ['coverage.html']
       }
+    },
+    browserify: {
+      tests: {
+        src: src,
+        dest: './dist/browserified_tests.js'
+      }
     }
   });
 
   // Default task.
-  grunt.registerTask('default', ['clean', 'mochaTest']);
+  grunt.registerTask('default', ['clean', 'mochaTest', 'browserify']);
 };
