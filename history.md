@@ -1,3 +1,7 @@
+0.2.36 / 2014-12-10
+===================
+* fix placehold boolean bug [merge pull request 105](https://github.com/bearcatnode/bearcat/pull/105)
+
 0.2.35 / 2014-12-2
 ===================
 * add createApp opts [createApp](http://bearcatnode.github.io/bearcat/bearcat-api.html#createApp)
