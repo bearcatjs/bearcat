@@ -47,5 +47,5 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', ['clean', 'mochaTest', 'browserify']);
+  grunt.registerTask('default', ['clean', 'mochaTest']);
 };
