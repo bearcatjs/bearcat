@@ -1,11 +1,14 @@
-var Wheel = function() {}
+var Wheel = function() {
+	this.$id = "wheel";
+}
 
 Wheel.prototype.run = function() {
 	console.log('run wheel...');
 	return 'wheel';
 }
 
-module.exports = {
-	id: "wheel",
-	func: Wheel
-};
+module.exports = Wheel;
+// {
+// 	id: "wheel",
+// 	func: Wheel
+// };
