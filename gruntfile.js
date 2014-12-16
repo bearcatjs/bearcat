@@ -42,6 +42,21 @@ module.exports = function(grunt) {
       tests: {
         src: src,
         dest: './dist/browserified_tests.js'
+      },
+      // This browserify build be used by users of the module. It contains a
+      // UMD (universal module definition) and can be used via an AMD module
+      // loader like RequireJS or by simply placing a script tag in the page,
+      // which registers mymodule as a global var. You can see examples for both
+      // usages in browser/example/index.html (script tag) and
+      // browser/example/index-require.html (RequireJS).
+      standalone: {
+        src: ['index.js'],
+        dest: './dist/bearcat.standalone.js',
+        options: {
+          browserifyOptions: {
+            standalone: 'bearcat'
+          }
+        }
       }
     }
   });

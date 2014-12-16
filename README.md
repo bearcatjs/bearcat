@@ -1,16 +1,16 @@
-## Bearcat -- a POJOs based application framework
-Bearcat is a POJOs based application framework which provides a lightweight container for writing simple, maintainable [node.js](http://nodejs.org/). Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJO) and to apply enterprise services non-invasively to POJOs.
+## Bearcat -- magic, expressive javaScript Objects build elastic, maintainable fullstack javaScript applications
+Bearcat makes plain javaScript magic and expressive, which makes it easy to resolve dependency through DI and declarative middleware service through AOP. Bearcat support all javaScript based enviroments, [node.js](http://nodejs.org/) , browser and javaScript based hybrid apps. Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJO) and to apply enterprise services non-invasively to POJOs.
 
-> ###Simple POJOs + Configuration metadatas = Elastic, maintainable system 
+> ###Simple POJOs + Embeded configuration metadatas = Elastic, maintainable system 
   
 ![](http://bearcatnode.github.io/bearcat/images/bearcat-logo.png)
 [![Build Status](https://travis-ci.org/bearcatnode/bearcat.svg?branch=master)](https://travis-ci.org/bearcatnode/bearcat)
 
  * Homepage: <http://bearcatnode.github.io/bearcat/>
  * Mailing list: <https://groups.google.com/group/bearcatnode/>
- * Wiki: <https://github.com/bearcatnode/bearcat/wiki/>
- * Issues: <https://github.com/bearcatnode/bearcat/issues/>
- * Tags: nodejs, POJO, IoC, AOP, consistent configuration
+ * Wiki: <https://github.com/bearcatjs/bearcat/wiki/>
+ * Issues: <https://github.com/bearcatjs/bearcat/issues/>
+ * Tags: nodejs, browser, hybrid apps, POJO, IoC, AOP, consistent configuration, full-stack, frontend, backend
 
 ## Features
 ### lightweight container
@@ -39,13 +39,17 @@ Bearcat is a POJOs based application framework which provides a lightweight cont
 ### Extensible
 * Custom features: you can add custom codes to container
 
+### Sharable codes for full-stack development
+
+
 ## What is POJO ? 
 POJO is an acronym for Plain Old Java Object, you can refer to [POJO wikipedia](http://en.wikipedia.org/wiki/Plain_Old_Java_Object). It is mostly used in Java Platform which is used to emphasize that a given object is an ordinary Java Object, not a special object.   
 In Node, what is POJO ?  
 It must be Plain Old JavaScript Object, which is simple, ordinary, and not anonymous.  
 To be not anonymous, it must have Constructor function.  
 So POJO can be like this:  
-```
+
+```js
 var POJO = function() {
 	this.props = null;
 }
@@ -62,11 +66,40 @@ module.exports = POJO;
 * POJO makes development consistently, all your codes is POJOs  
 * POJO makes it friendly to document  
 
+## Magic POJO with expressive configurations
+```js
+var POJO = function() {
+	this.$id = "pojo";         // define id
+	this.$scope = "singleton"; // define scope
+	this.$depend = null;       // want a dependency with id "depend"
+}
+
+POJO.prototype.go = function() {
+	this.$depend.go();         // go with the "depend" go method
+	console.log('POJO go...');
+}
+
+module.exports = POJO;
+```
+
+```js
+var Depend = function() {
+	this.$id = "depend";       // define id
+}
+
+Depend.prototype.go = function() {
+	console.log('Depend go...');
+}
+
+module.exports = Depend;
+```
+
 ## Usage
+### Node
 Running bearcat is quite simple, all you have to do is to write simple POJOs and simple configuration metadatas like context.json, after this, passing context.json paths to bearcat, and run it, then all your POJOs will be magicly turned into an elastic, maintainable system.  
 
 [helloBearcat](https://github.com/bearcatnode/bearcat/wiki/HelloWorld-of-Bearcat) example 
-```
+```js
 var Bearcat = require('bearcat');
 var contextPath = require.resolve('./context.json');
 
@@ -80,6 +113,9 @@ bearcat.start(function(){
 Codes written by simple POJOs and simple configuration metadatas can be run without Bearcat, however, in this case, you should have to do a lot of things by yourself, like handling dependency, configuration  
 
 more bearcat apis can be refered to [bearcat-api](http://bearcatnode.github.io/bearcat/bearcat-api.html)
+
+### Browser
+
 
 ## Generator
 [generator-bearcat](https://github.com/bearcatnode/generator-bearcat) is provided for quick startup  
