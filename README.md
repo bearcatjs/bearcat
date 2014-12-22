@@ -1,5 +1,5 @@
-## Bearcat -- magic, expressive javaScript Objects build elastic, maintainable fullstack javaScript applications
-Bearcat makes plain javaScript magic and expressive, which makes it easy to resolve dependency through DI and declarative middleware service through AOP. Bearcat support all javaScript based enviroments, [node.js](http://nodejs.org/) , browser and javaScript based hybrid apps. Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJO) and to apply enterprise services non-invasively to POJOs.
+## Bearcat -- magic, expressive javaScript Objects build up elastic, maintainable javaScript applications
+Bearcat makes plain javaScript object magic and expressive, which makes it easy to resolve dependency through DI and declarative middleware service through AOP. Bearcat supports frontend browser, backend [node.js](http://nodejs.org/) , and javaScript based hybrid apps, all you write are plain old javaScript objects, so codes can be easied shared. Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJO) and to apply enterprise services non-invasively to POJOs.
 
 > ###Simple POJOs + Embeded configuration metadatas = Elastic, maintainable system 
   
@@ -24,7 +24,7 @@ Bearcat makes plain javaScript magic and expressive, which makes it easy to reso
 * Simple meta configuration and POJOs
 * Lightweight: high development efficiency based on node.js
 * Reuseable: POJOs can be used to any development environment
-* Invasive: there's no dependence on a container API
+* Invasive: there's no dependency on a container API
 * Modular: you just use only those parts that you need
 * One stop shop: no need for a dedicated Singleton or factory for every object etc
 * Easy to mock objects for unit test based on IoC

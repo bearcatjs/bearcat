@@ -1,8 +1,25 @@
-var Root;
-(function() { Root = this; }(this));
-var metas = {};
-Root.__bearcatData__ = {};
-Root.__bearcatData__.metas = {};
-Root.__bearcatData__.configData = {};
-var properties = {};
-Root.__bearcatData__.configData = properties;
+these are examples of Bearcat framework  
+
+run examples will be like this:  
+
+```
+node app.js
+```
+
+```
+modify example_dir parameter to run different bearcat examples
+```
+
+```
+var bearcat = require('../lib/bearcat');
+var example_dir = 'simple'; // change this to run different examples
+// var example_dir = 'simple_function_annotation';
+
+var contextPath = require.resolve('./' + example_dir + '/context.json'); // to run simple example
+
+bearcat.createApp([contextPath]);
+bearcat.start(function() {
+	var car = bearcat.getBean('car'); // get bean
+	car.run(); // call the method
+});
+```
