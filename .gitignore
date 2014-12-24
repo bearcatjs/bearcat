@@ -13,7 +13,6 @@ node_modules/*
 *.sublime-workspace
 lib/doc/
 lib-cov/
-coverage.html
 .DS_Store
 .idea/*
 test_/*
