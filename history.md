@@ -1,3 +1,7 @@
+0.2.37 / 2014-12-24
+===================
+* getBeanByMeta donnot post process [merge pull request 106](https://github.com/bearcatnode/bearcat/pull/106)
+
 0.2.36 / 2014-12-10
 ===================
 * fix placehold boolean bug [merge pull request 105](https://github.com/bearcatnode/bearcat/pull/105)
