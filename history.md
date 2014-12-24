@@ -1,3 +1,7 @@
+0.3.1 / 2014-12-24
+===================
+* fix bower.json
+
 0.3.0 / 2014-12-24
 ===================
 * release 0.3.x version, add browser support, more details please visit [http://bearcatjs.org](http://bearcatjs.org)
