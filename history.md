@@ -1,3 +1,7 @@
+0.3.0 / 2014-12-24
+===================
+* release 0.3.x version, add browser support, more details please visit [http://bearcatjs.org](http://bearcatjs.org)
+
 0.2.37 / 2014-12-24
 ===================
 * getBeanByMeta donnot post process [merge pull request 106](https://github.com/bearcatnode/bearcat/pull/106)
