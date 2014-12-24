@@ -1,7 +1,7 @@
 {
   "name": "bearcat",
   "version": "0.3.0",
-  "description": "a POJOs based application framework for node.js",
+  "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
   "scripts": {
@@ -13,30 +13,20 @@
   },
   "keywords": [
     "IoC",
+    "AOP",
     "dependency",
     "injection",
-    "AOP",
     "consistent",
     "configuration",
-    "hot reload"
+    "hot reload",
+    "front-backend",
+    "sharable codes",
+    "asynchronous script loading",
+    "magic, self-described javaScript objects"
   ],
   "dependencies": {
     "pomelo-logger": "0.1.x",
     "commander": "2.x"
-  },
-  "spm": {
-    "main": "index.js",
-    "dependencies": {
-      "pomelo-logger": "0.1.7",
-      "fs": "0.0.0",
-      "path": "0.0.0",
-      "util": "0.10.3",
-      "os": "0.0.0",
-      "events": "1.0.1"
-    },
-    "devDependencies": {
-      "expect.js": "0.3.1"
-    }
   },
   "browser": {
     "pomelo-logger": "./shim/logger.js"
@@ -45,12 +35,12 @@
   "license": "MIT",
   "devDependencies": {
     "expect.js": "~0.3.1",
-    "should": ">=0.0.1",
     "mocha": ">=0.0.1",
     "grunt": "~0.4.2",
+    "blanket": "1.1.x",
+    "grunt-browserify": "3.x",
     "grunt-mocha-test": "0.8.x",
     "grunt-contrib-clean": "0.5.x",
-    "blanket": "1.1.x",
-    "grunt-browserify": "3.x"
+    "grunt-contrib-uglify": "~0.3.2"
   }
 }

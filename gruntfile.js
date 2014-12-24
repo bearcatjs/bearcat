@@ -5,6 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   var src = ['test/bearcat.js', 'test/beans/support/*.js', 'test/context/applicationContext.js', 'test/util/*.js',
     'test/resource/*.js', 'test/aop/aop.js', 'test/aop/aop_annotation.js', 'test/aop/advisor.js', 'test/aop/aspect.js',
@@ -13,7 +14,6 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    // Metadata.
     pkg: grunt.file.readJSON('package.json'),
     mochaTest: {
       dot: {
@@ -41,26 +41,29 @@ module.exports = function(grunt) {
     browserify: {
       tests: {
         src: src,
-        dest: './dist/browserified_tests.js'
+        dest: './test/browser/browserified_tests.js'
       },
-      // This browserify build be used by users of the module. It contains a
-      // UMD (universal module definition) and can be used via an AMD module
-      // loader like RequireJS or by simply placing a script tag in the page,
-      // which registers mymodule as a global var. You can see examples for both
-      // usages in browser/example/index.html (script tag) and
-      // browser/example/index-require.html (RequireJS).
       standalone: {
         src: ['index.js'],
-        dest: './dist/bearcat.standalone.js',
+        dest: './dist/bearcat.js',
         options: {
           browserifyOptions: {
             standalone: 'bearcat'
           }
         }
       }
-    }
+    }, 
+    uglify: {
+      dist: {
+        files: {
+          './dist/bearcat.min.js': ['<%= browserify.standalone.dest %>'],
+        }
+      }
+    },
   });
 
   // Default task.
   grunt.registerTask('default', ['clean', 'mochaTest']);
+  grunt.registerTask('browser_test', ['browserify:tests']);
+  grunt.registerTask('package', ['browserify:standalone', 'uglify']);
 };
