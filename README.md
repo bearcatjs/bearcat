@@ -19,24 +19,24 @@ Bearcat makes plain javaScript object magic and expressive, which makes it easy 
  consistent configuration, front-backend, asynchronous script loading
 
 ## Features
-* Simple :   
+* Simple   
 Write simple plain old javaScript objects, that's it
-* Efficient :  
+* Efficient  
 Dependency injection with asynchronous loading(frontend), no need to use define, require, or a bundle file
-* Reuseable :  
+* Reuseable  
 Simple javaScript objects can be used for frontend and backend(node.js) without any modifications
-* Easy :  
+* Easy  
 Easy to use, all javaScript objects will be scaned ready for you, no need to write extra complex, messy configuration files
-* Powerful :  
+* Powerful  
 Powered by dependency injection, AOP based declarative middleware services
-* Moduler :  
+* Moduler  
 You just use only those parts that you need
 
 ## Install
 ### Frontend
 * standalone :   
-[bearcat.js](https://github.com/bearcatjs/bearcat/blob/0.3.x/dist/bearcat.js)  
-[bearcat.min.js](https://github.com/bearcatjs/bearcat/blob/0.3.x/dist/bearcat.min.js)
+[bearcat.js](https://raw.githubusercontent.com/bearcatjs/bearcat/master/dist/bearcat.js)  
+[bearcat.min.js](https://raw.githubusercontent.com/bearcatjs/bearcat/master/dist/bearcat.min.js)
 
 * bower : 
 ```
