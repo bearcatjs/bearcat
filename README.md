@@ -27,7 +27,7 @@ Bearcat makes plain javaScript object magic and expressive, which makes it easy 
 ## Install
 ### Frontend
 * standalone : 
-[bearcat.js](https://github.com/bearcatjs/bearcat/blob/0.3.x/dist/bearcat.js)
+[bearcat.js](https://github.com/bearcatjs/bearcat/blob/0.3.x/dist/bearcat.js)  
 [bearcat.min.js](https://github.com/bearcatjs/bearcat/blob/0.3.x/dist/bearcat.min.js)
 
 * bower : 
