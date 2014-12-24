@@ -18,6 +18,7 @@
     "grunt",
     "gruntfile.js",
     "*.json",
-    "*.md"
+    "*.md",
+    "*.html"
   ]
 }
