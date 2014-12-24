@@ -11,7 +11,7 @@
     "build",
     "coverage",
     "docs",
-    "test_"
+    "test_",
     ".*",
     "examples",
     "test",
