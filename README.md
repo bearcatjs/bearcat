@@ -3,7 +3,7 @@ Bearcat makes plain javaScript object magic and expressive, which makes it easy 
 
 > ###Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications
   
-![](http://bearcatnode.github.io/bearcat/images/bearcat-logo.png)
+![](http://bearcatjs.github.io/bearcat/images/bearcat-logo.png)
 [![Build Status](https://travis-ci.org/bearcatnode/bearcat.svg?branch=master)](https://travis-ci.org/bearcatnode/bearcat)
 
  * Homepage: <http://bearcatjs.org/>
