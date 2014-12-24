@@ -1,8 +1,4 @@
 {
 	"name": "simple_prototype",
-	"beans": [{
-		"id": "car",
-		"func": "car",
-		"scope": "prototype"
-	}]
+	"scan": "app"
 }

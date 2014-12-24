@@ -6,11 +6,11 @@ function isBrowser() {
 }
 
 if (isBrowser()) {
-	require.resolve = noop;
-
 	function noop() {
 
 	}
+
+	require.resolve = noop;
 }
 
 describe('configLoader', function() {

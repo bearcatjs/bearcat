@@ -10,11 +10,3 @@ Car.prototype.run = function() {
 }
 
 module.exports = Car;
-// {
-// 	id: "car",
-// 	func: Car,
-// 	props: [{
-// 		name: "wheel",
-// 		ref: "wheel"
-// 	}]
-// };

@@ -1,16 +1,16 @@
-## Bearcat -- magic, expressive javaScript Objects build up elastic, maintainable javaScript applications
-Bearcat makes plain javaScript object magic and expressive, which makes it easy to resolve dependency through DI and declarative middleware service through AOP. Bearcat supports frontend browser, backend [node.js](http://nodejs.org/) , and javaScript based hybrid apps, all you write are plain old javaScript objects, so codes can be easied shared. Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJO) and to apply enterprise services non-invasively to POJOs.
+## Bearcat -- Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications
+Bearcat makes plain javaScript object magic and expressive, which makes it easy to resolve dependency through DI and declarative middleware service through AOP. Bearcat supports frontend browser, backend [node.js](http://nodejs.org/) , and javaScript based hybrid apps, all you write are plain old javaScript objects, so codes can be easilly shared. Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. 
 
-> ###Simple POJOs + Embeded configuration metadatas = Elastic, maintainable system 
+> ###Simple javaScript objects + Embeded configuration metadatas = Elastic, maintainable system 
   
 ![](http://bearcatnode.github.io/bearcat/images/bearcat-logo.png)
 [![Build Status](https://travis-ci.org/bearcatnode/bearcat.svg?branch=master)](https://travis-ci.org/bearcatnode/bearcat)
 
- * Homepage: <http://bearcatnode.github.io/bearcat/>
- * Mailing list: <https://groups.google.com/group/bearcatnode/>
+ * Homepage: <http://bearcatjs.org/>
+ * Mailing list: <https://groups.google.com/group/bearcatjs/>
  * Wiki: <https://github.com/bearcatjs/bearcat/wiki/>
  * Issues: <https://github.com/bearcatjs/bearcat/issues/>
- * Tags: nodejs, browser, hybrid apps, POJO, IoC, AOP, consistent configuration, full-stack, frontend, backend
+ * Tags: nodejs, browser, hybrid apps, POJO, IoC, AOP, consistent configuration, full-stack, front-backend, asynchronous script loading
 
 ## Features
 ### lightweight container

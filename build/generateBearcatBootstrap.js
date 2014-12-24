@@ -13,7 +13,7 @@
  * MIT Licensed
  */
 
-var bearcatBin = require('../bin/bearcatBin');
+var bearcatBin = require('../bin/bearcat-bin');
 var path = require('path');
 var fs = require('fs');
 var examplesDir = path.dirname(require.resolve('../examples/app'));
@@ -21,6 +21,11 @@ var dirs = fs.readdirSync(examplesDir);
 
 for (var i = 0; i < dirs.length; i++) {
 	var dirName = dirs[i];
+
+	if (dirName == 'browser') {
+		continue;
+	}
+
 	if (fs.statSync(examplesDir + '/' + dirName).isFile()) {
 		continue;
 	}

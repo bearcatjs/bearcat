@@ -1,19 +1,4 @@
 {
 	"name": "simple_factory_bean",
-	"beans": [{
-		"id": "car",
-		"func": "car",
-		"factoryBean": "carFactory",
-		"factoryMethod": "createCar"
-	}, {
-		"id": "carFactory",
-		"func": "carFactory",
-		"props": [{
-			"name": "wheel",
-			"ref": "wheel"
-		}]
-	}, {
-		"id": "wheel",
-		"func": "wheel"
-	}]
+	"scan": "app"
 }

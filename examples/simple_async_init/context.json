@@ -1,25 +1,4 @@
 {
 	"name": "simple_async_init",
-	"beans": [{
-		"id": "car",
-		"func": "car",
-		"init": "init",
-		"order": 1,
-		"props": [{
-			"name": "wheel",
-			"ref": "wheel"
-		}]
-	}, {
-		"id": "wheel",
-		"func": "wheel",
-		"async": true,
-		"init": "init",
-		"order": 2
-	}, {
-		"id": "bus",
-		"func": "bus",
-		"async": true,
-		"init": "init",
-		"order": 3
-	}]
+	"scan": "app"
 }

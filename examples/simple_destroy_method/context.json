@@ -1,8 +1,4 @@
 {
 	"name": "simple_destroy_method",
-	"beans": [{
-		"id": "car",
-		"func": "car",
-		"destroy": "destroy"
-	}]
+	"scan": "app"
 }

@@ -1,18 +1,4 @@
 {
-	"name": "simple",
-	"beans": [{
-		"id": "car",
-		"func": "car",
-		"props": [{
-			"name": "bus",
-			"ref": "bus"
-		}]
-	}, {
-		"id": "bus",
-		"func": "bus",
-		"props": [{
-			"name": "car",
-			"ref": "car"
-		}]
-	}]
+	"name": "circle_reference",
+	"scan": "app"
 }

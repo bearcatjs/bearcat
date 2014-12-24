@@ -19,17 +19,41 @@
 // });
 
 var bearcat = require('../lib/bearcat');
+
 var simplepath = require.resolve('../examples/simple/context.json');
 var paths = [simplepath];
 
+bearcat.getBeanFactory();
+bearcat.getApplicationContext();
+bearcat.getBeanByMeta();
+bearcat.getBean();
+bearcat.getFunction();
+
+bearcat.start();
+bearcat.stop();
+
+var Bus = function() {}
+
 bearcat.createApp(paths);
 bearcat.start(function() {
-	var car = bearcat.getBean('car');
-	var r = car.run();
+	bearcat.getBeanFactory();
+	bearcat.getApplicationContext();
+	bearcat.getBeanByMeta({
+		id: "bus",
+		func: Bus
+	});
 
-	// r.should.exist;
-	// r.should.be.eql('car');
+	bearcat.getBean({
+		id: "bus",
+		func: Bus
+	});
 
-	bearcat.stop();
-	// done();
+	bearcat.getBean();
+
+	bearcat.getFunction('car');
+	bearcat.start(function() {
+		bearcat.getRoute("car", "run");
+		bearcat.stop();
+		bearcat.stop();
+	});
 });

@@ -1,21 +1,4 @@
 {
 	"name": "simple_inject",
-	"beans": [{
-		"id": "car",
-		"func": "car",
-		"props": [{
-			"name": "wheel",
-			"ref": "wheel"
-		}],
-		"args": [{
-			"name": "engine",
-			"ref": "engine"
-		}]
-	}, {
-		"id": "wheel",
-		"func": "wheel"
-	}, {
-		"id": "engine",
-		"func": "engine"
-	}]
+	"scan": "app"
 }

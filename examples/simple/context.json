@@ -1,7 +1,4 @@
 {
 	"name": "simple",
-	"beans": [{
-		"id": "car",
-		"func": "car"
-	}]
+	"scan": "app"
 }

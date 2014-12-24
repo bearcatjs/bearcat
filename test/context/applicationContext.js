@@ -8,11 +8,11 @@ function isBrowser() {
 }
 
 if (isBrowser()) {
-	require.resolve = noop;
-
 	function noop() {
 
 	}
+
+	require.resolve = noop;
 }
 
 describe('applicationContext', function() {
@@ -266,7 +266,9 @@ describe('applicationContext', function() {
 				var r = car.run();
 				expect(r).to.eql('car 1');
 
-				done();
+				setTimeout(function() {
+					done();
+				}, 2000);
 			})
 			applicationContext.refresh();
 		});

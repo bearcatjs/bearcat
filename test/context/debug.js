@@ -116,21 +116,42 @@ var ApplicationContext = require('../../lib/context/applicationContext');
 // 		r = bus.run();
 // 	}, 6000);
 // });
+var simplepath = require.resolve('../../examples/simple/context.json');
 
-function isBrowser() {
-	return typeof window !== 'undefined';
-}
-
-var simplepath = require.resolve('../../examples/simple_meta_merge/context.json');
-if (isBrowser()) {
-	require('../../examples/simple_meta_merge/bearcat-bootstrap.js');
-}
 var paths = [simplepath];
 
 var applicationContext = new ApplicationContext(paths);
+
 applicationContext.refresh();
 
-var car = applicationContext.getBean('car');
-var r = car.run();
-console.log(r);
-// expect(r).to.eql('car wheel');
+var CarM = function() {
+
+}
+
+CarM.prototype.run = function(num) {
+	console.log('mcar' + num);
+	return 'mcar' + num;
+}
+
+CarM.prototype.dyInit = function() {
+
+}
+
+CarM.prototype.a = 1;
+var mcar = applicationContext.getBeanByMeta({
+	id: "mcar",
+	func: CarM
+});
+
+var r = mcar.run(100);
+// expect(r).to.eql('mcar' + 100);
+
+// mcar.dyInit();
+
+var acar = applicationContext.getBeanByMeta({
+	id: "acar"
+});
+
+var abcar = applicationContext.getBeanByMeta({});
+
+applicationContext.registerBeanMeta({});

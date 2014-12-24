@@ -1,12 +1,4 @@
 {
 	"name": "simple_factory_bean",
-	"beans": [{
-		"id": "car",
-		"func": "car",
-		"factoryBean": "carFactory1",
-		"factoryMethod": "createCar"
-	}, {
-		"id": "carFactory",
-		"func": "carFactory"
-	}]
+	"scan": "app"
 }

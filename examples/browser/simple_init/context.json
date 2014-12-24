@@ -1,0 +1,5 @@
+{
+	"name": "bearcat-simple-example",
+	"scan": ["app"],
+	"beans": []
+}
