@@ -1,8 +1,6 @@
 var Aspect = require('../../lib/aop/aspect');
 var BeanDefinition = require('../../lib/beans/support/beanDefinition');
 
-var should = require('should');
-
 describe('Aspect', function() {
 	describe('aspect', function() {
 		it('should aspect right', function(done) {

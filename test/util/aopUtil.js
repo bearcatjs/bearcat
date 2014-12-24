@@ -1,8 +1,6 @@
 var AopUtil = require('../../lib/util/aopUtil');
 var BeanDefinition = require('../../lib/beans/support/beanDefinition');
 
-var should = require('should');
-
 describe('AopUtil', function() {
 	describe('AopUtil', function() {
 		it('should AopUtil right', function(done) {

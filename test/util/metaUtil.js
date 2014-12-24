@@ -1,7 +1,7 @@
 var MockAnnotationFunction = require('../mock-base/mock-annotation-function');
 var MetaUtil = require('../../lib/util/metaUtil');
 
-var should = require('should');
+var expect = require('expect.js');
 
 describe('MetaUtil', function() {
 	describe('MetaUtil', function() {
@@ -9,8 +9,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t1;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				func: func
 			});
 
@@ -23,8 +22,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t2;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				func: func,
 				args: [{
 					name: "name",
@@ -41,8 +39,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t3;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				func: func
 			});
 
@@ -55,8 +52,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t4;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				func: func,
 				args: [{
 					name: "$engine",
@@ -73,8 +69,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t5;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				func: func,
 				props: [{
 					name: "$engine",
@@ -91,8 +86,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t6;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				func: func,
 				args: [{
 					name: "$engine",
@@ -116,8 +110,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t7;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				func: func,
 				props: [{
 					name: "$Vnum",
@@ -134,8 +127,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t8;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				func: func,
 				props: [{
 					name: "$Tnum",
@@ -152,8 +144,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t9;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				id: "t9",
 				scope: "prototype",
 				order: 1,
@@ -194,8 +185,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t10;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				id: "t10",
 				aop: [{
 					"advice": "run",
@@ -213,8 +203,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t11;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				id: "t11",
 				aop: [{
 					"advice": "fly",
@@ -237,8 +226,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t12;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				id: "t12",
 				scope: "prototype",
 				func: func
@@ -253,8 +241,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t13;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				id: "t13",
 				aop: [{
 					"advice": "run",
@@ -272,8 +259,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t14;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				id: "t14",
 				init: "start",
 				props: [{
@@ -292,8 +278,7 @@ describe('MetaUtil', function() {
 			var func = MockAnnotationFunction.t15;
 			var meta = MetaUtil.resolveFuncAnnotation(func);
 
-			meta.should.exist;
-			meta.should.eql({
+			expect(meta).to.eql({
 				func: func,
 				args: [{
 					name: "$engine",

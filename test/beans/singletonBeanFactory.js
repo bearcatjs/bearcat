@@ -1,5 +1,4 @@
 var SingletonBeanFactory = require('../../lib/beans/singletonBeanFactory');
-var should = require('should');
 
 describe('SingletonBeanFactory', function() {
 	describe('simple', function() {

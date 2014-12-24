@@ -1,5 +1,5 @@
 var Car = function() {
-
+	this.$id = "car";
 }
 
 Car.prototype.run = function() {

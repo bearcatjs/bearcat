@@ -1,6 +1,6 @@
 var Advisor = require('../../lib/aop/advisor');
 
-var should = require('should');
+var expect = require('expect.js');
 
 describe('Advisor', function() {
 	describe('advisor', function() {
@@ -10,7 +10,7 @@ describe('Advisor', function() {
 
 			advisor.setBeanName('car');
 			var r = advisor.getBeanName();
-			r.should.eql('car');
+			expect(r).to.eql('car');
 
 			done();
 		});

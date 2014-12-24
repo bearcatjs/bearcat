@@ -1,5 +1,4 @@
 var PlaceHolderResolver = require('../../../lib/beans/support/placeHolderResolver');
-var should = require('should');
 
 describe('PlaceHolderResolver', function() {
 	describe('simple', function() {

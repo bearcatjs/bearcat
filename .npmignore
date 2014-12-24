@@ -8,7 +8,13 @@ testing.js
 coverage.html
 lib-cov
 design/
+_design/
 express/
 node_modules/
+spm_modules/
 test_/
 test-generator
+browser-test.html
+dist/
+build/
+docs

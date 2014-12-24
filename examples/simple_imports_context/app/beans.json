@@ -1,7 +1,4 @@
 {
 	"name": "beans",
-	"beans": [{
-		"id": "car",
-		"func": "car"
-	}]
+	"scan": ""
 }

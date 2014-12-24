@@ -1,26 +1,42 @@
 var ConfigLoader = require('../../lib/resource/configLoader');
-var should = require('should');
+var expect = require('expect.js');
+
+function isBrowser() {
+	return typeof window !== 'undefined';
+}
+
+if (isBrowser()) {
+	function noop() {
+
+	}
+
+	require.resolve = noop;
+}
 
 describe('configLoader', function() {
 	describe('#getResources', function() {
 		it('should getResources right', function(done) {
+			if (isBrowser()) {
+				return done();
+			}
+
 			var p = require.resolve('../moduleA/context.json');
 			var configLoader = new ConfigLoader();
 			var metaObjects = configLoader.getResources(p);
-			metaObjects.should.have.property('wheel');
-			metaObjects.should.have.property('bus');
+			expect(metaObjects).to.have.property('wheel');
+			expect(metaObjects).to.have.property('bus');
 			var wheelMeta = metaObjects['wheel'];
 			var busMeta = metaObjects['bus'];
 
-			wheelMeta.should.have.property('func');
-			wheelMeta.should.have.property('id', 'wheel');
-			wheelMeta.should.have.property('initMethod', 'init');
-			wheelMeta.should.have.property('destroyMethod', 'destroy');
-			wheelMeta.should.have.property('order', 3);
+			expect(wheelMeta).to.have.property('func');
+			expect(wheelMeta).to.have.property('id', 'wheel');
+			expect(wheelMeta).to.have.property('initMethod', 'init');
+			expect(wheelMeta).to.have.property('destroyMethod', 'destroy');
+			expect(wheelMeta).to.have.property('order', 3);
 
-			busMeta.should.have.property('func');
-			busMeta.should.have.property('id', 'bus');
-			busMeta.should.have.property('parent', 'car');
+			expect(busMeta).to.have.property('func');
+			expect(busMeta).to.have.property('id', 'bus');
+			expect(busMeta).to.have.property('parent', 'car');
 
 			done();
 		});

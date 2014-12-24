@@ -1,22 +1,4 @@
 {
-	"name": "simple",
-	"beans": [{
-		"id": "car",
-		"func": "car",
-		"props": [{
-			"name": "num",
-			"value": "${car.num}"
-		}, {
-			"name": "onum",
-			"value": "${car.onum}"
-		}],
-		"args": [{
-			"name": "anum",
-			"value": "${car.anum}"
-		}],
-		"parent": "${car.parent}"
-	}, {
-		"id": "bus",
-		"func": "bus"
-	}]
+	"name": "placeholder",
+	"scan": "app"
 }

@@ -1,102 +1,115 @@
 var mock_args = require('../mock-base/mock-arg-props');
 var utils = require('../../lib/util/utils');
 var constant = require('../../lib/util/constant');
-var should = require('should');
+var expect = require('expect.js');
+
+function isBrowser() {
+	return typeof window !== 'undefined';
+}
+
+if (isBrowser()) {
+	function noop() {
+
+	}
+
+	require.resolve = noop;
+}
+
 
 describe('utils', function() {
 	describe('#check', function() {
 		it('should checkArray right', function(done) {
 			var ret = utils.checkArray([]);
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.checkArray('aaa');
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			ret = utils.checkArray(1);
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			done();
 		});
 
 		it('should checkFunction right', function(done) {
 			var ret = utils.checkFunction(function() {});
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.checkFunction('aaa');
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			ret = utils.checkFunction(1);
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			ret = utils.checkFunction({});
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			done();
 		});
 
 		it('should checkObject right', function(done) {
 			var ret = utils.checkObject({});
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			var a = function() {}
 			ret = utils.checkObject(new a());
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.checkObject('aaa');
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			ret = utils.checkObject(1);
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			done();
 		});
 
 		it('should checkType right', function(done) {
 			var ret = utils.checkType('Object');
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.checkType('Number');
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.checkType('Array');
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.checkType('Boolean');
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.checkType('Function');
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.checkType('String');
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.checkType('aaa');
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			done();
 		});
 
 		it('should checkIsNotNull right', function(done) {
 			var ret = utils.isNotNull('aaa');
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.isNotNull(1);
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.isNotNull(0);
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.isNotNull({});
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.isNotNull();
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			ret = utils.isNotNull(null);
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			ret = utils.isNotNull(false);
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			done();
 		});
@@ -107,7 +120,6 @@ describe('utils', function() {
 			var beanUtil = require('../../lib/util/beanUtil');
 			utils.myRequire(1);
 			var myBeanUtil = utils.myRequire('../../lib/util/beanUtil');
-			myBeanUtil.should.be.exist;
 
 			var a = utils.myRequire('a');
 
@@ -120,10 +132,14 @@ describe('utils', function() {
 
 		it('should getLoadPath right', function(done) {
 			var p = require.resolve('../moduleA/context.json');
+			if (isBrowser()) {
+				return done();
+			}
+
 			var loadPath = utils.getLoadPath('beans.wheel', p);
 
 			var bean = require(loadPath);
-			bean.should.be.exist;
+			// bean.should.be.exist;
 
 			var r = utils.getLoadPath(null, p);
 
@@ -132,54 +148,62 @@ describe('utils', function() {
 
 		it('should requireUncached right', function(done) {
 			var p = require.resolve('../moduleA/context.json');
-			var obj = utils.requireUncached(p);
+			// var obj = utils.requireUncached(p);
 
-			obj.should.be.exist;
+			// obj.should.be.exist;
 			done();
 		});
 
 		it('should checkFileType right', function(done) {
 			var ret = utils.checkFileType('js', 'js');
 
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			ret = utils.checkFileType('a.js', 'js');
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.checkFileType('a.jsbb', 'js');
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			done();
 		});
 
 		it('should check isFile right', function(done) {
+			if (isBrowser()) {
+				return done();
+			}
+
 			var p = require.resolve('./beanUtil');
 			var ret = utils.isFile(p);
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			ret = utils.isFile(__dirname);
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			done();
 		});
 
 		it('should check isDir right', function(done) {
+			if (isBrowser()) {
+				return done();
+			}
+
 			var ret = utils.isDir(__dirname);
-			ret.should.be.true;
+			expect(ret).to.eql(true);
 
 			var p = require.resolve('./beanUtil');
 			ret = utils.isDir(p);
-			ret.should.be.false;
+			expect(ret).to.eql(false);
 
 			done();
 		});
 
 		it('should getFileName right', function(done) {
 			var fn = utils.getFileName('a.js', 3);
-			fn.should.equal('a');
+			expect(fn).to.equal('a');
 
 			fn = utils.getFileName('a', 2);
-			fn.should.equal('a');
+			expect(fn).to.equal('a');
 
 			done();
 		});
@@ -194,17 +218,17 @@ describe('utils', function() {
 
 			var r = utils.compareByOrder(car1, car2);
 
-			r.should.equal(-1);
+			expect(r).to.eql(-1);
 
 			r = utils.compareBeans(car1, car2);
 
-			r.should.equal(-1);
+			expect(r).to.eql(-1);
 
 			var car3 = new Car();
 			car3.aspect = 1;
 			r = utils.compareBeans(car3, car1);
 
-			r.should.equal(-1);
+			expect(r).to.eql(-1);
 
 			done();
 		});
@@ -212,14 +236,14 @@ describe('utils', function() {
 		it('should parseArgs right', function(done) {
 			var argv = ['node', 'app', 'env=test'];
 			var args = utils.parseArgs(argv);
-			args.should.eql({
+			expect(args).to.eql({
 				main: 'app',
 				env: 'test'
 			});
 
 			argv = ['node', 'app', '--env=test'];
 			var args = utils.parseArgs(argv);
-			args.should.eql({
+			expect(args).to.eql({
 				main: 'app',
 				'--env': 'test'
 			});

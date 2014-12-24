@@ -1,7 +1,5 @@
 var BeanDefinitionVisitor = require('../../../lib/beans/support/beanDefinitionVisitor');
 
-var should = require('should');
-
 describe('BeanDefinitionVisitor', function() {
 	describe('beanDefinitionVisitor', function() {
 		it('should advice right', function(done) {

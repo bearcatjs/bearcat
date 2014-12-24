@@ -1,6 +1,6 @@
 var BeanWrapper = require('../../../lib/beans/support/beanWrapper');
 var Constant = require('../../../lib/util/constant');
-var should = require('should');
+var expect = require('expect.js');
 
 describe('beanWrapper', function() {
 	describe('create get beanWrapper', function() {
@@ -10,8 +10,7 @@ describe('beanWrapper', function() {
 			t1Bean.setType('Number');
 			t1Bean.setRole();
 			var t1Role = t1Bean.getDependType();
-			t1Role.should.exist;
-			t1Role.should.eql(Constant.DEPEND_TYPE_VAR);
+			expect(t1Role).to.eql(Constant.DEPEND_TYPE_VAR);
 
 			done();
 		});
@@ -23,8 +22,7 @@ describe('beanWrapper', function() {
 			t2Bean.setRole();
 
 			var t2Role = t2Bean.getDependType();
-			t2Role.should.exist;
-			t2Role.should.eql(Constant.DEPEND_TYPE_VALUE);
+			expect(t2Role).to.eql(Constant.DEPEND_TYPE_VALUE);
 
 			done();
 		});
@@ -36,8 +34,7 @@ describe('beanWrapper', function() {
 			t3Bean.setRole();
 
 			var t3Role = t3Bean.getDependType();
-			t3Role.should.exist;
-			t3Role.should.eql(Constant.DEPEND_TYPE_BEAN);
+			expect(t3Role).to.eql(Constant.DEPEND_TYPE_BEAN);
 
 			done();
 		});
@@ -47,8 +44,7 @@ describe('beanWrapper', function() {
 			t4Bean.setRole();
 
 			var t4Role = t4Bean.getDependType();
-			t4Role.should.exist;
-			t4Role.should.eql(Constant.DEPEND_TYPE_ERROR);
+			expect(t4Role).to.eql(Constant.DEPEND_TYPE_ERROR);
 
 			done();
 		});
@@ -60,8 +56,7 @@ describe('beanWrapper', function() {
 			t5Bean.setRole();
 
 			var t5Role = t5Bean.getDependType();
-			t5Role.should.exist;
-			t5Role.should.eql(Constant.DEPEND_TYPE_ERROR);
+			expect(t5Role).to.eql(Constant.DEPEND_TYPE_ERROR);
 
 			done();
 		});
