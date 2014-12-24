@@ -157,6 +157,7 @@ function doGenerateIdPaths(opts) {
 
 	fs.appendFileSync(outputFile, 'var idPaths = ' + JSON.stringify(idPaths) + ';\n');
 	fs.appendFileSync(outputFile, 'Root.__bearcatData__.idPaths = idPaths;\n');
+	fs.appendFileSync(outputFile, 'bearcat.createApp\(\);');
 
 	console.log(outputFile + ' idPaths generated...');
 }
