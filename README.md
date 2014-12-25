@@ -53,6 +53,18 @@ npm install bearcat
 npm install bearcat
 ```
 
+## Build
+```
+grunt package
+```
+
+## Tests
+```
+grunt
+```
+
+for browser tests, open browser-test.html in your browser
+
 ## License
 
 (The MIT License)
