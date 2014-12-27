@@ -3965,6 +3965,10 @@ module.exports = Bearcat;
  * @api public
  */
 Bearcat.createApp = function(configLocations, opts) {
+	if (this.state >= STATE_INITED) {
+		return;
+	}
+
 	if (!Utils.checkArray(configLocations) && Utils.checkObject(configLocations)) {
 		opts = configLocations;
 		configLocations = [];
@@ -4309,9 +4313,9 @@ var MetaUtil = require('../util/metaUtil');
 var Utils = require('../util/utils');
 var Path = RequireUtil.requirePath();
 var Util = RequireUtil.requireUtil();
-var DEFAULT_BASE = process.cwd();
-var DEFAULT_LOAD_PATH = DEFAULT_BASE + "/config";
-var DEFAULT_HOT_RELOAD_PATH = DEFAULT_BASE + "/hot";
+var DEFAULT_BASE = "";
+var DEFAULT_LOAD_PATH = "";
+var DEFAULT_HOT_RELOAD_PATH = "";
 
 var Root;
 (function() {
@@ -4347,11 +4351,30 @@ module.exports = ApplicationContext;
 
 Util.inherits(ApplicationContext, EventEmitter);
 
+/**
+ * ApplicationContext init.
+ *
+ * @api public
+ */
 ApplicationContext.prototype.init = function() {
 	if (this.hasBeanFactory()) {
 		this.destroyBeans();
 		this.closeBeanFactory();
 	}
+
+	DEFAULT_BASE = process.cwd();
+
+	if (this.configLocations.length) {
+		var contextPath = this.configLocations[0];
+		DEFAULT_BASE = Path.dirname(contextPath);
+	}
+
+	DEFAULT_LOAD_PATH = DEFAULT_BASE + "/config";
+	DEFAULT_HOT_RELOAD_PATH = DEFAULT_BASE + "/hot";
+
+	this.cpath = DEFAULT_LOAD_PATH;
+	this.hpath = DEFAULT_HOT_RELOAD_PATH;
+	this.base = DEFAULT_BASE;
 
 	this.createBeanFactory();
 }
@@ -4895,6 +4918,7 @@ ApplicationContext.prototype.getBeanByMeta = function(meta) {
 
 	this.registerBeanMeta(meta);
 
+	this.invokeBeanFactoryPostProcessors();
 	arguments = Array.prototype.slice.apply(arguments);
 	arguments[0] = id;
 	return this.beanFactory.getBeanProxy.apply(this.beanFactory, arguments);
@@ -5155,6 +5179,7 @@ ApplicationContext.prototype.getHotPath = function() {
 ApplicationContext.prototype.getBase = function() {
 	return this.base;
 }
+
 }).call(this,require('_process'))
 },{"../aop/autoproxy/autoProxyCreator":4,"../beans/beanFactory":11,"../beans/support/placeHolderConfigurer":17,"../resource/asyncScriptLoader":21,"../resource/resourceLoader":25,"../util/constant":28,"../util/fileUtil":29,"../util/metaUtil":30,"../util/requireUtil":32,"../util/utils":34,"_process":41,"events":37,"pomelo-logger":46}],21:[function(require,module,exports){
 /*!
@@ -5170,6 +5195,7 @@ ApplicationContext.prototype.getBase = function() {
  * MIT Licensed
  */
 
+var logger = require('pomelo-logger').getLogger('bearcat', 'AsyncScriptLoader');
 var BeanModule = require('../beans/support/beanModule');
 var Path = require('../util/requireUtil').requirePath();
 var ScriptUtil = require('../util/scriptUtil');
@@ -5284,7 +5310,8 @@ AsyncScriptLoader.prototype.resolve = function(id, refUri) {
 	// id path map
 	var path = this.getPathById(id);
 	if (!path) {
-		throw new Error('id: ' + id + ' can not be resolved');
+		path = id;
+		logger.warn('id: ' + id + ' can not be resolved, try run bearcat generate or use bearcat.module to register it');
 	}
 
 	return path;
@@ -5357,7 +5384,7 @@ AsyncScriptLoader.prototype.setApplicationContext = function(applicationContext)
 }
 
 module.exports = AsyncScriptLoader;
-},{"../beans/support/beanModule":15,"../util/requireUtil":32,"../util/scriptUtil":33,"../util/utils":34}],22:[function(require,module,exports){
+},{"../beans/support/beanModule":15,"../util/requireUtil":32,"../util/scriptUtil":33,"../util/utils":34,"pomelo-logger":46}],22:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -8835,8 +8862,8 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.0",
-  "description": "a POJOs based application framework for node.js",
+  "version": "0.3.2",
+  "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
   "scripts": {
@@ -8848,30 +8875,20 @@ module.exports={
   },
   "keywords": [
     "IoC",
+    "AOP",
     "dependency",
     "injection",
-    "AOP",
     "consistent",
     "configuration",
-    "hot reload"
+    "hot reload",
+    "front-backend",
+    "sharable codes",
+    "asynchronous script loading",
+    "magic, self-described javaScript objects"
   ],
   "dependencies": {
     "pomelo-logger": "0.1.x",
     "commander": "2.x"
-  },
-  "spm": {
-    "main": "index.js",
-    "dependencies": {
-      "pomelo-logger": "0.1.7",
-      "fs": "0.0.0",
-      "path": "0.0.0",
-      "util": "0.10.3",
-      "os": "0.0.0",
-      "events": "1.0.1"
-    },
-    "devDependencies": {
-      "expect.js": "0.3.1"
-    }
   },
   "browser": {
     "pomelo-logger": "./shim/logger.js"
