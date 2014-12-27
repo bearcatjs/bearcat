@@ -1,3 +1,7 @@
+0.3.3 / 2014-12-27
+===================
+* improve asyncScriptLoader resolve warn msg
+
 0.3.2 / 2014-12-24
 ===================
 * update bower.json
