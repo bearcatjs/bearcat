@@ -1,3 +1,7 @@
+0.3.4 / 2014-12-31
+===================
+* make $ based configuration more powerful, not just this.$id like, details see [complex_function_annotation](https://github.com/bearcatjs/bearcat/tree/master/examples/complex_function_annotation)
+
 0.3.3 / 2014-12-27
 ===================
 * improve asyncScriptLoader resolve warn msg
