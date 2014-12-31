@@ -371,18 +371,18 @@ Root.__bearcatData__.configData = properties;
 
 },{"/home/fantasyni/projects/pomelo-projects/bearcat/examples/circle_reference/app/bus.js":11,"/home/fantasyni/projects/pomelo-projects/bearcat/examples/circle_reference/app/car.js":12}],14:[function(require,module,exports){
 var Car = function() {
-
+	this.$id = "car";
 }
 
 Car.prototype.run = function() {
-	console.log('run car...');
+	console.log('run namespace: app car...');
 	return 'car';
 }
 
 module.exports = Car;
 },{}],15:[function(require,module,exports){
-module.exports=require(14)
-},{"/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app/car.js":14}],16:[function(require,module,exports){
+module.exports=require(12)
+},{"/home/fantasyni/projects/pomelo-projects/bearcat/examples/circle_reference/app/car.js":12}],16:[function(require,module,exports){
 var Car = function() {
 	this.$id = "car2";
 	this.$Ncar = "app:car";
@@ -398,7 +398,7 @@ module.exports = Car;
 },{}],17:[function(require,module,exports){
 var Root;
 (function() { Root = this; }());
-var metas = {"app:car":{"id":"car","fpath":"/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app/car"},"app1:car":{"id":"car","fpath":"/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app1/car"},"car2":{"id":"car2","props":[{"name":"$Ncar","ref":"app:car"}],"fpath":"/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app2/car.js"}};
+var metas = {"app:car":{"id":"car","fpath":"/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app/car"},"app1:car":{"id":"car","fpath":"/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app1/car"},"car":{"id":"car","fpath":"/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app1/car.js"},"car2":{"id":"car2","props":[{"name":"$Ncar","ref":"app:car"}],"fpath":"/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app2/car.js"}};
 Root.__bearcatData__ = {};
 Root.__bearcatData__.metas = {};
 Root.__bearcatData__.configData = {};
@@ -408,6 +408,11 @@ var fpath = meta["fpath"];
 meta["func"] = require("/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app/car.js");
 Root.__bearcatData__.metas[id] = meta;
 var id = "app1:car";
+var meta = metas[id];
+var fpath = meta["fpath"];
+meta["func"] = require("/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app1/car.js");
+Root.__bearcatData__.metas[id] = meta;
+var id = "car";
 var meta = metas[id];
 var fpath = meta["fpath"];
 meta["func"] = require("/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app1/car.js");
@@ -451,8 +456,17 @@ Bus.prototype.run = function() {
 
 module.exports = Bus;
 },{}],20:[function(require,module,exports){
-module.exports=require(14)
-},{"/home/fantasyni/projects/pomelo-projects/bearcat/examples/context_namespace/app/car.js":14}],21:[function(require,module,exports){
+var Car = function() {
+
+}
+
+Car.prototype.run = function() {
+	console.log('run car...');
+	return 'car';
+}
+
+module.exports = Car;
+},{}],21:[function(require,module,exports){
 var Bus = function() {
 	this.$id = "bus";
 	this.$Vnum = "${car.num}";
@@ -5435,6 +5449,10 @@ module.exports = Bearcat;
  * @api public
  */
 Bearcat.createApp = function(configLocations, opts) {
+	if (this.state >= STATE_INITED) {
+		return;
+	}
+
 	if (!Utils.checkArray(configLocations) && Utils.checkObject(configLocations)) {
 		opts = configLocations;
 		configLocations = [];
@@ -6384,6 +6402,7 @@ ApplicationContext.prototype.getBeanByMeta = function(meta) {
 
 	this.registerBeanMeta(meta);
 
+	this.invokeBeanFactoryPostProcessors();
 	arguments = Array.prototype.slice.apply(arguments);
 	arguments[0] = id;
 	return this.beanFactory.getBeanProxy.apply(this.beanFactory, arguments);
@@ -6644,6 +6663,7 @@ ApplicationContext.prototype.getHotPath = function() {
 ApplicationContext.prototype.getBase = function() {
 	return this.base;
 }
+
 }).call(this,require('_process'))
 },{"../aop/autoproxy/autoProxyCreator":88,"../beans/beanFactory":95,"../beans/support/placeHolderConfigurer":101,"../resource/asyncScriptLoader":105,"../resource/resourceLoader":109,"../util/constant":112,"../util/fileUtil":113,"../util/metaUtil":114,"../util/requireUtil":116,"../util/utils":118,"_process":130,"events":126,"pomelo-logger":135}],105:[function(require,module,exports){
 /*!
@@ -6659,6 +6679,7 @@ ApplicationContext.prototype.getBase = function() {
  * MIT Licensed
  */
 
+var logger = require('pomelo-logger').getLogger('bearcat', 'AsyncScriptLoader');
 var BeanModule = require('../beans/support/beanModule');
 var Path = require('../util/requireUtil').requirePath();
 var ScriptUtil = require('../util/scriptUtil');
@@ -6773,7 +6794,8 @@ AsyncScriptLoader.prototype.resolve = function(id, refUri) {
 	// id path map
 	var path = this.getPathById(id);
 	if (!path) {
-		throw new Error('id: ' + id + ' can not be resolved');
+		path = id;
+		logger.warn('id: ' + id + ' can not be resolved, try run bearcat generate or use bearcat.module to register it');
 	}
 
 	return path;
@@ -6846,7 +6868,7 @@ AsyncScriptLoader.prototype.setApplicationContext = function(applicationContext)
 }
 
 module.exports = AsyncScriptLoader;
-},{"../beans/support/beanModule":99,"../util/requireUtil":116,"../util/scriptUtil":117,"../util/utils":118}],106:[function(require,module,exports){
+},{"../beans/support/beanModule":99,"../util/requireUtil":116,"../util/scriptUtil":117,"../util/utils":118,"pomelo-logger":135}],106:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -7801,63 +7823,66 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 
 	var funcArgs = funcArgsString.split(",");
 
-	var funcPropsArray = funcString.match(Constant.FUNC_PROPS_REGEXP);
+	// var funcPropsArray = funcString.match(Constant.FUNC_PROPS_REGEXP);
 
 	var meta = {};
 	var props = [];
 	var args = [];
 
-	if (funcPropsArray && Utils.checkArray(funcPropsArray)) {
-		var t = "var FuncProps = function(" + funcArgsString + ") {" + EOL;
-		for (var i = 0; i < funcPropsArray.length; i++) {
-			t += (funcPropsArray[i] + EOL);
-		}
-		t += "}";
+	// if (funcPropsArray && Utils.checkArray(funcPropsArray)) {
+	// 	var t = "var FuncProps = function(" + funcArgsString + ") {" + EOL;
+	// 	for (var i = 0; i < funcPropsArray.length; i++) {
+	// 		t += (funcPropsArray[i] + EOL);
+	// 	}
+	// 	t += "}";
 
-		var funcProps = MetaUtil.getEvalFuncProps(t);
+	// var funcProps = MetaUtil.getEvalFuncProps(t);
+	var funcProps = new func();
 
-		for (var funcKey in funcProps) {
-			if (MetaUtil.checkFuncAnnotation(funcKey)) {
-				var key = funcKey.substr(1);
-				var value = funcProps[funcKey];
-				if (MetaUtil.checkInMetaProps(funcKey)) {
-					if (key === Constant.META_AOP && funcProps[funcKey] === true) {
-						meta[key] = this.resolvePrototypeAnnotation(func);
-					} else {
-						meta[key] = funcProps[funcKey];
-					}
+	for (var funcKey in funcProps) {
+		if (MetaUtil.checkFuncAnnotation(funcKey)) {
+			var key = funcKey.substr(1);
+			var value = funcProps[funcKey];
+			if (MetaUtil.checkInMetaProps(funcKey)) {
+				if (key === Constant.META_AOP && funcProps[funcKey] === true) {
+					meta[key] = this.resolvePrototypeAnnotation(func);
 				} else {
-					if (!MetaUtil.checkInFuncArgs(funcKey, funcArgs)) {
-						if (MetaUtil.checkFuncPropsValue(funcKey)) {
-							props.push({
-								name: funcKey,
-								value: value
-							});
-						} else if (MetaUtil.checkFuncPropsType(funcKey)) {
-							props.push({
-								name: funcKey,
-								type: value
-							});
-						} else if (MetaUtil.checkFuncPropsNamespace(funcKey)) {
-							props.push({
-								name: funcKey,
-								ref: value
-							});
-						} else {
-							props.push({
-								name: funcKey,
-								ref: key
-							});
-						}
+					meta[key] = funcProps[funcKey];
+				}
+			} else {
+				if (!MetaUtil.checkInFuncArgs(funcKey, funcArgs)) {
+					if (MetaUtil.checkFuncPropsValue(funcKey)) {
+						props.push({
+							name: funcKey,
+							value: value
+						});
+					} else if (MetaUtil.checkFuncPropsType(funcKey)) {
+						props.push({
+							name: funcKey,
+							type: value
+						});
+					} else if (MetaUtil.checkFuncPropsNamespace(funcKey)) {
+						props.push({
+							name: funcKey,
+							ref: value
+						});
+					} else {
+						props.push({
+							name: funcKey,
+							ref: key
+						});
 					}
 				}
 			}
 		}
-
-		if (props.length) {
-			meta['props'] = props;
-		}
 	}
+
+	delete funcProps;
+
+	if (props.length) {
+		meta['props'] = props;
+	}
+	// }
 
 	for (var i = 0; i < funcArgs.length; i++) {
 		var funcArg = funcArgs[i].trim();
@@ -12909,8 +12934,8 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":131,"_process":130,"inherits":127}],133:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.0",
-  "description": "a POJOs based application framework for node.js",
+  "version": "0.3.3",
+  "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
   "scripts": {
@@ -12922,12 +12947,17 @@ module.exports={
   },
   "keywords": [
     "IoC",
+    "AOP",
     "dependency",
     "injection",
-    "AOP",
     "consistent",
     "configuration",
-    "hot reload"
+    "hot reload",
+    "front-backend",
+    "sharable codes",
+    "dependency injection",
+    "asynchronous script loading",
+    "magic, self-described javaScript objects"
   ],
   "dependencies": {
     "pomelo-logger": "0.1.x",
