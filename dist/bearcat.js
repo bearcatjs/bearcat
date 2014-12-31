@@ -6339,63 +6339,66 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 
 	var funcArgs = funcArgsString.split(",");
 
-	var funcPropsArray = funcString.match(Constant.FUNC_PROPS_REGEXP);
+	// var funcPropsArray = funcString.match(Constant.FUNC_PROPS_REGEXP);
 
 	var meta = {};
 	var props = [];
 	var args = [];
 
-	if (funcPropsArray && Utils.checkArray(funcPropsArray)) {
-		var t = "var FuncProps = function(" + funcArgsString + ") {" + EOL;
-		for (var i = 0; i < funcPropsArray.length; i++) {
-			t += (funcPropsArray[i] + EOL);
-		}
-		t += "}";
+	// if (funcPropsArray && Utils.checkArray(funcPropsArray)) {
+	// 	var t = "var FuncProps = function(" + funcArgsString + ") {" + EOL;
+	// 	for (var i = 0; i < funcPropsArray.length; i++) {
+	// 		t += (funcPropsArray[i] + EOL);
+	// 	}
+	// 	t += "}";
 
-		var funcProps = MetaUtil.getEvalFuncProps(t);
+	// var funcProps = MetaUtil.getEvalFuncProps(t);
+	var funcProps = new func();
 
-		for (var funcKey in funcProps) {
-			if (MetaUtil.checkFuncAnnotation(funcKey)) {
-				var key = funcKey.substr(1);
-				var value = funcProps[funcKey];
-				if (MetaUtil.checkInMetaProps(funcKey)) {
-					if (key === Constant.META_AOP && funcProps[funcKey] === true) {
-						meta[key] = this.resolvePrototypeAnnotation(func);
-					} else {
-						meta[key] = funcProps[funcKey];
-					}
+	for (var funcKey in funcProps) {
+		if (MetaUtil.checkFuncAnnotation(funcKey)) {
+			var key = funcKey.substr(1);
+			var value = funcProps[funcKey];
+			if (MetaUtil.checkInMetaProps(funcKey)) {
+				if (key === Constant.META_AOP && funcProps[funcKey] === true) {
+					meta[key] = this.resolvePrototypeAnnotation(func);
 				} else {
-					if (!MetaUtil.checkInFuncArgs(funcKey, funcArgs)) {
-						if (MetaUtil.checkFuncPropsValue(funcKey)) {
-							props.push({
-								name: funcKey,
-								value: value
-							});
-						} else if (MetaUtil.checkFuncPropsType(funcKey)) {
-							props.push({
-								name: funcKey,
-								type: value
-							});
-						} else if (MetaUtil.checkFuncPropsNamespace(funcKey)) {
-							props.push({
-								name: funcKey,
-								ref: value
-							});
-						} else {
-							props.push({
-								name: funcKey,
-								ref: key
-							});
-						}
+					meta[key] = funcProps[funcKey];
+				}
+			} else {
+				if (!MetaUtil.checkInFuncArgs(funcKey, funcArgs)) {
+					if (MetaUtil.checkFuncPropsValue(funcKey)) {
+						props.push({
+							name: funcKey,
+							value: value
+						});
+					} else if (MetaUtil.checkFuncPropsType(funcKey)) {
+						props.push({
+							name: funcKey,
+							type: value
+						});
+					} else if (MetaUtil.checkFuncPropsNamespace(funcKey)) {
+						props.push({
+							name: funcKey,
+							ref: value
+						});
+					} else {
+						props.push({
+							name: funcKey,
+							ref: key
+						});
 					}
 				}
 			}
 		}
-
-		if (props.length) {
-			meta['props'] = props;
-		}
 	}
+
+	delete funcProps;
+
+	if (props.length) {
+		meta['props'] = props;
+	}
+	// }
 
 	for (var i = 0; i < funcArgs.length; i++) {
 		var funcArg = funcArgs[i].trim();
@@ -8862,7 +8865,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
@@ -8883,6 +8886,7 @@ module.exports={
     "hot reload",
     "front-backend",
     "sharable codes",
+    "dependency injection",
     "asynchronous script loading",
     "magic, self-described javaScript objects"
   ],
