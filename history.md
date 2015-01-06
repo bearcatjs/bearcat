@@ -1,3 +1,7 @@
+0.3.5 / 2015-1-6
+===================
+* improve function annotation when have arguments or new with error case, cases exmaple see [simple_meta_error](https://github.com/bearcatjs/bearcat/tree/master/examples/simple_meta_error)
+
 0.3.4 / 2014-12-31
 ===================
 * make $ based configuration more powerful, not just this.$id like, details see [complex_function_annotation](https://github.com/bearcatjs/bearcat/tree/master/examples/complex_function_annotation)

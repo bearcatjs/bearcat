@@ -5764,6 +5764,10 @@ Bearcat.getFunction = function(beanName) {
  * @api public
  */
 Bearcat.getRoute = function(beanName, fnName) {
+	if (this.state !== STATE_STARTED) {
+		return;
+	}
+	
 	var bean = Bearcat.getBean(beanName);
 
 	return bean[fnName].bind(bean);
@@ -7811,7 +7815,6 @@ MetaUtil.mergeMeta = function(meta, originMeta) {
  */
 MetaUtil.resolveFuncAnnotation = function(func, fp) {
 	var funcString = func.toString();
-	funcString = MetaUtil.resolveFuncComment(funcString);
 
 	var funcArgsString = funcString.match(Constant.FUNC_ARGS_REGEXP);
 
@@ -7823,21 +7826,26 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 
 	var funcArgs = funcArgsString.split(",");
 
-	// var funcPropsArray = funcString.match(Constant.FUNC_PROPS_REGEXP);
-
 	var meta = {};
 	var props = [];
 	var args = [];
 
-	// if (funcPropsArray && Utils.checkArray(funcPropsArray)) {
-	// 	var t = "var FuncProps = function(" + funcArgsString + ") {" + EOL;
-	// 	for (var i = 0; i < funcPropsArray.length; i++) {
-	// 		t += (funcPropsArray[i] + EOL);
-	// 	}
-	// 	t += "}";
+	var funcProps = null;
 
-	// var funcProps = MetaUtil.getEvalFuncProps(t);
-	var funcProps = new func();
+	if (funcArgs.length) {
+		// if constructor function have arguments
+		// use funcString to resolve $ props
+		funcString = MetaUtil.resolveFuncComment(funcString);
+		funcProps = MetaUtil.resolvePropsFromFuncString(funcString, funcArgsString);
+	} else {
+		// use new to resolve $ props directly to support dynamic $ prefix attributes
+		// try catch the error, when dependency is not ready when started
+		try {
+			funcProps = new func();
+		} catch (e) {
+			return;
+		}
+	}
 
 	for (var funcKey in funcProps) {
 		if (MetaUtil.checkFuncAnnotation(funcKey)) {
@@ -7914,6 +7922,29 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 		meta['fpath'] = require('path').resolve(process.cwd(), fp);
 	}
 	return meta;
+}
+
+/**
+ * MetaUtil props from function string.
+ *
+ * @param  {String}     function string
+ * @return {Object}     resolved props object
+ * @api private
+ */
+MetaUtil.resolvePropsFromFuncString = function(funcString, funcArgsString) {
+	var funcPropsArray = funcString.match(Constant.FUNC_PROPS_REGEXP);
+
+	if (funcPropsArray && Utils.checkArray(funcPropsArray)) {
+		var t = "var FuncProps = function(" + funcArgsString + ") {" + EOL;
+		for (var i = 0; i < funcPropsArray.length; i++) {
+			t += (funcPropsArray[i] + EOL);
+		}
+		t += "}";
+	}
+
+	var funcProps = MetaUtil.getEvalFuncProps(t);
+
+	return funcProps;
 }
 
 /**
@@ -12934,7 +12965,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":131,"_process":130,"inherits":127}],133:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
