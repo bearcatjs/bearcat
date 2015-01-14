@@ -116,42 +116,81 @@ var ApplicationContext = require('../../lib/context/applicationContext');
 // 		r = bus.run();
 // 	}, 6000);
 // });
-var simplepath = require.resolve('../../examples/simple/context.json');
+// var simplepath = require.resolve('../../examples/simple/context.json');
 
+// var paths = [simplepath];
+
+// var applicationContext = new ApplicationContext(paths);
+
+// applicationContext.refresh();
+
+// var CarM = function() {
+
+// }
+
+// CarM.prototype.run = function(num) {
+// 	console.log('mcar' + num);
+// 	return 'mcar' + num;
+// }
+
+// CarM.prototype.dyInit = function() {
+
+// }
+
+// CarM.prototype.a = 1;
+// var mcar = applicationContext.getBeanByMeta({
+// 	id: "mcar",
+// 	func: CarM
+// });
+
+// var r = mcar.run(100);
+// // expect(r).to.eql('mcar' + 100);
+
+// // mcar.dyInit();
+
+// var acar = applicationContext.getBeanByMeta({
+// 	id: "acar"
+// });
+
+// var abcar = applicationContext.getBeanByMeta({});
+
+// applicationContext.registerBeanMeta({});
+
+var path = require('path');
+var simplepath = require.resolve('../../examples/hot_reload/context.json');
+var hotPath = path.dirname(simplepath) + '/hot';
 var paths = [simplepath];
+var applicationContext = new ApplicationContext(paths, {
+	BEARCAT_HOT: 'on'
+});
+applicationContext.setHotPath(hotPath);
 
-var applicationContext = new ApplicationContext(paths);
+applicationContext.on('finishRefresh', function() {
+	var car = applicationContext.getBean('car');
+	var bus = applicationContext.getBean('bus');
+	var r = car.run();
+	console.log(r);
 
+	r = bus.run();
+	console.log(r);
+
+	var hotCarPath = require.resolve('../../examples/hot_reload/hot/car.js');
+	var hotBusPath = require.resolve('../../examples/hot_reload/hot/bus.js');
+	var fs = require('fs');
+	require(hotCarPath);
+	require(hotBusPath);
+	setTimeout(function() {
+		fs.appendFileSync(hotCarPath, "\n");
+		fs.appendFileSync(hotBusPath, "\n");
+
+		// done();
+		setTimeout(function() {
+			r = car.run();
+			console.log(r);
+
+			r = bus.run();
+			console.log(r);
+		}, 6000);
+	}, 2000);
+});
 applicationContext.refresh();
-
-var CarM = function() {
-
-}
-
-CarM.prototype.run = function(num) {
-	console.log('mcar' + num);
-	return 'mcar' + num;
-}
-
-CarM.prototype.dyInit = function() {
-
-}
-
-CarM.prototype.a = 1;
-var mcar = applicationContext.getBeanByMeta({
-	id: "mcar",
-	func: CarM
-});
-
-var r = mcar.run(100);
-// expect(r).to.eql('mcar' + 100);
-
-// mcar.dyInit();
-
-var acar = applicationContext.getBeanByMeta({
-	id: "acar"
-});
-
-var abcar = applicationContext.getBeanByMeta({});
-
-applicationContext.registerBeanMeta({});

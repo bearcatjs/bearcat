@@ -617,7 +617,9 @@ describe('applicationContext', function() {
 			}
 			var hotPath = path.dirname(simplepath) + '/hot';
 			var paths = [simplepath];
-			var applicationContext = new ApplicationContext(paths);
+			var applicationContext = new ApplicationContext(paths, {
+				BEARCAT_HOT: 'on'
+			});
 			applicationContext.setHotPath(hotPath);
 			applicationContext.refresh(function() {
 				var car = applicationContext.getBean('car');
@@ -631,23 +633,23 @@ describe('applicationContext', function() {
 
 				var hotCarPath = require.resolve('../../examples/hot_reload/hot/car.js');
 				var hotBusPath = require.resolve('../../examples/hot_reload/hot/bus.js');
+				// var fs = require('fs');
 				// require(hotCarPath);
 				// require(hotBusPath);
-				// fs.appendFileSync(hotCarPath, "\n");
-				// fs.appendFileSync(hotBusPath, "\n");
+				setTimeout(function() {
+					// fs.appendFileSync(hotCarPath, "\n");
+					// fs.appendFileSync(hotBusPath, "\n");
+					done();
+					// setTimeout(function() {
+					// 	r = car.run();
+					// 	expect(r).to.eql('car hot');
 
-				done();
-				// setTimeout(function() {
-				// 	r = car.run();
-				// 	r.should.exist;
-				// 	r.should.eql('car hot');
+					// 	r = bus.run();
+					// 	expect(r).to.eql('bus hot');
 
-				// 	r = bus.run();
-				// 	r.should.exist;
-				// 	r.should.eql('bus hot');
-
-				// 	done();
-				// }, 6000);
+					// 	done();
+					// }, 6000);
+				}, 2000);
 			});
 		});
 	});

@@ -957,7 +957,7 @@ var checkFuncName = function(name) {
 
 	return false;
 }
-},{"../../util/constant":28,"../../util/utils":34,"pomelo-logger":46}],7:[function(require,module,exports){
+},{"../../util/constant":28,"../../util/utils":34,"pomelo-logger":47}],7:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -1151,7 +1151,7 @@ var checkFuncName = function(name) {
 
 	return false;
 }
-},{"../../util/utils":34,"pomelo-logger":46}],8:[function(require,module,exports){
+},{"../../util/utils":34,"pomelo-logger":47}],8:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -2194,19 +2194,18 @@ BeanFactory.prototype.removeBeanDefinition = function(beanName) {
  * @api public
  */
 BeanFactory.prototype.containsBeanDefinition = function(beanName) {
-	return !!this.getBeanDefinition(beanName);
-}
-
-/**
- * BeanFactory get aspects.
- *
- * @return {Array} aspects
- * @api public
- */
+		return !!this.getBeanDefinition(beanName);
+	}
+	/**
+	 * BeanFactory get aspects.
+	 *
+	 * @return {Array} aspects
+	 * @api public
+	 */
 BeanFactory.prototype.getAspects = function() {
 	return this.aspects;
 }
-},{"../aop/aspect":3,"../aop/framework/dynamicMetaProxy":7,"../util/aopUtil":26,"../util/beanUtil":27,"../util/constant":28,"../util/utils":34,"../util/validatorUtil":35,"./singletonBeanFactory":12,"./support/beanDefinition":13,"pomelo-logger":46}],12:[function(require,module,exports){
+},{"../aop/aspect":3,"../aop/framework/dynamicMetaProxy":7,"../util/aopUtil":26,"../util/beanUtil":27,"../util/constant":28,"../util/utils":34,"../util/validatorUtil":35,"./singletonBeanFactory":12,"./support/beanDefinition":13,"pomelo-logger":47}],12:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -2302,7 +2301,7 @@ SingletonBeanFactory.prototype.getSingletonNames = function() {
 SingletonBeanFactory.prototype.removeSingleton = function(beanName) {
 	delete this.singletonObjects[beanName];
 }
-},{"pomelo-logger":46}],13:[function(require,module,exports){
+},{"pomelo-logger":47}],13:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -3049,7 +3048,7 @@ BeanDefinitionVisitor.prototype.visitArgumentsValues = function(beanDefinition) 
 		}
 	}
 }
-},{"../../util/constant":28,"../../util/utils":34,"pomelo-logger":46}],15:[function(require,module,exports){
+},{"../../util/constant":28,"../../util/utils":34,"pomelo-logger":47}],15:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -3568,7 +3567,7 @@ BeanWrapper.prototype.getBean = function() {
 BeanWrapper.prototype.setBean = function(bean) {
 	this.bean = bean;
 }
-},{"../../util/constant":28,"../../util/utils":34,"pomelo-logger":46}],17:[function(require,module,exports){
+},{"../../util/constant":28,"../../util/utils":34,"pomelo-logger":47}],17:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -3915,6 +3914,7 @@ PlaceHolderResolver.prototype.doReplace = function(strVal) {
 
 var logger = require('pomelo-logger').getLogger('bearcat', 'app');
 var ApplicationContext = require('./context/applicationContext');
+var EventEmitter = require('events').EventEmitter;
 var BeanFactory = require('./beans/beanFactory');
 var Package = require('../package.json');
 var Utils = require('./util/utils');
@@ -3945,6 +3945,8 @@ var Bearcat = {
 	version: Package.version
 };
 
+Bearcat['__proto__'] = EventEmitter.prototype;
+
 module.exports = Bearcat;
 
 /**
@@ -3956,8 +3958,9 @@ module.exports = Bearcat;
  * @param  {String} opts.BEARCAT_ENV         setup env
  * @param  {String} opts.NODE_CPATH          setup config path
  * @param  {String} opts.BEARCAT_CPATH       setup config path
+ * @param  {String} opts.BEARCAT_HPATH       setup hot reload path, usually it is the scan source directory(app by default)
  * @param  {String} opts.BEARCAT_LOGGER      setup 'off' to turn off bearcat logger configuration
- * @param  {String} opts.BEARCAT_HOT         setup 'off' to turn off bearcat hot code reloading
+ * @param  {String} opts.BEARCAT_HOT         setup 'on' to turn on bearcat hot code reloading
  * @param  {String} opts.BEARCAT_ANNOTATION  setup 'off' to turn off bearcat $ based annotation
  * @param  {String} opts.BEARCAT_GLOBAL  	 setup bearcat to be global object
  *
@@ -4032,6 +4035,10 @@ Bearcat.start = function(cb) {
 		self.state = STATE_STARTED;
 		logger.info('Bearcat startup in %s with %s ms', env, Date.now() - self.startTime);
 		cb();
+	});
+
+	this.applicationContext.on('reload', function() {
+		self.emit('reload');
 	});
 
 	this.applicationContext.refresh();
@@ -4283,12 +4290,20 @@ Bearcat.getRoute = function(beanName, fnName) {
 	if (this.state !== STATE_STARTED) {
 		return;
 	}
-	
-	var bean = Bearcat.getBean(beanName);
 
+	var bean = Bearcat.getBean(beanName);
 	return bean[fnName].bind(bean);
 }
-},{"../package.json":44,"./beans/beanFactory":11,"./context/applicationContext":20,"./util/utils":34,"pomelo-logger":46}],20:[function(require,module,exports){
+
+/**
+ * Bearcat hook function, invoked when codes hot reloaded, implement it by yourself.
+ *
+ * @api public
+ */
+Bearcat.onReload = function() {
+
+}
+},{"../package.json":44,"./beans/beanFactory":11,"./context/applicationContext":20,"./util/utils":34,"events":37,"pomelo-logger":47}],20:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -4374,7 +4389,7 @@ ApplicationContext.prototype.init = function() {
 	}
 
 	DEFAULT_LOAD_PATH = DEFAULT_BASE + "/config";
-	DEFAULT_HOT_RELOAD_PATH = DEFAULT_BASE + "/hot";
+	DEFAULT_HOT_RELOAD_PATH = DEFAULT_BASE + "/app"; // equal to scan path
 
 	this.cpath = DEFAULT_LOAD_PATH;
 	this.hpath = DEFAULT_HOT_RELOAD_PATH;
@@ -4546,12 +4561,16 @@ ApplicationContext.prototype.prepareRefresh = function() {
 		process.env.BEARCAT_CPATH = opts['BEARCAT_CPATH'];
 	}
 
+	if (opts['BEARCAT_HPATH']) {
+		process.env.BEARCAT_HPATH = opts['BEARCAT_HPATH'];
+	}
+
 	if (opts['BEARCAT_LOGGER'] && opts['BEARCAT_LOGGER'] === 'off') {
 		process.env.BEARCAT_LOGGER = 'off';
 	}
 
-	if (opts['BEARCAT_HOT'] && opts['BEARCAT_HOT'] === 'off') {
-		process.env.BEARCAT_HOT = 'off';
+	if (opts['BEARCAT_HOT'] && opts['BEARCAT_HOT'] === 'on') {
+		process.env.BEARCAT_HOT = 'on';
 	}
 
 	if (opts['BEARCAT_ANNOTATION'] && opts['BEARCAT_ANNOTATION'] === 'off') {
@@ -4596,10 +4615,10 @@ ApplicationContext.prototype.prepareRefresh = function() {
 	}
 
 	var hpath = this.getHotPath();
-	hpath = args.hpath || args['--hpath'] || hpath;
+	hpath = args.hpath || args['--hpath'] || process.env.BEARCAT_HPATH || hpath;
 	this.setHotPath(hpath);
 
-	if (process.env.BEARCAT_HOT !== 'off') {
+	if (process.env.BEARCAT_HOT === 'on') {
 		if (FileUtil.existsSync(hpath)) {
 			this.hotReloadFileWatch(hpath);
 		}
@@ -4703,56 +4722,70 @@ ApplicationContext.prototype.registerBeanMeta = function(meta) {
  */
 ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 	var self = this;
-	logger.info('Bearcat hot reload watch %j', hpath);
-	FileUtil.watch(hpath, function(event, filename) {
+	var watcher = require('chokidar').watch(hpath, {
+		ignored: /[\/\\]\./,
+		ignoreInitial: true
+	});
+
+	if (!watcher) {
+		return;
+	}
+
+	logger.info('bearcat hot reload watch %j', hpath);
+	watcher.on('all', function(event, path) {
+		logger.debug('hotReloadFileWatch %s %s', event, path);
+		if (event != 'change' && event != 'add') {
+			return;
+		}
+
+		var filename = path;
 		if (!Utils.checkString(filename)) {
 			return;
 		}
 
-		if (!self.reloadMap[filename]) {
-			var filepath = Path.join(hpath, filename);
-			var id = Utils.getFileName(filepath, '.js'.length);
+		var id = Utils.getFileName(filename, '.js'.length);
 
-			if (Utils.checkFileType(filepath, '.js') && Utils.isFile(filepath)) {
-				self.reloadMap[filename] = true;
-				logger.info('%j changed, Bearcat start hot reloading...', filepath);
+		if (!Utils.checkFileType(filename, '.js') || !Utils.isFile(filename)) {
+			return;
+		}
 
-				var s = Math.floor(Math.random(0, 1) * 5);
-				var p = Math.floor(Math.random(0, 1) * 100);
+		var s = Math.floor(Math.random(0, 1) * 5);
+		var p = Math.floor(Math.random(0, 1) * 100);
 
-				// system call bug reload require readFileSync may not work by return empty string
-				// hack it with random setTimeout
-				setTimeout(function() {
-					var meta = Utils.myRequireHot(filepath);
-					if (Utils.checkFunction(meta)) {
-						meta = MetaUtil.resolveFuncAnnotation(meta);
-					}
+		var doHotReload = function() {
+			logger.info('%j changed, bearcat start hot reloading ...', filename);
+			var meta = Utils.myRequireHot(filename);
+			if (!meta) {
+				return;
+			}
 
-					if (Utils.checkObject(meta)) {
-						id = meta['id'];
-						var func = meta['func'];
+			if (Utils.checkFunction(meta)) {
+				meta = MetaUtil.resolveFuncAnnotation(meta);
+			}
 
-						if (id && Utils.checkFunction(func)) {
-							var beanFunc = self.getBeanFactory().getBeanFunction(id);
+			if (Utils.checkObject(meta)) {
+				id = meta['id'];
+				var func = meta['func'];
 
-							if (beanFunc) {
-								var proto = func.prototype;
+				if (id && Utils.checkFunction(func)) {
+					var beanFactory = self.getBeanFactory();
+					var beanFunc = beanFactory.getBeanFunction(id);
 
-								for (var key in proto) {
-									logger.info('Bearcat reload %j:%j', filename, key);
-									beanFunc.prototype[key] = proto[key];
-								}
-							}
+					if (beanFunc) {
+						var proto = func.prototype;
+
+						for (var key in proto) {
+							logger.info('bearcat reload %j:%j', filename, key);
+							beanFunc.prototype[key] = proto[key];
 						}
 					}
-					logger.info('Bearcat hot reloading done...');
-					// node fs.watch emit cb twice, hack with 1000ms delay
-					setTimeout(function() {
-						self.reloadMap[filename] = false;
-					}, 1000);
-				}, s * 1000 + p + s)
+				}
 			}
+			self.emit('reload');
+			logger.info('Bearcat hot reloading done...');
 		}
+
+		setTimeout(doHotReload, s * 1000 + p + s);
 	});
 }
 
@@ -5183,9 +5216,8 @@ ApplicationContext.prototype.getHotPath = function() {
 ApplicationContext.prototype.getBase = function() {
 	return this.base;
 }
-
 }).call(this,require('_process'))
-},{"../aop/autoproxy/autoProxyCreator":4,"../beans/beanFactory":11,"../beans/support/placeHolderConfigurer":17,"../resource/asyncScriptLoader":21,"../resource/resourceLoader":25,"../util/constant":28,"../util/fileUtil":29,"../util/metaUtil":30,"../util/requireUtil":32,"../util/utils":34,"_process":41,"events":37,"pomelo-logger":46}],21:[function(require,module,exports){
+},{"../aop/autoproxy/autoProxyCreator":4,"../beans/beanFactory":11,"../beans/support/placeHolderConfigurer":17,"../resource/asyncScriptLoader":21,"../resource/resourceLoader":25,"../util/constant":28,"../util/fileUtil":29,"../util/metaUtil":30,"../util/requireUtil":32,"../util/utils":34,"_process":41,"chokidar":46,"events":37,"pomelo-logger":47}],21:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -5388,7 +5420,7 @@ AsyncScriptLoader.prototype.setApplicationContext = function(applicationContext)
 }
 
 module.exports = AsyncScriptLoader;
-},{"../beans/support/beanModule":15,"../util/requireUtil":32,"../util/scriptUtil":33,"../util/utils":34,"pomelo-logger":46}],22:[function(require,module,exports){
+},{"../beans/support/beanModule":15,"../util/requireUtil":32,"../util/scriptUtil":33,"../util/utils":34,"pomelo-logger":47}],22:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -5562,7 +5594,7 @@ ConfigLoader.prototype.getRecursiveScanPath = function(cpath, scanPaths, metaObj
 	}
 }
 }).call(this,require('_process'))
-},{"../util/constant":28,"../util/metaUtil":30,"../util/requireUtil":32,"../util/utils":34,"./metaLoader":23,"_process":41,"pomelo-logger":46}],23:[function(require,module,exports){
+},{"../util/constant":28,"../util/metaUtil":30,"../util/requireUtil":32,"../util/utils":34,"./metaLoader":23,"_process":41,"pomelo-logger":47}],23:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -5715,7 +5747,7 @@ MetaLoader.prototype.loadPath = function(meta, path) {
 	return meta;
 };
 }).call(this,require('_process'))
-},{"../util/fileUtil":29,"../util/metaUtil":30,"../util/utils":34,"_process":41,"path":40,"pomelo-logger":46}],24:[function(require,module,exports){
+},{"../util/fileUtil":29,"../util/metaUtil":30,"../util/utils":34,"_process":41,"path":40,"pomelo-logger":47}],24:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -5804,7 +5836,7 @@ PropertiesLoader.prototype.loadDir = function(meta, lpath) {
 		}
 	}
 }
-},{"../util/fileUtil":29,"../util/utils":34,"pomelo-logger":46}],25:[function(require,module,exports){
+},{"../util/fileUtil":29,"../util/utils":34,"pomelo-logger":47}],25:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -6667,7 +6699,7 @@ MetaUtil.checkFuncPropsNamespace = function(funcKey) {
 	return funcKey.match(/^\$N/);
 }
 }).call(this,require('_process'))
-},{"./constant":28,"./requireUtil":32,"./utils":34,"_process":41,"path":40,"pomelo-logger":46}],31:[function(require,module,exports){
+},{"./constant":28,"./requireUtil":32,"./utils":34,"_process":41,"path":40,"pomelo-logger":47}],31:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -7381,7 +7413,7 @@ Utils.requireUncached = function(module) {
 		delete require.cache[modulePath];
 	}
 
-	return require(module)
+	return require(modulePath)
 }
 
 /**
@@ -8896,7 +8928,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
@@ -8908,6 +8940,7 @@ module.exports={
     "url": "https://github.com/bearcatjs/bearcat.git"
   },
   "keywords": [
+    "di",
     "IoC",
     "AOP",
     "dependency",
@@ -8923,10 +8956,12 @@ module.exports={
   ],
   "dependencies": {
     "pomelo-logger": "0.1.x",
-    "commander": "2.x"
+    "commander": "2.x",
+    "chokidar": "0.12.6"
   },
   "browser": {
-    "pomelo-logger": "./shim/logger.js"
+    "pomelo-logger": "./shim/logger.js",
+    "chokidar": "./shim/chokidar.js"
   },
   "author": "fantasyni",
   "license": "MIT",
@@ -8960,7 +8995,15 @@ exports.path = require('./modules/path');
 exports.util = require('./modules/util');
 exports.os = require('./modules/os');
 require('./object');
-},{"./modules/os":47,"./modules/path":48,"./modules/process":49,"./modules/util":52,"./object":53}],46:[function(require,module,exports){
+},{"./modules/os":48,"./modules/path":49,"./modules/process":50,"./modules/util":53,"./object":54}],46:[function(require,module,exports){
+var Chokidar = {};
+
+Chokidar.watch = function() {
+
+}
+
+module.exports = Chokidar;
+},{}],47:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -9029,7 +9072,7 @@ module.exports = {
 	getLogger: getLogger
 }
 }).call(this,require('_process'))
-},{"_process":41}],47:[function(require,module,exports){
+},{"_process":41}],48:[function(require,module,exports){
 exports.endianness = function() {
     return 'LE'
 };
@@ -9088,7 +9131,7 @@ exports.tmpdir = exports.tmpDir = function() {
 };
 
 exports.EOL = '\n';
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -9314,7 +9357,7 @@ var substr = 'ab'.substr(-1) === 'b' ? function(str, start, len) {
   return str.substr(start, len);
 };
 }).call(this,require('_process'))
-},{"_process":41}],49:[function(require,module,exports){
+},{"_process":41}],50:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -9403,7 +9446,7 @@ process.cwd = function() {
 process.chdir = function(dir) {
     throw new Error('process.chdir is not supported');
 };
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -9427,11 +9470,11 @@ if (typeof Object.create === 'function') {
     ctor.prototype.constructor = ctor
   }
 }
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
 	return arg && typeof arg === 'object' && typeof arg.copy === 'function' && typeof arg.fill === 'function' && typeof arg.readUInt8 === 'function';
 }
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -10028,7 +10071,7 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/inherits":50,"./support/isBuffer":51,"_process":41}],53:[function(require,module,exports){
+},{"./support/inherits":51,"./support/isBuffer":52,"_process":41}],54:[function(require,module,exports){
 if (typeof Object.create != 'function') {
   Object.create = (function() {
     var Object = function() {};

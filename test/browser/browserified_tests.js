@@ -2441,7 +2441,7 @@ var checkFuncName = function(name) {
 
 	return false;
 }
-},{"../../util/constant":112,"../../util/utils":118,"pomelo-logger":135}],91:[function(require,module,exports){
+},{"../../util/constant":112,"../../util/utils":118,"pomelo-logger":136}],91:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -2635,7 +2635,7 @@ var checkFuncName = function(name) {
 
 	return false;
 }
-},{"../../util/utils":118,"pomelo-logger":135}],92:[function(require,module,exports){
+},{"../../util/utils":118,"pomelo-logger":136}],92:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -3678,19 +3678,18 @@ BeanFactory.prototype.removeBeanDefinition = function(beanName) {
  * @api public
  */
 BeanFactory.prototype.containsBeanDefinition = function(beanName) {
-	return !!this.getBeanDefinition(beanName);
-}
-
-/**
- * BeanFactory get aspects.
- *
- * @return {Array} aspects
- * @api public
- */
+		return !!this.getBeanDefinition(beanName);
+	}
+	/**
+	 * BeanFactory get aspects.
+	 *
+	 * @return {Array} aspects
+	 * @api public
+	 */
 BeanFactory.prototype.getAspects = function() {
 	return this.aspects;
 }
-},{"../aop/aspect":87,"../aop/framework/dynamicMetaProxy":91,"../util/aopUtil":110,"../util/beanUtil":111,"../util/constant":112,"../util/utils":118,"../util/validatorUtil":119,"./singletonBeanFactory":96,"./support/beanDefinition":97,"pomelo-logger":135}],96:[function(require,module,exports){
+},{"../aop/aspect":87,"../aop/framework/dynamicMetaProxy":91,"../util/aopUtil":110,"../util/beanUtil":111,"../util/constant":112,"../util/utils":118,"../util/validatorUtil":119,"./singletonBeanFactory":96,"./support/beanDefinition":97,"pomelo-logger":136}],96:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -3786,7 +3785,7 @@ SingletonBeanFactory.prototype.getSingletonNames = function() {
 SingletonBeanFactory.prototype.removeSingleton = function(beanName) {
 	delete this.singletonObjects[beanName];
 }
-},{"pomelo-logger":135}],97:[function(require,module,exports){
+},{"pomelo-logger":136}],97:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -4533,7 +4532,7 @@ BeanDefinitionVisitor.prototype.visitArgumentsValues = function(beanDefinition) 
 		}
 	}
 }
-},{"../../util/constant":112,"../../util/utils":118,"pomelo-logger":135}],99:[function(require,module,exports){
+},{"../../util/constant":112,"../../util/utils":118,"pomelo-logger":136}],99:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -5052,7 +5051,7 @@ BeanWrapper.prototype.getBean = function() {
 BeanWrapper.prototype.setBean = function(bean) {
 	this.bean = bean;
 }
-},{"../../util/constant":112,"../../util/utils":118,"pomelo-logger":135}],101:[function(require,module,exports){
+},{"../../util/constant":112,"../../util/utils":118,"pomelo-logger":136}],101:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -5399,6 +5398,7 @@ PlaceHolderResolver.prototype.doReplace = function(strVal) {
 
 var logger = require('pomelo-logger').getLogger('bearcat', 'app');
 var ApplicationContext = require('./context/applicationContext');
+var EventEmitter = require('events').EventEmitter;
 var BeanFactory = require('./beans/beanFactory');
 var Package = require('../package.json');
 var Utils = require('./util/utils');
@@ -5429,6 +5429,8 @@ var Bearcat = {
 	version: Package.version
 };
 
+Bearcat['__proto__'] = EventEmitter.prototype;
+
 module.exports = Bearcat;
 
 /**
@@ -5440,8 +5442,9 @@ module.exports = Bearcat;
  * @param  {String} opts.BEARCAT_ENV         setup env
  * @param  {String} opts.NODE_CPATH          setup config path
  * @param  {String} opts.BEARCAT_CPATH       setup config path
+ * @param  {String} opts.BEARCAT_HPATH       setup hot reload path, usually it is the scan source directory(app by default)
  * @param  {String} opts.BEARCAT_LOGGER      setup 'off' to turn off bearcat logger configuration
- * @param  {String} opts.BEARCAT_HOT         setup 'off' to turn off bearcat hot code reloading
+ * @param  {String} opts.BEARCAT_HOT         setup 'on' to turn on bearcat hot code reloading
  * @param  {String} opts.BEARCAT_ANNOTATION  setup 'off' to turn off bearcat $ based annotation
  * @param  {String} opts.BEARCAT_GLOBAL  	 setup bearcat to be global object
  *
@@ -5516,6 +5519,10 @@ Bearcat.start = function(cb) {
 		self.state = STATE_STARTED;
 		logger.info('Bearcat startup in %s with %s ms', env, Date.now() - self.startTime);
 		cb();
+	});
+
+	this.applicationContext.on('reload', function() {
+		self.emit('reload');
 	});
 
 	this.applicationContext.refresh();
@@ -5767,12 +5774,20 @@ Bearcat.getRoute = function(beanName, fnName) {
 	if (this.state !== STATE_STARTED) {
 		return;
 	}
-	
-	var bean = Bearcat.getBean(beanName);
 
+	var bean = Bearcat.getBean(beanName);
 	return bean[fnName].bind(bean);
 }
-},{"../package.json":133,"./beans/beanFactory":95,"./context/applicationContext":104,"./util/utils":118,"pomelo-logger":135}],104:[function(require,module,exports){
+
+/**
+ * Bearcat hook function, invoked when codes hot reloaded, implement it by yourself.
+ *
+ * @api public
+ */
+Bearcat.onReload = function() {
+
+}
+},{"../package.json":133,"./beans/beanFactory":95,"./context/applicationContext":104,"./util/utils":118,"events":126,"pomelo-logger":136}],104:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -5858,7 +5873,7 @@ ApplicationContext.prototype.init = function() {
 	}
 
 	DEFAULT_LOAD_PATH = DEFAULT_BASE + "/config";
-	DEFAULT_HOT_RELOAD_PATH = DEFAULT_BASE + "/hot";
+	DEFAULT_HOT_RELOAD_PATH = DEFAULT_BASE + "/app"; // equal to scan path
 
 	this.cpath = DEFAULT_LOAD_PATH;
 	this.hpath = DEFAULT_HOT_RELOAD_PATH;
@@ -6030,12 +6045,16 @@ ApplicationContext.prototype.prepareRefresh = function() {
 		process.env.BEARCAT_CPATH = opts['BEARCAT_CPATH'];
 	}
 
+	if (opts['BEARCAT_HPATH']) {
+		process.env.BEARCAT_HPATH = opts['BEARCAT_HPATH'];
+	}
+
 	if (opts['BEARCAT_LOGGER'] && opts['BEARCAT_LOGGER'] === 'off') {
 		process.env.BEARCAT_LOGGER = 'off';
 	}
 
-	if (opts['BEARCAT_HOT'] && opts['BEARCAT_HOT'] === 'off') {
-		process.env.BEARCAT_HOT = 'off';
+	if (opts['BEARCAT_HOT'] && opts['BEARCAT_HOT'] === 'on') {
+		process.env.BEARCAT_HOT = 'on';
 	}
 
 	if (opts['BEARCAT_ANNOTATION'] && opts['BEARCAT_ANNOTATION'] === 'off') {
@@ -6080,10 +6099,10 @@ ApplicationContext.prototype.prepareRefresh = function() {
 	}
 
 	var hpath = this.getHotPath();
-	hpath = args.hpath || args['--hpath'] || hpath;
+	hpath = args.hpath || args['--hpath'] || process.env.BEARCAT_HPATH || hpath;
 	this.setHotPath(hpath);
 
-	if (process.env.BEARCAT_HOT !== 'off') {
+	if (process.env.BEARCAT_HOT === 'on') {
 		if (FileUtil.existsSync(hpath)) {
 			this.hotReloadFileWatch(hpath);
 		}
@@ -6187,56 +6206,70 @@ ApplicationContext.prototype.registerBeanMeta = function(meta) {
  */
 ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 	var self = this;
-	logger.info('Bearcat hot reload watch %j', hpath);
-	FileUtil.watch(hpath, function(event, filename) {
+	var watcher = require('chokidar').watch(hpath, {
+		ignored: /[\/\\]\./,
+		ignoreInitial: true
+	});
+
+	if (!watcher) {
+		return;
+	}
+
+	logger.info('bearcat hot reload watch %j', hpath);
+	watcher.on('all', function(event, path) {
+		logger.debug('hotReloadFileWatch %s %s', event, path);
+		if (event != 'change' && event != 'add') {
+			return;
+		}
+
+		var filename = path;
 		if (!Utils.checkString(filename)) {
 			return;
 		}
 
-		if (!self.reloadMap[filename]) {
-			var filepath = Path.join(hpath, filename);
-			var id = Utils.getFileName(filepath, '.js'.length);
+		var id = Utils.getFileName(filename, '.js'.length);
 
-			if (Utils.checkFileType(filepath, '.js') && Utils.isFile(filepath)) {
-				self.reloadMap[filename] = true;
-				logger.info('%j changed, Bearcat start hot reloading...', filepath);
+		if (!Utils.checkFileType(filename, '.js') || !Utils.isFile(filename)) {
+			return;
+		}
 
-				var s = Math.floor(Math.random(0, 1) * 5);
-				var p = Math.floor(Math.random(0, 1) * 100);
+		var s = Math.floor(Math.random(0, 1) * 5);
+		var p = Math.floor(Math.random(0, 1) * 100);
 
-				// system call bug reload require readFileSync may not work by return empty string
-				// hack it with random setTimeout
-				setTimeout(function() {
-					var meta = Utils.myRequireHot(filepath);
-					if (Utils.checkFunction(meta)) {
-						meta = MetaUtil.resolveFuncAnnotation(meta);
-					}
+		var doHotReload = function() {
+			logger.info('%j changed, bearcat start hot reloading ...', filename);
+			var meta = Utils.myRequireHot(filename);
+			if (!meta) {
+				return;
+			}
 
-					if (Utils.checkObject(meta)) {
-						id = meta['id'];
-						var func = meta['func'];
+			if (Utils.checkFunction(meta)) {
+				meta = MetaUtil.resolveFuncAnnotation(meta);
+			}
 
-						if (id && Utils.checkFunction(func)) {
-							var beanFunc = self.getBeanFactory().getBeanFunction(id);
+			if (Utils.checkObject(meta)) {
+				id = meta['id'];
+				var func = meta['func'];
 
-							if (beanFunc) {
-								var proto = func.prototype;
+				if (id && Utils.checkFunction(func)) {
+					var beanFactory = self.getBeanFactory();
+					var beanFunc = beanFactory.getBeanFunction(id);
 
-								for (var key in proto) {
-									logger.info('Bearcat reload %j:%j', filename, key);
-									beanFunc.prototype[key] = proto[key];
-								}
-							}
+					if (beanFunc) {
+						var proto = func.prototype;
+
+						for (var key in proto) {
+							logger.info('bearcat reload %j:%j', filename, key);
+							beanFunc.prototype[key] = proto[key];
 						}
 					}
-					logger.info('Bearcat hot reloading done...');
-					// node fs.watch emit cb twice, hack with 1000ms delay
-					setTimeout(function() {
-						self.reloadMap[filename] = false;
-					}, 1000);
-				}, s * 1000 + p + s)
+				}
 			}
+			self.emit('reload');
+			logger.info('Bearcat hot reloading done...');
 		}
+
+		setTimeout(doHotReload, s * 1000 + p + s);
 	});
 }
 
@@ -6667,9 +6700,8 @@ ApplicationContext.prototype.getHotPath = function() {
 ApplicationContext.prototype.getBase = function() {
 	return this.base;
 }
-
 }).call(this,require('_process'))
-},{"../aop/autoproxy/autoProxyCreator":88,"../beans/beanFactory":95,"../beans/support/placeHolderConfigurer":101,"../resource/asyncScriptLoader":105,"../resource/resourceLoader":109,"../util/constant":112,"../util/fileUtil":113,"../util/metaUtil":114,"../util/requireUtil":116,"../util/utils":118,"_process":130,"events":126,"pomelo-logger":135}],105:[function(require,module,exports){
+},{"../aop/autoproxy/autoProxyCreator":88,"../beans/beanFactory":95,"../beans/support/placeHolderConfigurer":101,"../resource/asyncScriptLoader":105,"../resource/resourceLoader":109,"../util/constant":112,"../util/fileUtil":113,"../util/metaUtil":114,"../util/requireUtil":116,"../util/utils":118,"_process":130,"chokidar":135,"events":126,"pomelo-logger":136}],105:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -6872,7 +6904,7 @@ AsyncScriptLoader.prototype.setApplicationContext = function(applicationContext)
 }
 
 module.exports = AsyncScriptLoader;
-},{"../beans/support/beanModule":99,"../util/requireUtil":116,"../util/scriptUtil":117,"../util/utils":118,"pomelo-logger":135}],106:[function(require,module,exports){
+},{"../beans/support/beanModule":99,"../util/requireUtil":116,"../util/scriptUtil":117,"../util/utils":118,"pomelo-logger":136}],106:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -7046,7 +7078,7 @@ ConfigLoader.prototype.getRecursiveScanPath = function(cpath, scanPaths, metaObj
 	}
 }
 }).call(this,require('_process'))
-},{"../util/constant":112,"../util/metaUtil":114,"../util/requireUtil":116,"../util/utils":118,"./metaLoader":107,"_process":130,"pomelo-logger":135}],107:[function(require,module,exports){
+},{"../util/constant":112,"../util/metaUtil":114,"../util/requireUtil":116,"../util/utils":118,"./metaLoader":107,"_process":130,"pomelo-logger":136}],107:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -7199,7 +7231,7 @@ MetaLoader.prototype.loadPath = function(meta, path) {
 	return meta;
 };
 }).call(this,require('_process'))
-},{"../util/fileUtil":113,"../util/metaUtil":114,"../util/utils":118,"_process":130,"path":129,"pomelo-logger":135}],108:[function(require,module,exports){
+},{"../util/fileUtil":113,"../util/metaUtil":114,"../util/utils":118,"_process":130,"path":129,"pomelo-logger":136}],108:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -7288,7 +7320,7 @@ PropertiesLoader.prototype.loadDir = function(meta, lpath) {
 		}
 	}
 }
-},{"../util/fileUtil":113,"../util/utils":118,"pomelo-logger":135}],109:[function(require,module,exports){
+},{"../util/fileUtil":113,"../util/utils":118,"pomelo-logger":136}],109:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -8151,7 +8183,7 @@ MetaUtil.checkFuncPropsNamespace = function(funcKey) {
 	return funcKey.match(/^\$N/);
 }
 }).call(this,require('_process'))
-},{"./constant":112,"./requireUtil":116,"./utils":118,"_process":130,"path":129,"pomelo-logger":135}],115:[function(require,module,exports){
+},{"./constant":112,"./requireUtil":116,"./utils":118,"_process":130,"path":129,"pomelo-logger":136}],115:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -8865,7 +8897,7 @@ Utils.requireUncached = function(module) {
 		delete require.cache[modulePath];
 	}
 
-	return require(module)
+	return require(modulePath)
 }
 
 /**
@@ -12965,7 +12997,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":131,"_process":130,"inherits":127}],133:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
@@ -12977,6 +13009,7 @@ module.exports={
     "url": "https://github.com/bearcatjs/bearcat.git"
   },
   "keywords": [
+    "di",
     "IoC",
     "AOP",
     "dependency",
@@ -12992,10 +13025,12 @@ module.exports={
   ],
   "dependencies": {
     "pomelo-logger": "0.1.x",
-    "commander": "2.x"
+    "commander": "2.x",
+    "chokidar": "0.12.6"
   },
   "browser": {
-    "pomelo-logger": "./shim/logger.js"
+    "pomelo-logger": "./shim/logger.js",
+    "chokidar": "./shim/chokidar.js"
   },
   "author": "fantasyni",
   "license": "MIT",
@@ -13029,7 +13064,15 @@ exports.path = require('./modules/path');
 exports.util = require('./modules/util');
 exports.os = require('./modules/os');
 require('./object');
-},{"./modules/os":136,"./modules/path":137,"./modules/process":138,"./modules/util":141,"./object":142}],135:[function(require,module,exports){
+},{"./modules/os":137,"./modules/path":138,"./modules/process":139,"./modules/util":142,"./object":143}],135:[function(require,module,exports){
+var Chokidar = {};
+
+Chokidar.watch = function() {
+
+}
+
+module.exports = Chokidar;
+},{}],136:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -13098,7 +13141,7 @@ module.exports = {
 	getLogger: getLogger
 }
 }).call(this,require('_process'))
-},{"_process":130}],136:[function(require,module,exports){
+},{"_process":130}],137:[function(require,module,exports){
 exports.endianness = function() {
     return 'LE'
 };
@@ -13157,7 +13200,7 @@ exports.tmpdir = exports.tmpDir = function() {
 };
 
 exports.EOL = '\n';
-},{}],137:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -13383,7 +13426,7 @@ var substr = 'ab'.substr(-1) === 'b' ? function(str, start, len) {
   return str.substr(start, len);
 };
 }).call(this,require('_process'))
-},{"_process":130}],138:[function(require,module,exports){
+},{"_process":130}],139:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -13472,7 +13515,7 @@ process.cwd = function() {
 process.chdir = function(dir) {
     throw new Error('process.chdir is not supported');
 };
-},{}],139:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -13496,11 +13539,11 @@ if (typeof Object.create === 'function') {
     ctor.prototype.constructor = ctor
   }
 }
-},{}],140:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
 	return arg && typeof arg === 'object' && typeof arg.copy === 'function' && typeof arg.fill === 'function' && typeof arg.readUInt8 === 'function';
 }
-},{}],141:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -14097,7 +14140,7 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/inherits":139,"./support/isBuffer":140,"_process":130}],142:[function(require,module,exports){
+},{"./support/inherits":140,"./support/isBuffer":141,"_process":130}],143:[function(require,module,exports){
 if (typeof Object.create != 'function') {
   Object.create = (function() {
     var Object = function() {};
@@ -14127,7 +14170,7 @@ if (typeof String.prototype.trim != 'function') {
     })();
   }
 }
-},{}],143:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 var Advisor = require('../../lib/aop/advisor');
 
 var expect = require('expect.js');
@@ -14146,7 +14189,7 @@ describe('Advisor', function() {
 		});
 	});
 });
-},{"../../lib/aop/advisor":86,"expect.js":120}],144:[function(require,module,exports){
+},{"../../lib/aop/advisor":86,"expect.js":120}],145:[function(require,module,exports){
 var ApplicationContext = require('../../lib/context/applicationContext');
 
 var expect = require('expect.js');
@@ -14354,7 +14397,7 @@ describe('aop', function() {
 		});
 	});
 });
-},{"../../examples/aop/bearcat-bootstrap.js":3,"../../lib/context/applicationContext":104,"expect.js":120}],145:[function(require,module,exports){
+},{"../../examples/aop/bearcat-bootstrap.js":3,"../../lib/context/applicationContext":104,"expect.js":120}],146:[function(require,module,exports){
 var ApplicationContext = require('../../lib/context/applicationContext');
 
 var expect = require('expect.js');
@@ -14536,7 +14579,7 @@ describe('aop', function() {
 		});
 	});
 });
-},{"../../examples/aop_annotation/bearcat-bootstrap.js":10,"../../lib/context/applicationContext":104,"expect.js":120}],146:[function(require,module,exports){
+},{"../../examples/aop_annotation/bearcat-bootstrap.js":10,"../../lib/context/applicationContext":104,"expect.js":120}],147:[function(require,module,exports){
 var Aspect = require('../../lib/aop/aspect');
 var BeanDefinition = require('../../lib/beans/support/beanDefinition');
 
@@ -14555,7 +14598,7 @@ describe('Aspect', function() {
 		});
 	});
 });
-},{"../../lib/aop/aspect":87,"../../lib/beans/support/beanDefinition":97}],147:[function(require,module,exports){
+},{"../../lib/aop/aspect":87,"../../lib/beans/support/beanDefinition":97}],148:[function(require,module,exports){
 var DynamicAopProxy = require('../../../lib/aop/framework/dynamicAopProxy');
 
 describe('DynamicAopProxy', function() {
@@ -14567,7 +14610,7 @@ describe('DynamicAopProxy', function() {
 		});
 	});
 });
-},{"../../../lib/aop/framework/dynamicAopProxy":90}],148:[function(require,module,exports){
+},{"../../../lib/aop/framework/dynamicAopProxy":90}],149:[function(require,module,exports){
 var DynamicMetaProxy = require('../../../lib/aop/framework/dynamicMetaProxy');
 
 describe('DynamicMetaProxy', function() {
@@ -14581,7 +14624,7 @@ describe('DynamicMetaProxy', function() {
 		});
 	});
 });
-},{"../../../lib/aop/framework/dynamicMetaProxy":91}],149:[function(require,module,exports){
+},{"../../../lib/aop/framework/dynamicMetaProxy":91}],150:[function(require,module,exports){
 var ProxyFactory = require('../../../lib/aop/framework/proxyFactory');
 
 describe('ProxyFactory', function() {
@@ -14595,7 +14638,7 @@ describe('ProxyFactory', function() {
 		});
 	});
 });
-},{"../../../lib/aop/framework/proxyFactory":92}],150:[function(require,module,exports){
+},{"../../../lib/aop/framework/proxyFactory":92}],151:[function(require,module,exports){
 var Pointcut = require('../../lib/aop/pointcut');
 
 describe('Pointcut', function() {
@@ -14608,7 +14651,7 @@ describe('Pointcut', function() {
 		});
 	});
 });
-},{"../../lib/aop/pointcut":93}],151:[function(require,module,exports){
+},{"../../lib/aop/pointcut":93}],152:[function(require,module,exports){
 var TargetSource = require('../../lib/aop/targetSource');
 
 describe('TargetSource', function() {
@@ -14623,7 +14666,7 @@ describe('TargetSource', function() {
 		});
 	});
 });
-},{"../../lib/aop/targetSource":94}],152:[function(require,module,exports){
+},{"../../lib/aop/targetSource":94}],153:[function(require,module,exports){
 var BeanFactory = require('../../lib/beans/beanFactory');
 var BeanDefinition = require('../../lib/beans/support/beanDefinition');
 var BeanWrapper = require('../../lib/beans/support/beanWrapper');
@@ -14658,7 +14701,7 @@ describe('BeanFactory', function() {
 		});
 	});
 });
-},{"../../lib/beans/beanFactory":95,"../../lib/beans/support/beanDefinition":97,"../../lib/beans/support/beanWrapper":100}],153:[function(require,module,exports){
+},{"../../lib/beans/beanFactory":95,"../../lib/beans/support/beanDefinition":97,"../../lib/beans/support/beanWrapper":100}],154:[function(require,module,exports){
 var SingletonBeanFactory = require('../../lib/beans/singletonBeanFactory');
 
 describe('SingletonBeanFactory', function() {
@@ -14671,7 +14714,7 @@ describe('SingletonBeanFactory', function() {
 		});
 	});
 });
-},{"../../lib/beans/singletonBeanFactory":96}],154:[function(require,module,exports){
+},{"../../lib/beans/singletonBeanFactory":96}],155:[function(require,module,exports){
 var BeanDefinition = require('../../../lib/beans/support/beanDefinition');
 var BeanWrapper = require('../../../lib/beans/support/beanWrapper');
 var Constant = require('../../../lib/util/constant');
@@ -14712,7 +14755,7 @@ describe('beanDefinition', function() {
 		});
 	});
 });
-},{"../../../lib/beans/support/beanDefinition":97,"../../../lib/beans/support/beanWrapper":100,"../../../lib/util/constant":112}],155:[function(require,module,exports){
+},{"../../../lib/beans/support/beanDefinition":97,"../../../lib/beans/support/beanWrapper":100,"../../../lib/util/constant":112}],156:[function(require,module,exports){
 var BeanDefinitionVisitor = require('../../../lib/beans/support/beanDefinitionVisitor');
 
 describe('BeanDefinitionVisitor', function() {
@@ -14726,7 +14769,7 @@ describe('BeanDefinitionVisitor', function() {
 		});
 	});
 });
-},{"../../../lib/beans/support/beanDefinitionVisitor":98}],156:[function(require,module,exports){
+},{"../../../lib/beans/support/beanDefinitionVisitor":98}],157:[function(require,module,exports){
 var BeanWrapper = require('../../../lib/beans/support/beanWrapper');
 var Constant = require('../../../lib/util/constant');
 var expect = require('expect.js');
@@ -14791,7 +14834,7 @@ describe('beanWrapper', function() {
 		});
 	});
 });
-},{"../../../lib/beans/support/beanWrapper":100,"../../../lib/util/constant":112,"expect.js":120}],157:[function(require,module,exports){
+},{"../../../lib/beans/support/beanWrapper":100,"../../../lib/util/constant":112,"expect.js":120}],158:[function(require,module,exports){
 var PlaceHolderConfigurer = require('../../../lib/beans/support/placeHolderConfigurer');
 
 describe('PlaceHolderConfigurer', function() {
@@ -14807,7 +14850,7 @@ describe('PlaceHolderConfigurer', function() {
 		});
 	});
 });
-},{"../../../lib/beans/support/placeHolderConfigurer":101}],158:[function(require,module,exports){
+},{"../../../lib/beans/support/placeHolderConfigurer":101}],159:[function(require,module,exports){
 var PlaceHolderResolver = require('../../../lib/beans/support/placeHolderResolver');
 
 describe('PlaceHolderResolver', function() {
@@ -14835,7 +14878,7 @@ describe('PlaceHolderResolver', function() {
 		});
 	});
 });
-},{"../../../lib/beans/support/placeHolderResolver":102}],159:[function(require,module,exports){
+},{"../../../lib/beans/support/placeHolderResolver":102}],160:[function(require,module,exports){
 var expect = require('expect.js');
 
 function isBrowser() {
@@ -14984,7 +15027,7 @@ describe('bearcat', function() {
 		});
 	});
 });
-},{"../examples/simple/bearcat-bootstrap.js":29,"../lib/bearcat":103,"expect.js":120}],160:[function(require,module,exports){
+},{"../examples/simple/bearcat-bootstrap.js":29,"../lib/bearcat":103,"expect.js":120}],161:[function(require,module,exports){
 var ApplicationContext = require('../../lib/context/applicationContext');
 var expect = require('expect.js');
 var path = require('path');
@@ -15604,7 +15647,9 @@ describe('applicationContext', function() {
 			}
 			var hotPath = path.dirname(simplepath) + '/hot';
 			var paths = [simplepath];
-			var applicationContext = new ApplicationContext(paths);
+			var applicationContext = new ApplicationContext(paths, {
+				BEARCAT_HOT: 'on'
+			});
 			applicationContext.setHotPath(hotPath);
 			applicationContext.refresh(function() {
 				var car = applicationContext.getBean('car');
@@ -15618,23 +15663,23 @@ describe('applicationContext', function() {
 
 				var hotCarPath = require.resolve('../../examples/hot_reload/hot/car.js');
 				var hotBusPath = require.resolve('../../examples/hot_reload/hot/bus.js');
+				// var fs = require('fs');
 				// require(hotCarPath);
 				// require(hotBusPath);
-				// fs.appendFileSync(hotCarPath, "\n");
-				// fs.appendFileSync(hotBusPath, "\n");
+				setTimeout(function() {
+					// fs.appendFileSync(hotCarPath, "\n");
+					// fs.appendFileSync(hotBusPath, "\n");
+					done();
+					// setTimeout(function() {
+					// 	r = car.run();
+					// 	expect(r).to.eql('car hot');
 
-				done();
-				// setTimeout(function() {
-				// 	r = car.run();
-				// 	r.should.exist;
-				// 	r.should.eql('car hot');
+					// 	r = bus.run();
+					// 	expect(r).to.eql('bus hot');
 
-				// 	r = bus.run();
-				// 	r.should.exist;
-				// 	r.should.eql('bus hot');
-
-				// 	done();
-				// }, 6000);
+					// 	done();
+					// }, 6000);
+				}, 2000);
 			});
 		});
 	});
@@ -15708,7 +15753,7 @@ describe('applicationContext', function() {
 		});
 	});
 });
-},{"../../examples/circle_reference/bearcat-bootstrap.js":13,"../../examples/context_namespace/bearcat-bootstrap.js":17,"../../examples/hot_reload/bearcat-bootstrap.js":18,"../../examples/placeholder/bearcat-bootstrap.js":23,"../../examples/relative_scan/bearcat-bootstrap.js":27,"../../examples/simple/bearcat-bootstrap":29,"../../examples/simple/bearcat-bootstrap.js":29,"../../examples/simple_abstract_parent/bearcat-bootstrap.js":35,"../../examples/simple_args_type/bearcat-bootstrap.js":37,"../../examples/simple_args_value/bearcat-bootstrap.js":38,"../../examples/simple_async_init/bearcat-bootstrap.js":43,"../../examples/simple_destroy_method/bearcat-bootstrap.js":45,"../../examples/simple_factory_bean/bearcat-bootstrap.js":49,"../../examples/simple_factory_bean_error/bearcat-bootstrap.js":52,"../../examples/simple_function_annotation/bearcat-bootstrap.js":56,"../../examples/simple_imports_context/bearcat-bootstrap.js":58,"../../examples/simple_init_method/bearcat-bootstrap.js":60,"../../examples/simple_inject/bearcat-bootstrap.js":64,"../../examples/simple_inject_meta/bearcat-bootstrap.js":67,"../../examples/simple_lazy_init/bearcat-bootstrap.js":69,"../../examples/simple_meta/bearcat-bootstrap.js":71,"../../examples/simple_meta_error/bearcat-bootstrap.js":72,"../../examples/simple_meta_merge/bearcat-bootstrap.js":73,"../../examples/simple_module_inject/bearcat-bootstrap.js":76,"../../examples/simple_parent_bean/bearcat-bootstrap.js":83,"../../examples/simple_prototype/bearcat-bootstrap.js":85,"../../lib/context/applicationContext":104,"expect.js":120,"path":129}],161:[function(require,module,exports){
+},{"../../examples/circle_reference/bearcat-bootstrap.js":13,"../../examples/context_namespace/bearcat-bootstrap.js":17,"../../examples/hot_reload/bearcat-bootstrap.js":18,"../../examples/placeholder/bearcat-bootstrap.js":23,"../../examples/relative_scan/bearcat-bootstrap.js":27,"../../examples/simple/bearcat-bootstrap":29,"../../examples/simple/bearcat-bootstrap.js":29,"../../examples/simple_abstract_parent/bearcat-bootstrap.js":35,"../../examples/simple_args_type/bearcat-bootstrap.js":37,"../../examples/simple_args_value/bearcat-bootstrap.js":38,"../../examples/simple_async_init/bearcat-bootstrap.js":43,"../../examples/simple_destroy_method/bearcat-bootstrap.js":45,"../../examples/simple_factory_bean/bearcat-bootstrap.js":49,"../../examples/simple_factory_bean_error/bearcat-bootstrap.js":52,"../../examples/simple_function_annotation/bearcat-bootstrap.js":56,"../../examples/simple_imports_context/bearcat-bootstrap.js":58,"../../examples/simple_init_method/bearcat-bootstrap.js":60,"../../examples/simple_inject/bearcat-bootstrap.js":64,"../../examples/simple_inject_meta/bearcat-bootstrap.js":67,"../../examples/simple_lazy_init/bearcat-bootstrap.js":69,"../../examples/simple_meta/bearcat-bootstrap.js":71,"../../examples/simple_meta_error/bearcat-bootstrap.js":72,"../../examples/simple_meta_merge/bearcat-bootstrap.js":73,"../../examples/simple_module_inject/bearcat-bootstrap.js":76,"../../examples/simple_parent_bean/bearcat-bootstrap.js":83,"../../examples/simple_prototype/bearcat-bootstrap.js":85,"../../lib/context/applicationContext":104,"expect.js":120,"path":129}],162:[function(require,module,exports){
 var mock = {};
 
 module.exports = mock;
@@ -15867,7 +15912,7 @@ mock.t15 = t15;
 // }
 
 // mock.t16 = t16;
-},{}],162:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 var args = {};
 
 module.exports = args;
@@ -15915,7 +15960,7 @@ args.t10 = [{
 	name: "car",
 	value: 100
 }, {}];
-},{}],163:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 var car = function() {
 	this.order = null;
 	this.aspect = 0;
@@ -15934,7 +15979,7 @@ car.prototype.setOrder = function(order) {
 car.prototype.isAspect = function() {
 	return this.aspect;
 }
-},{}],164:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 var meta = {};
 
 module.exports = meta;
@@ -16015,7 +16060,7 @@ meta.t12 = {
 	func: Engine,
 	lazy: "aaa"
 }
-},{}],165:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 var ConfigLoader = require('../../lib/resource/configLoader');
 var expect = require('expect.js');
 
@@ -16060,7 +16105,7 @@ describe('configLoader', function() {
 		});
 	});
 });
-},{"../../lib/resource/configLoader":106,"expect.js":120}],166:[function(require,module,exports){
+},{"../../lib/resource/configLoader":106,"expect.js":120}],167:[function(require,module,exports){
 var MetaLoader = require('../../lib/resource/metaLoader');
 
 function isBrowser() {
@@ -16084,7 +16129,7 @@ describe('metaLoader', function() {
 		});
 	});
 });
-},{"../../lib/resource/metaLoader":107,"path":129}],167:[function(require,module,exports){
+},{"../../lib/resource/metaLoader":107,"path":129}],168:[function(require,module,exports){
 var PropertiesLoader = require('../../lib/resource/propertiesLoader');
 
 function isBrowser() {
@@ -16111,7 +16156,7 @@ describe('propertiesLoader', function() {
 		});
 	});
 });
-},{"../../lib/resource/propertiesLoader":108,"path":129}],168:[function(require,module,exports){
+},{"../../lib/resource/propertiesLoader":108,"path":129}],169:[function(require,module,exports){
 var ResourceLoader = require('../../lib/resource/resourceLoader');
 var expect = require('expect.js');
 
@@ -16136,7 +16181,7 @@ describe('resourceLoader', function() {
 		});
 	});
 });
-},{"../../lib/resource/resourceLoader":109,"expect.js":120}],169:[function(require,module,exports){
+},{"../../lib/resource/resourceLoader":109,"expect.js":120}],170:[function(require,module,exports){
 var AopUtil = require('../../lib/util/aopUtil');
 var BeanDefinition = require('../../lib/beans/support/beanDefinition');
 
@@ -16152,7 +16197,7 @@ describe('AopUtil', function() {
 		});
 	});
 });
-},{"../../lib/beans/support/beanDefinition":97,"../../lib/util/aopUtil":110}],170:[function(require,module,exports){
+},{"../../lib/beans/support/beanDefinition":97,"../../lib/util/aopUtil":110}],171:[function(require,module,exports){
 var beanWrapper = require('../../lib/beans/support/beanWrapper');
 var mock_args = require('../mock-base/mock-arg-props');
 var beanUtil = require('../../lib/util/beanUtil');
@@ -16335,7 +16380,7 @@ describe('beanUtil', function() {
 		});
 	});
 });
-},{"../../lib/beans/support/beanWrapper":100,"../../lib/util/beanUtil":111,"../../lib/util/constant":112,"../mock-base/mock-arg-props":162,"expect.js":120}],171:[function(require,module,exports){
+},{"../../lib/beans/support/beanWrapper":100,"../../lib/util/beanUtil":111,"../../lib/util/constant":112,"../mock-base/mock-arg-props":163,"expect.js":120}],172:[function(require,module,exports){
 var MockAnnotationFunction = require('../mock-base/mock-annotation-function');
 var MetaUtil = require('../../lib/util/metaUtil');
 
@@ -16343,7 +16388,7 @@ var func = MockAnnotationFunction.t14;
 var meta = MetaUtil.resolveFuncAnnotation(func);
 
 console.log(meta);
-},{"../../lib/util/metaUtil":114,"../mock-base/mock-annotation-function":161}],172:[function(require,module,exports){
+},{"../../lib/util/metaUtil":114,"../mock-base/mock-annotation-function":162}],173:[function(require,module,exports){
 var MockAnnotationFunction = require('../mock-base/mock-annotation-function');
 var MetaUtil = require('../../lib/util/metaUtil');
 
@@ -16662,7 +16707,7 @@ describe('MetaUtil', function() {
 		});
 	});
 });
-},{"../../lib/util/metaUtil":114,"../mock-base/mock-annotation-function":161,"expect.js":120}],173:[function(require,module,exports){
+},{"../../lib/util/metaUtil":114,"../mock-base/mock-annotation-function":162,"expect.js":120}],174:[function(require,module,exports){
 (function (__dirname){
 var mock_args = require('../mock-base/mock-arg-props');
 var utils = require('../../lib/util/utils');
@@ -16919,7 +16964,7 @@ describe('utils', function() {
 	});
 });
 }).call(this,"/test/util")
-},{"../../lib/util/beanUtil":111,"../../lib/util/constant":112,"../../lib/util/utils":118,"../mock-base/mock-arg-props":162,"../mock-base/mock-compare":163,"expect.js":120}],174:[function(require,module,exports){
+},{"../../lib/util/beanUtil":111,"../../lib/util/constant":112,"../../lib/util/utils":118,"../mock-base/mock-arg-props":163,"../mock-base/mock-compare":164,"expect.js":120}],175:[function(require,module,exports){
 var validatorUtil = require('../../lib/util/validatorUtil');
 var mock_meta = require('../mock-base/mock-meta');
 var expect = require('expect.js');
@@ -17023,4 +17068,4 @@ describe('validatorUtil', function() {
 		});
 	});
 });
-},{"../../lib/util/validatorUtil":119,"../mock-base/mock-meta":164,"expect.js":120}]},{},[159,154,155,156,157,158,160,169,170,171,172,173,174,165,166,167,168,144,145,143,146,147,148,149,150,151,152,153]);
+},{"../../lib/util/validatorUtil":119,"../mock-base/mock-meta":165,"expect.js":120}]},{},[160,155,156,157,158,159,161,170,171,172,173,174,175,166,167,168,169,145,146,144,147,148,149,150,151,152,153,154]);
