@@ -1,3 +1,7 @@
+0.3.6 / 2015-1-14
+===================
+* improve bearcat hot reload, using chokidar to watch source files
+
 0.3.5 / 2015-1-6
 ===================
 * improve function annotation when have arguments or new with error case, cases exmaple see [simple_meta_error](https://github.com/bearcatjs/bearcat/tree/master/examples/simple_meta_error)

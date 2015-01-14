@@ -28,10 +28,12 @@
   ],
   "dependencies": {
     "pomelo-logger": "0.1.x",
-    "commander": "2.x"
+    "commander": "2.x",
+    "chokidar": "0.12.6"
   },
   "browser": {
-    "pomelo-logger": "./shim/logger.js"
+    "pomelo-logger": "./shim/logger.js",
+    "chokidar": "./shim/chokidar.js"
   },
   "author": "fantasyni",
   "license": "MIT",
