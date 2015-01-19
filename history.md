@@ -1,3 +1,7 @@
+0.3.7 / 2015-1-19
+===================
+* fix codes, make some improvements
+
 0.3.6 / 2015-1-14
 ===================
 * improve bearcat hot reload, using chokidar to watch source files
