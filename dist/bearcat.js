@@ -2194,14 +2194,15 @@ BeanFactory.prototype.removeBeanDefinition = function(beanName) {
  * @api public
  */
 BeanFactory.prototype.containsBeanDefinition = function(beanName) {
-		return !!this.getBeanDefinition(beanName);
-	}
-	/**
-	 * BeanFactory get aspects.
-	 *
-	 * @return {Array} aspects
-	 * @api public
-	 */
+	return !!this.getBeanDefinition(beanName);
+}
+
+/**
+ * BeanFactory get aspects.
+ *
+ * @return {Array} aspects
+ * @api public
+ */
 BeanFactory.prototype.getAspects = function() {
 	return this.aspects;
 }
@@ -3960,7 +3961,7 @@ module.exports = Bearcat;
  * @param  {String} opts.BEARCAT_CPATH       setup config path
  * @param  {String} opts.BEARCAT_HPATH       setup hot reload path, usually it is the scan source directory(app by default)
  * @param  {String} opts.BEARCAT_LOGGER      setup 'off' to turn off bearcat logger configuration
- * @param  {String} opts.BEARCAT_HOT         setup 'on' to turn on bearcat hot code reloading
+ * @param  {String} opts.BEARCAT_HOT         setup 'on' to turn on bearcat hot code reload
  * @param  {String} opts.BEARCAT_ANNOTATION  setup 'off' to turn off bearcat $ based annotation
  * @param  {String} opts.BEARCAT_GLOBAL  	 setup bearcat to be global object
  *
@@ -4293,15 +4294,6 @@ Bearcat.getRoute = function(beanName, fnName) {
 
 	var bean = Bearcat.getBean(beanName);
 	return bean[fnName].bind(bean);
-}
-
-/**
- * Bearcat hook function, invoked when codes hot reloaded, implement it by yourself.
- *
- * @api public
- */
-Bearcat.onReload = function() {
-
 }
 },{"../package.json":44,"./beans/beanFactory":11,"./context/applicationContext":20,"./util/utils":34,"events":37,"pomelo-logger":47}],20:[function(require,module,exports){
 (function (process){
@@ -8928,7 +8920,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.5",
+  "version": "0.3.7",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
