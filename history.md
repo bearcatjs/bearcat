@@ -1,3 +1,7 @@
+0.3.8 / 2015-1-20
+===================
+* update license year to 2015, make some improvements
+
 0.3.7 / 2015-1-19
 ===================
 * fix codes, make some improvements

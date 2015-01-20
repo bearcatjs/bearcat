@@ -12,7 +12,7 @@ module.exports = require('./lib/bearcat');
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat Advisor
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -179,7 +179,7 @@ Advisor.prototype.parse = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat Aspect
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -286,7 +286,7 @@ Aspect.prototype.getBean = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat AutoProxyCreator
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -517,7 +517,7 @@ AutoProxyCreator.prototype.canApply = function(advisor, beanObject, beanName) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat AdvisedSupport
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 var Utils = require('../../util/utils');
@@ -700,7 +700,7 @@ AdvisedSupport.prototype.doGetInterceptionAdvice = function(method, beanName, ad
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat DynamicAopProxy
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -967,7 +967,7 @@ var checkFuncName = function(name) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat DynamicMetaProxy
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -1161,7 +1161,7 @@ var checkFuncName = function(name) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat DynamicAopProxy
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -1216,7 +1216,7 @@ ProxyFactory.prototype.getProxy = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat Pointcut
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -1334,7 +1334,7 @@ Pointcut.prototype.match = function(targetMethod) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat TargetSource
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -1405,7 +1405,7 @@ TargetSource.prototype.releaseTarget = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat BeanFactory
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -2216,7 +2216,7 @@ BeanFactory.prototype.getAspects = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat SingletonBeanFactory
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -2312,7 +2312,7 @@ SingletonBeanFactory.prototype.removeSingleton = function(beanName) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat BeanDefinition
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -2926,7 +2926,7 @@ BeanDefinition.prototype.updateSettingsOn = function(BeanDefinition, key, settin
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat BeanDefinitionVisitor
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 var logger = require('pomelo-logger').getLogger('bearcat', 'BeanDefinitionVisitor');
@@ -3060,7 +3060,7 @@ BeanDefinitionVisitor.prototype.visitArgumentsValues = function(beanDefinition) 
  *
  * Bearcat BeanModule
  * modified from seajs module.js
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>, http://seajs.org
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>, http://seajs.org
  * MIT Licensed
  */
 
@@ -3381,7 +3381,7 @@ module.exports = BeanModule;
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat BeanWrapper
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -3579,7 +3579,7 @@ BeanWrapper.prototype.setBean = function(bean) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat PlaceHolderConfigurer
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -3787,7 +3787,7 @@ PlaceHolderConfigurer.prototype.getProperties = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat PlaceHolderResolver
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 var Utils = require('../../util/utils');
@@ -3898,7 +3898,6 @@ PlaceHolderResolver.prototype.doReplace = function(strVal) {
 	}
 	return res;
 }
-
 },{"../../util/utils":34}],19:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -3909,7 +3908,7 @@ PlaceHolderResolver.prototype.doReplace = function(strVal) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat App
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -4306,7 +4305,7 @@ Bearcat.getRoute = function(beanName, fnName) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat ApplicationContext
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -4725,7 +4724,6 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 
 	logger.info('bearcat hot reload watch %j', hpath);
 	watcher.on('all', function(event, path) {
-		logger.debug('hotReloadFileWatch %s %s', event, path);
 		if (event != 'change' && event != 'add') {
 			return;
 		}
@@ -5219,7 +5217,7 @@ ApplicationContext.prototype.getBase = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat AsyncScriptLoader
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -5423,7 +5421,7 @@ module.exports = AsyncScriptLoader;
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat ConfigLoader
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -5597,7 +5595,7 @@ ConfigLoader.prototype.getRecursiveScanPath = function(cpath, scanPaths, metaObj
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat MetaLoader
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -5749,7 +5747,7 @@ MetaLoader.prototype.loadPath = function(meta, path) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat PropertiesLoader
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -5838,7 +5836,7 @@ PropertiesLoader.prototype.loadDir = function(meta, lpath) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat ResourceLoader
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -5905,7 +5903,7 @@ ResourceLoader.prototype.load = function(cpath) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat AopUtil
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -5998,7 +5996,7 @@ AopUtil.sortAdvisorsByOrder = function(advisors) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat BeanUtils
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -6133,7 +6131,7 @@ BeanUtils.sortBeanDefinitions = function(beanDefinitions, beanFactory) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat Constant
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -6208,7 +6206,7 @@ module.exports = {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat FileUtil
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -6270,7 +6268,7 @@ if (fs) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat MetaUtil
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -6430,7 +6428,6 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 	if (props.length) {
 		meta['props'] = props;
 	}
-	// }
 
 	for (var i = 0; i < funcArgs.length; i++) {
 		var funcArg = funcArgs[i].trim();
@@ -6702,7 +6699,7 @@ MetaUtil.checkFuncPropsNamespace = function(funcKey) {
  *
  * Bearcat RequestUtil load async script
  * modified from seajs util-request.js
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>, http://seajs.org
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>, http://seajs.org
  * MIT Licensed
  */
 
@@ -6852,7 +6849,7 @@ module.exports = RequestUtil;
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat RequireUtils
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -6923,7 +6920,7 @@ module.exports = RequireUtils;
  * Bearcat ScriptUtil
  * modified from seajs util-path.js
  * The utilities for operating path such as id, uri
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>, http://seajs.org
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>, http://seajs.org
  * MIT Licensed
  */
 
@@ -7197,7 +7194,7 @@ module.exports = ScriptUtil;
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat Utils
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -7558,7 +7555,7 @@ Utils.checkWebWorker = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat ValidatorUtil
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
