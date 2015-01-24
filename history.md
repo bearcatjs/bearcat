@@ -1,3 +1,7 @@
+0.3.9 / 2015-1-24
+===================
+* review bearcat.getBeanFunction && improve proxy invoke with error when target bean has not such method
+
 0.3.8 / 2015-1-20
 ===================
 * update license year to 2015, make some improvements

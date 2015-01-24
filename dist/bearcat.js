@@ -1038,6 +1038,8 @@ DynamicMetaProxy.prototype.dyInvoke = function(method, args) {
 	var targetBean = this.getBean();
 	if (Utils.checkFunction(targetBean[method])) {
 		return targetBean[method].apply(targetBean, args);
+	} else {
+		logger.error('invoke error no such method %s in the target bean', method);
 	}
 }
 
@@ -4268,7 +4270,7 @@ Bearcat.getFunction = function(beanName) {
 		return;
 	}
 
-	return Bearcat.getBeanFactory().getBeanFunction(beanName);
+	return this.applicationContext.getBeanFunction(beanName);
 }
 
 /**
@@ -4972,6 +4974,17 @@ ApplicationContext.prototype.getBeanByFunc = function(func) {
 	arguments = Array.prototype.slice.apply(arguments);
 	arguments[0] = id;
 	return this.beanFactory.getBeanProxy.apply(this.beanFactory, arguments);
+}
+
+/**
+ * ApplicationContext get bean contructor function.
+ *
+ * @param  {String} beanName
+ * @return {Function} bean constructor function
+ * @api public
+ */
+ApplicationContext.prototype.getBeanFunction = function(beanName) {
+	return this.beanFactory.getBeanFunction(beanName);
 }
 
 /**
@@ -8917,7 +8930,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
