@@ -23,6 +23,7 @@ describe('bearcat', function() {
 			var paths = [simplepath];
 
 			bearcat.createApp(paths);
+			bearcat.createApp(paths);
 			bearcat.start(function() {
 				var car = bearcat.getBean('car');
 				var r = car.run();
