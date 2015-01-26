@@ -1,6 +1,6 @@
-var BeanFactory = require('../../lib/beans/beanFactory');
 var BeanDefinition = require('../../lib/beans/support/beanDefinition');
 var BeanWrapper = require('../../lib/beans/support/beanWrapper');
+var BeanFactory = require('../../lib/beans/beanFactory');
 
 describe('BeanFactory', function() {
 	describe('simple', function() {

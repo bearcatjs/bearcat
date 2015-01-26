@@ -529,7 +529,7 @@ describe('applicationContext', function() {
 
 			applicationContext.refresh();
 
-			applicationContext.getBean('xxx');
+			applicationContext.getBean('car');
 
 			done();
 		});

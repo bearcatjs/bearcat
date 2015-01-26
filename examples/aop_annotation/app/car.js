@@ -46,4 +46,8 @@ Car.prototype.doRunAfterSync = function() {
 	return 'runAfterSync';
 }
 
+Car.prototype.dyInit = function() {
+
+}
+
 module.exports = Car;
