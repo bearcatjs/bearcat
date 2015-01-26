@@ -2,14 +2,14 @@ var Util = require('util');
 
 var SizeConstraint = function() {
 	this.$cid = "size";
-	this.$message = "key %s value %s length over max %d";
+	this.message = "key %s value %s length over max %d";
 	this.max = null;
 }
 
 SizeConstraint.prototype.validate = function(key, value) {
 	console.log('validate %s %s', key, value);
 
-	var message = this.$message;
+	var message = this.message;
 	var maxLen = this.max;
 	if (maxLen === null) {
 		return;

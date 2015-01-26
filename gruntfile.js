@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 
   var src = ['test/bearcat.js', 'test/beans/support/*.js', 'test/context/applicationContext.js', 'test/util/*.js',
     'test/resource/*.js', 'test/aop/aop.js', 'test/aop/aop_annotation.js', 'test/aop/advisor.js', 'test/aop/aspect.js',
-    'test/aop/framework/*.js', 'test/aop/pointcut.js', 'test/aop/targetSource.js', 'test/beans/*.js'
+    'test/aop/framework/*.js', 'test/aop/pointcut.js', 'test/aop/targetSource.js', 'test/beans/*.js', 'test/model/*.js'
   ];
 
   // Project configuration.
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
           }
         }
       }
-    }, 
+    },
     uglify: {
       dist: {
         files: {

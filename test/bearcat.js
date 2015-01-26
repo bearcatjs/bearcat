@@ -141,6 +141,7 @@ describe('bearcat', function() {
 				var r = bus.run();
 				expect(r).to.eql('bus100');
 
+				bearcat.stop();
 				done();
 			});
 		});
