@@ -3986,16 +3986,11 @@ Bearcat.createApp = function(configLocations, opts) {
 		Root.bearcat = Bearcat;
 	}
 
-	var configLocations = this.configLocations;
-	if (!configLocations) {
-		return cb(new Error('Bearcat createApp error, configLocations null'));
-	}
-
 	if (!Utils.checkObject(this.opts)) {
 		logger.warn('Bearcat createApp opts must be object...');
 	}
 
-	this.applicationContext = new ApplicationContext(configLocations, this.opts);
+	this.applicationContext = new ApplicationContext(this.configLocations, this.opts);
 
 	this.state = STATE_INITED;
 	return Bearcat;
@@ -5925,8 +5920,6 @@ var Aspect = require('../aop/aspect');
 var Utils = require('./utils');
 var AopUtil = {};
 
-module.exports = AopUtil;
-
 /**
  * AopUtil build aspects from metaList and beanDefinition.
  *
@@ -5999,6 +5992,8 @@ AopUtil.sortAdvisorsByOrder = function(advisors) {
 
 	return advisors;
 }
+
+module.exports = AopUtil;
 },{"../aop/advisor":2,"../aop/aspect":3,"./utils":34}],27:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -6017,8 +6012,6 @@ var BeanWrapper = require('../beans/support/beanWrapper');
 var Utils = require('./utils');
 
 var BeanUtils = {};
-
-module.exports = BeanUtils;
 
 /**
  * BeanUtil build beanWrapper from meta settings.
@@ -6134,6 +6127,8 @@ BeanUtils.sortBeanDefinitions = function(beanDefinitions, beanFactory) {
 
 	return r;
 }
+
+module.exports = BeanUtils;
 },{"../beans/support/beanWrapper":16,"./utils":34}],28:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -6227,8 +6222,6 @@ var fs = require('fs');
 
 var FileUtil = {};
 
-module.exports = FileUtil;
-
 /**
  * FileUtil existsSync.
  *
@@ -6270,6 +6263,8 @@ if (fs) {
 		FileUtil[method] = fs[method];
 	}
 }
+
+module.exports = FileUtil;
 },{"fs":36}],30:[function(require,module,exports){
 (function (process){
 /*!
@@ -6293,8 +6288,6 @@ var Utils = require('./utils');
 var EOL = Os.EOL;
 
 var MetaUtil = {};
-
-module.exports = MetaUtil;
 
 /**
  * MetaUtil merge metaObject with originMeta.
@@ -6700,6 +6693,8 @@ MetaUtil.checkFuncPropsType = function(funcKey) {
 MetaUtil.checkFuncPropsNamespace = function(funcKey) {
 	return funcKey.match(/^\$N/);
 }
+
+module.exports = MetaUtil;
 }).call(this,require('_process'))
 },{"./constant":28,"./requireUtil":32,"./utils":34,"_process":41,"path":40,"pomelo-logger":47}],31:[function(require,module,exports){
 /*!
@@ -6944,11 +6939,6 @@ var DIRNAME_RE = /[^?#]*\//
 var DOT_RE = /\/\.\//g
 var DOUBLE_DOT_RE = /\/[^/]+\/\.\.\//
 var MULTI_SLASH_RE = /([^:/])\/+\//g
-
-
-// ScriptUtil.getLoaderPath = function() {
-//   return loaderPath;
-// }
 
 /**
  * ScriptUtil get current loader directory.
@@ -7216,8 +7206,6 @@ var FileUtil = require('./fileUtil');
 var Path = RequireUtil.requirePath();
 
 var Utils = {};
-
-module.exports = Utils;
 
 /**
  * Utils check array
@@ -7558,6 +7546,8 @@ Utils.checkBrowser = function() {
 Utils.checkWebWorker = function() {
 	return this.checkBrowser() && typeof importScripts !== 'undefined' && this.checkFunction(importScripts);
 }
+
+module.exports = Utils;
 },{"./fileUtil":29,"./requireUtil":32}],35:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -7574,8 +7564,6 @@ Utils.checkWebWorker = function() {
 
 var Constant = require('./constant');
 var ValidatorUtil = {};
-
-module.exports = ValidatorUtil;
 
 /**
  * ValidatorUtil validate metaObject.
@@ -7637,6 +7625,8 @@ ValidatorUtil.metaValidator = function(metaObject) {
 
 	return true;
 }
+
+module.exports = ValidatorUtil;
 },{"./constant":28}],36:[function(require,module,exports){
 
 },{}],37:[function(require,module,exports){
@@ -8930,7 +8920,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.8",
+  "version": "0.3.10",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",

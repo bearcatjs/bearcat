@@ -1,3 +1,7 @@
+0.3.10 / 2015-1-26
+===================
+* review bearcat.createApp && make some improvements
+
 0.3.9 / 2015-1-24
 ===================
 * review bearcat.getBeanFunction && improve proxy invoke with error when target bean has not such method
