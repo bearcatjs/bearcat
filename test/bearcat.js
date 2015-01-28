@@ -22,6 +22,17 @@ describe('bearcat', function() {
 			var simplepath = require.resolve('../examples/simple/context.json');
 			var paths = [simplepath];
 
+			bearcat.createApp({});
+			bearcat.stop();
+			bearcat.createApp({
+				BEARCAT_GLOBAL: true
+			});
+			bearcat.stop();
+			bearcat.createApp([], 2);
+			bearcat.stop();
+			bearcat.createApp(paths);
+			bearcat.stop();
+
 			bearcat.createApp(paths);
 			bearcat.createApp(paths);
 			bearcat.start(function() {

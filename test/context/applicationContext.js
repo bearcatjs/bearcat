@@ -633,22 +633,22 @@ describe('applicationContext', function() {
 
 				var hotCarPath = require.resolve('../../examples/hot_reload/hot/car.js');
 				var hotBusPath = require.resolve('../../examples/hot_reload/hot/bus.js');
-				// var fs = require('fs');
-				// require(hotCarPath);
-				// require(hotBusPath);
+				var fs = require('fs');
+				require(hotCarPath);
+				require(hotBusPath);
 				setTimeout(function() {
-					// fs.appendFileSync(hotCarPath, "\n");
-					// fs.appendFileSync(hotBusPath, "\n");
-					done();
-					// setTimeout(function() {
-					// 	r = car.run();
-					// 	expect(r).to.eql('car hot');
+					fs.appendFileSync(hotCarPath, "\n");
+					fs.appendFileSync(hotBusPath, "\n");
+					// done();
+					setTimeout(function() {
+						r = car.run();
+						expect(r).to.eql('car hot');
 
-					// 	r = bus.run();
-					// 	expect(r).to.eql('bus hot');
+						r = bus.run();
+						expect(r).to.eql('bus hot');
 
-					// 	done();
-					// }, 6000);
+						done();
+					}, 6000);
 				}, 2000);
 			});
 		});

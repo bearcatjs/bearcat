@@ -22,6 +22,8 @@ describe('bearcat', function() {
 			var simplepath = require.resolve('../../examples/model/context.json');
 			var paths = [simplepath];
 
+			bearcat.getModel('xxx');
+			bearcat.getRoute();
 			bearcat.createApp(paths);
 			bearcat.start(function() {
 				var car = bearcat.getModel('car'); // get bean
