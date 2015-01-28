@@ -1827,8 +1827,9 @@ BeanFactory.prototype.registryBean = function(beanName, metaObject) {
 		this.setBeanFunction(beanName, func);
 	}
 
-	if (!ValidatorUtil.metaValidator(metaObject)) {
-		logger.error("registryBean %j metaObject %j validate error", beanName, metaObject);
+	var validateResult = ValidatorUtil.metaValidator(metaObject);
+	if (validateResult !== true) {
+		logger.error("registryBean %j metaObject %j validate error %s", beanName, metaObject, validateResult.stack);
 		return;
 	}
 
@@ -7208,15 +7209,35 @@ var Path = RequireUtil.requirePath();
 var Utils = {};
 
 /**
+ * Utils check type
+ *
+ * @param  {String}   type
+ * @return {Function} high order function
+ * @api public
+ */
+Utils.isType = function(type) {
+	return function(obj) {
+		return {}.toString.call(obj) == "[object " + type + "]";
+	}
+}
+
+/**
  * Utils check array
  *
  * @param  {Array}   array
  * @return {Boolean} true|false
  * @api public
  */
-Utils.checkArray = function(array) {
-	return Object.prototype.toString.call(array) == '[object Array]';
-}
+Utils.checkArray = Array.isArray || Utils.isType("Array");
+
+/**
+ * Utils check number
+ *
+ * @param  {Number}  number
+ * @return {Boolean} true|false
+ * @api public
+ */
+Utils.checkNumber = Utils.isType("Number");
 
 /**
  * Utils check function
@@ -7225,10 +7246,7 @@ Utils.checkArray = function(array) {
  * @return {Boolean}    true|false
  * @api public
  */
-Utils.checkFunction = function(func) {
-	return (typeof func === 'function');
-}
-
+Utils.checkFunction = Utils.isType("Function");
 /**
  * Utils check object
  *
@@ -7236,9 +7254,7 @@ Utils.checkFunction = function(func) {
  * @return {Boolean}  true|false
  * @api public
  */
-Utils.checkObject = function(obj) {
-	return (typeof obj === 'object');
-}
+Utils.checkObject = Utils.isType("Object");
 
 /**
  * Utils check string
@@ -7247,9 +7263,16 @@ Utils.checkObject = function(obj) {
  * @return {Boolean}  true|false
  * @api public
  */
-Utils.checkString = function(str) {
-	return (typeof str === 'string');
-}
+Utils.checkString = Utils.isType("String");
+
+/**
+ * Utils check boolean
+ *
+ * @param  {Object}   obj object
+ * @return {Boolean}  true|false
+ * @api public
+ */
+Utils.checkBoolean = Utils.isType("Boolean");
 
 /**
  * Utils check object not empty
@@ -7563,6 +7586,7 @@ module.exports = Utils;
  */
 
 var Constant = require('./constant');
+var Utils = require('./utils');
 var ValidatorUtil = {};
 
 /**
@@ -7575,59 +7599,58 @@ var ValidatorUtil = {};
 ValidatorUtil.metaValidator = function(metaObject) {
 	var id = metaObject.id;
 
-	if (!id)
-		return false;
+	if (!Utils.checkString(id))
+		return new Error('id must be String');
 
 	var func = metaObject.func;
-	if (!func || typeof func !== 'function') {
-		return false;
-	}
+	if (!func || !Utils.checkFunction(func))
+		return new Error('func must be Function');
 
 	var order = metaObject.order;
-	if (order && typeof order !== 'number')
-		return false;
+	if (Utils.isNotNull(order) && !Utils.checkNumber(order))
+		return new Error('order must be Number');
 
 	var parentName = metaObject.parent;
-	if (parentName && typeof parentName !== 'string')
-		return false;
+	if (Utils.isNotNull(parentName) && !Utils.checkString(parentName))
+		return new Error('parent must be String');
 
 	var initMethodName = metaObject.init;
-	if (initMethodName && typeof initMethodName !== 'string')
-		return false;
+	if (Utils.isNotNull(initMethodName) && !Utils.checkString(initMethodName))
+		return new Error('init must be String');
 
 	var destroyMethodName = metaObject.destroy;
-	if (destroyMethodName && typeof destroyMethodName !== 'string')
-		return false;
+	if (Utils.isNotNull(destroyMethodName) && !Utils.checkString(destroyMethodName))
+		return new Error('destroy must be String');
 
 	var factoryBeanName = metaObject.factoryBean;
-	if (factoryBeanName && typeof factoryBeanName !== 'string')
-		return false;
+	if (Utils.isNotNull(factoryBeanName) && !Utils.checkString(factoryBeanName))
+		return new Error('factoryBean must be String');
 
 	var factoryMethodName = metaObject.factoryMethod;
-	if (factoryMethodName && typeof factoryMethodName !== 'string')
-		return false;
+	if (Utils.isNotNull(factoryMethodName) && !Utils.checkString(factoryMethodName))
+		return new Error('factoryMethodName must be String');
 
 	var scope = metaObject.scope || Constant.SCOPE_DEFAULT;
 	if (scope && scope !== Constant.SCOPE_SINGLETON && scope !== Constant.SCOPE_PROTOTYPE)
-		return false;
+		return new Error('scope must be singleton or prototype');
 
 	var args = metaObject.args || Constant.ARGS_DEFAULT;
 	var props = metaObject.props || Constant.PROPS_DEFAULT;
 	var factoryArgsOn = metaObject.factoryArgs || Constant.ARGS_DEFAULT;
 
 	var asyncInit = metaObject.async || Constant.ASYNC_INIT_DEFAULT;
-	if (asyncInit && typeof asyncInit !== 'boolean')
-		return false;
+	if (Utils.isNotNull(asyncInit) && !Utils.checkBoolean(asyncInit))
+		return new Error('async must be Boolean');
 
 	var lazyInit = metaObject.lazy || Constant.LAZY_INIT_DEFAULT;
-	if (lazyInit && typeof lazyInit !== 'boolean')
-		return false;
+	if (Utils.isNotNull(lazyInit) && !Utils.checkBoolean(lazyInit))
+		return new Error('lazy must be Boolean');
 
 	return true;
 }
 
 module.exports = ValidatorUtil;
-},{"./constant":28}],36:[function(require,module,exports){
+},{"./constant":28,"./utils":34}],36:[function(require,module,exports){
 
 },{}],37:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
@@ -8920,7 +8943,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
