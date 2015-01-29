@@ -1,7 +1,7 @@
 var CarModel = function() {
 	this.$mid = "car";
 	this.$table = "ba_car";
-	this.num = "$type:Long;notNull";
+	this.num = "$type:Number;notNull";
 	this.len = "$type:String;size(max=5)";
 	this.$utils = null;
 }

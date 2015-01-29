@@ -27,21 +27,31 @@ describe('bearcat', function() {
 			bearcat.createApp(paths);
 			bearcat.start(function() {
 				var car = bearcat.getModel('car'); // get bean
-				car.$before('before')
-					.$after(['transform'])
+				var r = car.$before('before')
 					.$set('num', 100);
+
+				expect(r).to.eql(true);
 
 				var num = car.$get('num');
 				expect(num).to.eql(100);
 
-				var r = car.$before(['checkNum'])
+				r = car.$before('before')
+					.$after(['transform'])
+					.$set('num', 100);
+
+				expect(r).to.eql(true);
+
+				num = car.$get('num');
+				expect(num).to.eql(10000);
+
+				r = car.$before(['checkNum'])
 					.$set('num', 'aaa');
 
 				expect(r).to.be.an('object');
 
 				num = car.$get('num');
 
-				expect(num).to.eql(100);
+				expect(num).to.eql(10000);
 
 				console.log(num);
 				r = car.$before()
