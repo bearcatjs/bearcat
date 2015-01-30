@@ -1,7 +1,8 @@
 var Util = require('util');
 
 var SizeConstraint = function() {
-	this.$cid = "size";
+	this.$cid = "carSize";
+	this.$constraint = "$notNull";
 	this.message = "key %s value %s length over max %d";
 	this.max = null;
 }

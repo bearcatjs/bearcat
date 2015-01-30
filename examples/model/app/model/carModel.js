@@ -1,8 +1,9 @@
 var CarModel = function() {
 	this.$mid = "car";
 	this.$table = "ba_car";
+	this.id = "$primary;type:Number;";
 	this.num = "$type:Number;notNull";
-	this.len = "$type:String;size(max=5)";
+	this.len = "$type:String;carSize(max=5)";
 	this.$utils = null;
 }
 
@@ -20,6 +21,14 @@ CarModel.prototype.checkNum = function(key, value) {
 CarModel.prototype.transform = function() {
 	console.log('transform~~~');
 	this.num = 10000;
+}
+
+CarModel.prototype.transformError = function() {
+	return new Error('transformError');
+}
+
+CarModel.prototype.run = function() {
+	console.log('run');
 }
 
 module.exports = CarModel;
