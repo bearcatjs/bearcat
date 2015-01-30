@@ -1,3 +1,7 @@
+0.3.12 / 2015-1-30
+===================
+* review typeof check type to Util.checkXXX
+
 0.3.11 / 2015-1-28
 ===================
 * review Utils.isType to make it more robust
