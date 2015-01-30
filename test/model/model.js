@@ -14,7 +14,7 @@ if (isBrowser()) {
 
 describe('bearcat', function() {
 	describe('#model', function() {
-		it('should do model right', function(done) {
+		it('should do model right|error', function(done) {
 			var bearcat = require('../../lib/bearcat');
 			if (isBrowser()) {
 				require('../../examples/model/bearcat-bootstrap.js');
@@ -53,14 +53,46 @@ describe('bearcat', function() {
 
 				expect(num).to.eql(10000);
 
-				console.log(num);
 				r = car.$before()
 					.$set('len', 'aaaaa6');
 
 				expect(r).to.be.an('object');
+
+				r = car.$after()
+					.$pack({
+						id: 100,
+						num: 100,
+						len: 100
+					});
+
+				num = car.$get('num');
+				expect(num).to.eql(100);
+
+				console.log(r);
+				expect(r).to.be.an('object');
+
+				r = car.$after()
+					.$pack({
+						id: 100,
+						num: 100,
+						len: "aaa"
+					});
+
+				car.run();
+
+				expect(r).to.eql(true);
+
+				r = car.$after(['transformError'])
+					.$set('num', 100);
+
+				expect(r).to.be.an('object');
+
+				var carError = bearcat.getModel("carError");
+				// console.log(carError);
+
 				bearcat.stop();
 				done();
 			});
-		})
+		});
 	});
 });
