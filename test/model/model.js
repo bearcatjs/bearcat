@@ -88,8 +88,9 @@ describe('bearcat', function() {
 				expect(r).to.be.an('object');
 
 				var carError = bearcat.getModel("carError");
-				// console.log(carError);
+				console.log(carError);
 
+				bearcat.getModel('xxx');
 				bearcat.stop();
 				done();
 			});

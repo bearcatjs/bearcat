@@ -28,6 +28,13 @@ describe('BeanFactory', function() {
 
 			beanFactory.getDependsApplyArgs([beanWrapper]);
 
+			beanFactory['models'] = {
+				xxx: {
+					getId: function() {}
+				}
+			}
+			beanFactory.getModelProxy('xxx');
+
 			done();
 		});
 	});
