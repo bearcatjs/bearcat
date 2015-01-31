@@ -1,3 +1,7 @@
+0.3.13 / 2015-1-31
+===================
+* update readme travis-ci and upgrade aop implements 
+
 0.3.12 / 2015-1-30
 ===================
 * review typeof check type to Util.checkXXX

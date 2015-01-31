@@ -1516,8 +1516,6 @@ var Advisor = function() {
 	this.bean = null;
 }
 
-module.exports = Advisor;
-
 /**
  * Advisor set pointcut.
  *
@@ -1653,6 +1651,8 @@ Advisor.prototype.isRuntime = function() {
 Advisor.prototype.parse = function() {
 	this.pointcut.parse();
 }
+
+module.exports = Advisor;
 },{"./pointcut":93}],87:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -1678,8 +1678,6 @@ var Aspect = function() {
 	this.beanDefinition = null;
 	this.bean = null;
 }
-
-module.exports = Aspect;
 
 /**
  * Aspect add advisor.
@@ -1760,6 +1758,8 @@ Aspect.prototype.setBean = function(bean) {
 Aspect.prototype.getBean = function() {
 	return this.bean;
 }
+
+module.exports = Aspect;
 },{}],88:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -1787,8 +1787,6 @@ var Utils = require('../../util/utils');
 var AutoProxyCreator = function() {
 	this.beanFactory = null;
 }
-
-module.exports = AutoProxyCreator;
 
 /**
  * AutoProxyCreator beanPostProcessor before filter wrap bean if necessary.
@@ -1991,6 +1989,8 @@ AutoProxyCreator.prototype.canApply = function(advisor, beanObject, beanName) {
 
 	return false;
 }
+
+module.exports = AutoProxyCreator;
 },{"../../util/aopUtil":110,"../../util/utils":118,"../framework/proxyFactory":92,"../targetSource":94}],89:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -2018,8 +2018,6 @@ var AdvisedSupport = function() {
 	this.targetSource = null;
 	this.advisorChainFactory = null;
 }
-
-module.exports = AdvisedSupport;
 
 /**
  * set target.
@@ -2174,6 +2172,8 @@ AdvisedSupport.prototype.doGetInterceptionAdvice = function(method, beanName, ad
 
 	return interceptorList;
 }
+
+module.exports = AdvisedSupport;
 },{"../../util/utils":118}],90:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -2202,8 +2202,6 @@ var DynamicAopProxy = function(advised) {
 	this.advised = advised;
 	this.dyInit();
 }
-
-module.exports = DynamicAopProxy;
 
 /**
  * DynamicAopProxy init function.
@@ -2441,6 +2439,8 @@ var checkFuncName = function(name) {
 
 	return false;
 }
+
+module.exports = DynamicAopProxy;
 },{"../../util/constant":112,"../../util/utils":118,"pomelo-logger":136}],91:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -2472,8 +2472,6 @@ var DynamicMetaProxy = function() {
 	this.beanFactory = null;
 	this.beanDefinition = null;
 }
-
-module.exports = DynamicMetaProxy;
 
 /**
  * DynamicMetaProxy init function.
@@ -2637,6 +2635,8 @@ var checkFuncName = function(name) {
 
 	return false;
 }
+
+module.exports = DynamicMetaProxy;
 },{"../../util/utils":118,"pomelo-logger":136}],92:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -2679,8 +2679,6 @@ var ProxyFactory = function(target, interfaces) {
 
 Util.inherits(ProxyFactory, AdvisedSupport);
 
-module.exports = ProxyFactory;
-
 /**
  * ProxyFactory get dynamic proxy.
  *
@@ -2692,6 +2690,8 @@ ProxyFactory.prototype.getProxy = function() {
 	var proxyObject = new DynamicAopProxy(this);
 	return proxyObject;
 }
+
+module.exports = ProxyFactory;
 },{"../../util/requireUtil":116,"../../util/utils":118,"./advisedSupport":89,"./dynamicAopProxy":90}],93:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -2718,8 +2718,6 @@ var Pointcut = function() {
 	this.adviceType = null;
 	this.targetExpression = null;
 }
-
-module.exports = Pointcut;
 
 /**
  * Pointcut set expression.
@@ -2810,6 +2808,8 @@ Pointcut.prototype.match = function(targetMethod) {
 
 	return targetMethod.match(targetExpression);
 }
+
+module.exports = Pointcut;
 },{"../util/utils":118}],94:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -2835,8 +2835,6 @@ var TargetSource = function(beanName, target) {
 	this.beanName = beanName;
 	this.target = target;
 }
-
-module.exports = TargetSource;
 
 /**
  * TargetSource set beanName.
@@ -2881,6 +2879,8 @@ TargetSource.prototype.getTarget = function() {
 TargetSource.prototype.releaseTarget = function() {
 
 }
+
+module.exports = TargetSource;
 },{}],95:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -13012,7 +13012,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":131,"_process":130,"inherits":127}],133:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.11",
+  "version": "0.3.13",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
