@@ -722,4 +722,25 @@ describe('applicationContext', function() {
 			applicationContext.refresh();
 		});
 	});
+
+	describe('multiple_scan', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/multiple_scan/context.json');
+			if (isBrowser()) {
+				require('../../examples/multiple_scan/bearcat-bootstrap.js');
+			}
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.on('finishRefresh', function() {
+				var bus = applicationContext.getBean('bus');
+				var r = bus.run();
+
+				expect(r).to.eql('bus wheel');
+
+				done();
+			})
+			applicationContext.refresh();
+		});
+	});
 });
