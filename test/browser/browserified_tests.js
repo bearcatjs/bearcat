@@ -1496,7 +1496,7 @@ Root.__bearcatData__.configData = properties;
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat Advisor
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -1663,7 +1663,7 @@ Advisor.prototype.parse = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat Aspect
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -1770,7 +1770,7 @@ Aspect.prototype.getBean = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat AutoProxyCreator
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -2001,7 +2001,7 @@ AutoProxyCreator.prototype.canApply = function(advisor, beanObject, beanName) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat AdvisedSupport
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 var Utils = require('../../util/utils');
@@ -2184,7 +2184,7 @@ AdvisedSupport.prototype.doGetInterceptionAdvice = function(method, beanName, ad
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat DynamicAopProxy
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -2451,7 +2451,7 @@ var checkFuncName = function(name) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat DynamicMetaProxy
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -2522,6 +2522,8 @@ DynamicMetaProxy.prototype.dyInvoke = function(method, args) {
 	var targetBean = this.getBean();
 	if (Utils.checkFunction(targetBean[method])) {
 		return targetBean[method].apply(targetBean, args);
+	} else {
+		logger.error('invoke error no such method %s in the target bean', method);
 	}
 }
 
@@ -2645,7 +2647,7 @@ var checkFuncName = function(name) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat DynamicAopProxy
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -2700,7 +2702,7 @@ ProxyFactory.prototype.getProxy = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat Pointcut
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -2818,7 +2820,7 @@ Pointcut.prototype.match = function(targetMethod) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat TargetSource
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -2889,7 +2891,7 @@ TargetSource.prototype.releaseTarget = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat BeanFactory
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -3309,8 +3311,9 @@ BeanFactory.prototype.registryBean = function(beanName, metaObject) {
 		this.setBeanFunction(beanName, func);
 	}
 
-	if (!ValidatorUtil.metaValidator(metaObject)) {
-		logger.error("registryBean %j metaObject %j validate error", beanName, metaObject);
+	var validateResult = ValidatorUtil.metaValidator(metaObject);
+	if (validateResult !== true) {
+		logger.error("registryBean %j metaObject %j validate error %s", beanName, metaObject, validateResult.stack);
 		return;
 	}
 
@@ -3678,14 +3681,15 @@ BeanFactory.prototype.removeBeanDefinition = function(beanName) {
  * @api public
  */
 BeanFactory.prototype.containsBeanDefinition = function(beanName) {
-		return !!this.getBeanDefinition(beanName);
-	}
-	/**
-	 * BeanFactory get aspects.
-	 *
-	 * @return {Array} aspects
-	 * @api public
-	 */
+	return !!this.getBeanDefinition(beanName);
+}
+
+/**
+ * BeanFactory get aspects.
+ *
+ * @return {Array} aspects
+ * @api public
+ */
 BeanFactory.prototype.getAspects = function() {
 	return this.aspects;
 }
@@ -3699,7 +3703,7 @@ BeanFactory.prototype.getAspects = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat SingletonBeanFactory
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -3795,7 +3799,7 @@ SingletonBeanFactory.prototype.removeSingleton = function(beanName) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat BeanDefinition
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -4409,7 +4413,7 @@ BeanDefinition.prototype.updateSettingsOn = function(BeanDefinition, key, settin
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat BeanDefinitionVisitor
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 var logger = require('pomelo-logger').getLogger('bearcat', 'BeanDefinitionVisitor');
@@ -4543,7 +4547,7 @@ BeanDefinitionVisitor.prototype.visitArgumentsValues = function(beanDefinition) 
  *
  * Bearcat BeanModule
  * modified from seajs module.js
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>, http://seajs.org
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>, http://seajs.org
  * MIT Licensed
  */
 
@@ -4864,7 +4868,7 @@ module.exports = BeanModule;
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat BeanWrapper
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -5062,7 +5066,7 @@ BeanWrapper.prototype.setBean = function(bean) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat PlaceHolderConfigurer
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -5270,7 +5274,7 @@ PlaceHolderConfigurer.prototype.getProperties = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat PlaceHolderResolver
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 var Utils = require('../../util/utils');
@@ -5381,7 +5385,6 @@ PlaceHolderResolver.prototype.doReplace = function(strVal) {
 	}
 	return res;
 }
-
 },{"../../util/utils":118}],103:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -5392,7 +5395,7 @@ PlaceHolderResolver.prototype.doReplace = function(strVal) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat App
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -5444,7 +5447,7 @@ module.exports = Bearcat;
  * @param  {String} opts.BEARCAT_CPATH       setup config path
  * @param  {String} opts.BEARCAT_HPATH       setup hot reload path, usually it is the scan source directory(app by default)
  * @param  {String} opts.BEARCAT_LOGGER      setup 'off' to turn off bearcat logger configuration
- * @param  {String} opts.BEARCAT_HOT         setup 'on' to turn on bearcat hot code reloading
+ * @param  {String} opts.BEARCAT_HOT         setup 'on' to turn on bearcat hot code reload
  * @param  {String} opts.BEARCAT_ANNOTATION  setup 'off' to turn off bearcat $ based annotation
  * @param  {String} opts.BEARCAT_GLOBAL  	 setup bearcat to be global object
  *
@@ -5468,16 +5471,11 @@ Bearcat.createApp = function(configLocations, opts) {
 		Root.bearcat = Bearcat;
 	}
 
-	var configLocations = this.configLocations;
-	if (!configLocations) {
-		return cb(new Error('Bearcat createApp error, configLocations null'));
-	}
-
 	if (!Utils.checkObject(this.opts)) {
 		logger.warn('Bearcat createApp opts must be object...');
 	}
 
-	this.applicationContext = new ApplicationContext(configLocations, this.opts);
+	this.applicationContext = new ApplicationContext(this.configLocations, this.opts);
 
 	this.state = STATE_INITED;
 	return Bearcat;
@@ -5718,11 +5716,11 @@ Bearcat.getBean = function(beanName) {
 
 	var firstarg = arguments[0];
 	var func = "";
-	if (typeof firstarg === 'object') {
+	if (Utils.checkObject(firstarg)) {
 		func = "getBeanByMeta";
-	} else if (typeof firstarg === 'function') {
+	} else if (Utils.checkFunction(firstarg)) {
 		func = "getBeanByFunc";
-	} else if (typeof firstarg === 'string') {
+	} else if (Utils.checkString(firstarg)) {
 		func = "getBean";
 	} else {
 		logger.error('Bearcat application unsupported getBean arguments for %s', beanName);
@@ -5752,7 +5750,7 @@ Bearcat.getFunction = function(beanName) {
 		return;
 	}
 
-	return Bearcat.getBeanFactory().getBeanFunction(beanName);
+	return this.applicationContext.getBeanFunction(beanName);
 }
 
 /**
@@ -5778,15 +5776,6 @@ Bearcat.getRoute = function(beanName, fnName) {
 	var bean = Bearcat.getBean(beanName);
 	return bean[fnName].bind(bean);
 }
-
-/**
- * Bearcat hook function, invoked when codes hot reloaded, implement it by yourself.
- *
- * @api public
- */
-Bearcat.onReload = function() {
-
-}
 },{"../package.json":133,"./beans/beanFactory":95,"./context/applicationContext":104,"./util/utils":118,"events":126,"pomelo-logger":136}],104:[function(require,module,exports){
 (function (process){
 /*!
@@ -5798,7 +5787,7 @@ Bearcat.onReload = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat ApplicationContext
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -6217,7 +6206,6 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 
 	logger.info('bearcat hot reload watch %j', hpath);
 	watcher.on('all', function(event, path) {
-		logger.debug('hotReloadFileWatch %s %s', event, path);
 		if (event != 'change' && event != 'add') {
 			return;
 		}
@@ -6469,6 +6457,17 @@ ApplicationContext.prototype.getBeanByFunc = function(func) {
 }
 
 /**
+ * ApplicationContext get bean contructor function.
+ *
+ * @param  {String} beanName
+ * @return {Function} bean constructor function
+ * @api public
+ */
+ApplicationContext.prototype.getBeanFunction = function(beanName) {
+	return this.beanFactory.getBeanFunction(beanName);
+}
+
+/**
  * ApplicationContext add module(bean) to IoC container through $ annotation function from applicationContext.
  *
  * @param   {Function} func $ annotation function
@@ -6711,7 +6710,7 @@ ApplicationContext.prototype.getBase = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat AsyncScriptLoader
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -6915,7 +6914,7 @@ module.exports = AsyncScriptLoader;
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat ConfigLoader
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -7089,7 +7088,7 @@ ConfigLoader.prototype.getRecursiveScanPath = function(cpath, scanPaths, metaObj
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat MetaLoader
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -7241,7 +7240,7 @@ MetaLoader.prototype.loadPath = function(meta, path) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat PropertiesLoader
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -7309,7 +7308,7 @@ PropertiesLoader.prototype.loadDir = function(meta, lpath) {
 		}
 
 		m = Utils.myRequire(fp);
-		if (!m || typeof m !== 'object') {
+		if (!Utils.isNotNull(m) || !Utils.checkObject(m)) {
 			continue;
 		}
 
@@ -7330,7 +7329,7 @@ PropertiesLoader.prototype.loadDir = function(meta, lpath) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat ResourceLoader
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -7397,7 +7396,7 @@ ResourceLoader.prototype.load = function(cpath) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat AopUtil
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -7405,8 +7404,6 @@ var Advisor = require('../aop/advisor');
 var Aspect = require('../aop/aspect');
 var Utils = require('./utils');
 var AopUtil = {};
-
-module.exports = AopUtil;
 
 /**
  * AopUtil build aspects from metaList and beanDefinition.
@@ -7460,7 +7457,7 @@ AopUtil.getMethodsFromObject = function(object) {
 
 	for (var key in proto) {
 		var method = proto[key];
-		if (typeof method === 'function') {
+		if (Utils.checkFunction(method)) {
 			methods.push(key);
 		}
 	}
@@ -7480,6 +7477,8 @@ AopUtil.sortAdvisorsByOrder = function(advisors) {
 
 	return advisors;
 }
+
+module.exports = AopUtil;
 },{"../aop/advisor":86,"../aop/aspect":87,"./utils":118}],111:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -7490,7 +7489,7 @@ AopUtil.sortAdvisorsByOrder = function(advisors) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat BeanUtils
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -7498,8 +7497,6 @@ var BeanWrapper = require('../beans/support/beanWrapper');
 var Utils = require('./utils');
 
 var BeanUtils = {};
-
-module.exports = BeanUtils;
 
 /**
  * BeanUtil build beanWrapper from meta settings.
@@ -7615,6 +7612,8 @@ BeanUtils.sortBeanDefinitions = function(beanDefinitions, beanFactory) {
 
 	return r;
 }
+
+module.exports = BeanUtils;
 },{"../beans/support/beanWrapper":100,"./utils":118}],112:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -7625,7 +7624,7 @@ BeanUtils.sortBeanDefinitions = function(beanDefinitions, beanFactory) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat Constant
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -7700,15 +7699,13 @@ module.exports = {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat FileUtil
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
 var fs = require('fs');
 
 var FileUtil = {};
-
-module.exports = FileUtil;
 
 /**
  * FileUtil existsSync.
@@ -7751,6 +7748,8 @@ if (fs) {
 		FileUtil[method] = fs[method];
 	}
 }
+
+module.exports = FileUtil;
 },{"fs":121}],114:[function(require,module,exports){
 (function (process){
 /*!
@@ -7762,7 +7761,7 @@ if (fs) {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat MetaUtil
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -7774,8 +7773,6 @@ var Utils = require('./utils');
 var EOL = Os.EOL;
 
 var MetaUtil = {};
-
-module.exports = MetaUtil;
 
 /**
  * MetaUtil merge metaObject with originMeta.
@@ -7922,7 +7919,6 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 	if (props.length) {
 		meta['props'] = props;
 	}
-	// }
 
 	for (var i = 0; i < funcArgs.length; i++) {
 		var funcArg = funcArgs[i].trim();
@@ -8182,6 +8178,8 @@ MetaUtil.checkFuncPropsType = function(funcKey) {
 MetaUtil.checkFuncPropsNamespace = function(funcKey) {
 	return funcKey.match(/^\$N/);
 }
+
+module.exports = MetaUtil;
 }).call(this,require('_process'))
 },{"./constant":112,"./requireUtil":116,"./utils":118,"_process":130,"path":129,"pomelo-logger":136}],115:[function(require,module,exports){
 /*!
@@ -8194,7 +8192,7 @@ MetaUtil.checkFuncPropsNamespace = function(funcKey) {
  *
  * Bearcat RequestUtil load async script
  * modified from seajs util-request.js
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>, http://seajs.org
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>, http://seajs.org
  * MIT Licensed
  */
 
@@ -8344,7 +8342,7 @@ module.exports = RequestUtil;
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat RequireUtils
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -8415,7 +8413,7 @@ module.exports = RequireUtils;
  * Bearcat ScriptUtil
  * modified from seajs util-path.js
  * The utilities for operating path such as id, uri
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>, http://seajs.org
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>, http://seajs.org
  * MIT Licensed
  */
 
@@ -8426,11 +8424,6 @@ var DIRNAME_RE = /[^?#]*\//
 var DOT_RE = /\/\.\//g
 var DOUBLE_DOT_RE = /\/[^/]+\/\.\.\//
 var MULTI_SLASH_RE = /([^:/])\/+\//g
-
-
-// ScriptUtil.getLoaderPath = function() {
-//   return loaderPath;
-// }
 
 /**
  * ScriptUtil get current loader directory.
@@ -8689,7 +8682,7 @@ module.exports = ScriptUtil;
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat Utils
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
@@ -8699,7 +8692,18 @@ var Path = RequireUtil.requirePath();
 
 var Utils = {};
 
-module.exports = Utils;
+/**
+ * Utils check type
+ *
+ * @param  {String}   type
+ * @return {Function} high order function
+ * @api public
+ */
+Utils.isType = function(type) {
+	return function(obj) {
+		return {}.toString.call(obj) == "[object " + type + "]";
+	}
+}
 
 /**
  * Utils check array
@@ -8708,9 +8712,16 @@ module.exports = Utils;
  * @return {Boolean} true|false
  * @api public
  */
-Utils.checkArray = function(array) {
-	return Object.prototype.toString.call(array) == '[object Array]';
-}
+Utils.checkArray = Array.isArray || Utils.isType("Array");
+
+/**
+ * Utils check number
+ *
+ * @param  {Number}  number
+ * @return {Boolean} true|false
+ * @api public
+ */
+Utils.checkNumber = Utils.isType("Number");
 
 /**
  * Utils check function
@@ -8719,10 +8730,7 @@ Utils.checkArray = function(array) {
  * @return {Boolean}    true|false
  * @api public
  */
-Utils.checkFunction = function(func) {
-	return (typeof func === 'function');
-}
-
+Utils.checkFunction = Utils.isType("Function");
 /**
  * Utils check object
  *
@@ -8730,9 +8738,7 @@ Utils.checkFunction = function(func) {
  * @return {Boolean}  true|false
  * @api public
  */
-Utils.checkObject = function(obj) {
-	return (typeof obj === 'object');
-}
+Utils.checkObject = Utils.isType("Object");
 
 /**
  * Utils check string
@@ -8741,9 +8747,16 @@ Utils.checkObject = function(obj) {
  * @return {Boolean}  true|false
  * @api public
  */
-Utils.checkString = function(str) {
-	return (typeof str === 'string');
-}
+Utils.checkString = Utils.isType("String");
+
+/**
+ * Utils check boolean
+ *
+ * @param  {Object}   obj object
+ * @return {Boolean}  true|false
+ * @api public
+ */
+Utils.checkBoolean = Utils.isType("Boolean");
 
 /**
  * Utils check object not empty
@@ -8847,7 +8860,7 @@ Utils.myRequireHot = function(cpath) {
  * @api public
  */
 Utils.getLoadPath = function(spath, cpath) {
-	if (typeof spath !== 'string') {
+	if (!Utils.checkString(spath)) {
 		return null;
 	}
 	spath = spath.replace(/\./g, "/");
@@ -8868,7 +8881,7 @@ Utils.getLoadPath = function(spath, cpath) {
  * @api public
  */
 Utils.getLoadPath2 = function(spath, cpath) {
-	if (typeof spath !== 'string') {
+	if (!Utils.checkString(spath)) {
 		return null;
 	}
 
@@ -9040,6 +9053,8 @@ Utils.checkBrowser = function() {
 Utils.checkWebWorker = function() {
 	return this.checkBrowser() && typeof importScripts !== 'undefined' && this.checkFunction(importScripts);
 }
+
+module.exports = Utils;
 },{"./fileUtil":113,"./requireUtil":116}],119:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -9050,14 +9065,13 @@ Utils.checkWebWorker = function() {
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat ValidatorUtil
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
 
 var Constant = require('./constant');
+var Utils = require('./utils');
 var ValidatorUtil = {};
-
-module.exports = ValidatorUtil;
 
 /**
  * ValidatorUtil validate metaObject.
@@ -9069,57 +9083,58 @@ module.exports = ValidatorUtil;
 ValidatorUtil.metaValidator = function(metaObject) {
 	var id = metaObject.id;
 
-	if (!id)
-		return false;
+	if (!Utils.checkString(id))
+		return new Error('id must be String');
 
 	var func = metaObject.func;
-	if (!func || typeof func !== 'function') {
-		return false;
-	}
+	if (!func || !Utils.checkFunction(func))
+		return new Error('func must be Function');
 
 	var order = metaObject.order;
-	if (order && typeof order !== 'number')
-		return false;
+	if (Utils.isNotNull(order) && !Utils.checkNumber(order))
+		return new Error('order must be Number');
 
 	var parentName = metaObject.parent;
-	if (parentName && typeof parentName !== 'string')
-		return false;
+	if (Utils.isNotNull(parentName) && !Utils.checkString(parentName))
+		return new Error('parent must be String');
 
 	var initMethodName = metaObject.init;
-	if (initMethodName && typeof initMethodName !== 'string')
-		return false;
+	if (Utils.isNotNull(initMethodName) && !Utils.checkString(initMethodName))
+		return new Error('init must be String');
 
 	var destroyMethodName = metaObject.destroy;
-	if (destroyMethodName && typeof destroyMethodName !== 'string')
-		return false;
+	if (Utils.isNotNull(destroyMethodName) && !Utils.checkString(destroyMethodName))
+		return new Error('destroy must be String');
 
 	var factoryBeanName = metaObject.factoryBean;
-	if (factoryBeanName && typeof factoryBeanName !== 'string')
-		return false;
+	if (Utils.isNotNull(factoryBeanName) && !Utils.checkString(factoryBeanName))
+		return new Error('factoryBean must be String');
 
 	var factoryMethodName = metaObject.factoryMethod;
-	if (factoryMethodName && typeof factoryMethodName !== 'string')
-		return false;
+	if (Utils.isNotNull(factoryMethodName) && !Utils.checkString(factoryMethodName))
+		return new Error('factoryMethodName must be String');
 
 	var scope = metaObject.scope || Constant.SCOPE_DEFAULT;
 	if (scope && scope !== Constant.SCOPE_SINGLETON && scope !== Constant.SCOPE_PROTOTYPE)
-		return false;
+		return new Error('scope must be singleton or prototype');
 
 	var args = metaObject.args || Constant.ARGS_DEFAULT;
 	var props = metaObject.props || Constant.PROPS_DEFAULT;
 	var factoryArgsOn = metaObject.factoryArgs || Constant.ARGS_DEFAULT;
 
 	var asyncInit = metaObject.async || Constant.ASYNC_INIT_DEFAULT;
-	if (asyncInit && typeof asyncInit !== 'boolean')
-		return false;
+	if (Utils.isNotNull(asyncInit) && !Utils.checkBoolean(asyncInit))
+		return new Error('async must be Boolean');
 
 	var lazyInit = metaObject.lazy || Constant.LAZY_INIT_DEFAULT;
-	if (lazyInit && typeof lazyInit !== 'boolean')
-		return false;
+	if (Utils.isNotNull(lazyInit) && !Utils.checkBoolean(lazyInit))
+		return new Error('lazy must be Boolean');
 
 	return true;
 }
-},{"./constant":112}],120:[function(require,module,exports){
+
+module.exports = ValidatorUtil;
+},{"./constant":112,"./utils":118}],120:[function(require,module,exports){
 (function (Buffer){
 (function (global, module) {
 
@@ -12997,7 +13012,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":131,"_process":130,"inherits":127}],133:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.5",
+  "version": "0.3.11",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
@@ -16974,7 +16989,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t1 right', function(done) {
 			var t1 = mock_meta.t1;
 			var ret = validatorUtil.metaValidator(t1);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});
@@ -16982,7 +16997,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t2 right', function(done) {
 			var t2 = mock_meta.t2;
 			var ret = validatorUtil.metaValidator(t2);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});
@@ -16990,7 +17005,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t3 right', function(done) {
 			var t3 = mock_meta.t3;
 			var ret = validatorUtil.metaValidator(t3);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});
@@ -16998,7 +17013,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t4 right', function(done) {
 			var t4 = mock_meta.t4;
 			var ret = validatorUtil.metaValidator(t4);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});
@@ -17006,7 +17021,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t5 right', function(done) {
 			var t5 = mock_meta.t5;
 			var ret = validatorUtil.metaValidator(t5);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});
@@ -17014,7 +17029,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t6 right', function(done) {
 			var t6 = mock_meta.t6;
 			var ret = validatorUtil.metaValidator(t6);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});
@@ -17022,7 +17037,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t7 right', function(done) {
 			var t7 = mock_meta.t7;
 			var ret = validatorUtil.metaValidator(t7);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});
@@ -17030,7 +17045,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t8 right', function(done) {
 			var t8 = mock_meta.t8;
 			var ret = validatorUtil.metaValidator(t8);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});
@@ -17038,7 +17053,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t9 right', function(done) {
 			var t9 = mock_meta.t9;
 			var ret = validatorUtil.metaValidator(t9);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});
@@ -17046,7 +17061,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t10 right', function(done) {
 			var t10 = mock_meta.t10;
 			var ret = validatorUtil.metaValidator(t10);
-			expect(ret).to.eql(true);
+			expect(ret).to.equal(true);
 
 			done();
 		});
@@ -17054,7 +17069,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t11 right', function(done) {
 			var t11 = mock_meta.t11;
 			var ret = validatorUtil.metaValidator(t11);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});
@@ -17062,7 +17077,7 @@ describe('validatorUtil', function() {
 		it('should metaValidator t12 right', function(done) {
 			var t12 = mock_meta.t12;
 			var ret = validatorUtil.metaValidator(t12);
-			expect(ret).to.eql(false);
+			expect(ret).not.to.equal(true);
 
 			done();
 		});

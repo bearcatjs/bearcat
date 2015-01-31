@@ -4232,11 +4232,11 @@ Bearcat.getBean = function(beanName) {
 
 	var firstarg = arguments[0];
 	var func = "";
-	if (typeof firstarg === 'object') {
+	if (Utils.checkObject(firstarg)) {
 		func = "getBeanByMeta";
-	} else if (typeof firstarg === 'function') {
+	} else if (Utils.checkFunction(firstarg)) {
 		func = "getBeanByFunc";
-	} else if (typeof firstarg === 'string') {
+	} else if (Utils.checkString(firstarg)) {
 		func = "getBean";
 	} else {
 		logger.error('Bearcat application unsupported getBean arguments for %s', beanName);
@@ -5824,7 +5824,7 @@ PropertiesLoader.prototype.loadDir = function(meta, lpath) {
 		}
 
 		m = Utils.myRequire(fp);
-		if (!m || typeof m !== 'object') {
+		if (!Utils.isNotNull(m) || !Utils.checkObject(m)) {
 			continue;
 		}
 
@@ -5973,7 +5973,7 @@ AopUtil.getMethodsFromObject = function(object) {
 
 	for (var key in proto) {
 		var method = proto[key];
-		if (typeof method === 'function') {
+		if (Utils.checkFunction(method)) {
 			methods.push(key);
 		}
 	}
@@ -7376,7 +7376,7 @@ Utils.myRequireHot = function(cpath) {
  * @api public
  */
 Utils.getLoadPath = function(spath, cpath) {
-	if (typeof spath !== 'string') {
+	if (!Utils.checkString(spath)) {
 		return null;
 	}
 	spath = spath.replace(/\./g, "/");
@@ -7397,7 +7397,7 @@ Utils.getLoadPath = function(spath, cpath) {
  * @api public
  */
 Utils.getLoadPath2 = function(spath, cpath) {
-	if (typeof spath !== 'string') {
+	if (!Utils.checkString(spath)) {
 		return null;
 	}
 
