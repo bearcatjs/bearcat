@@ -1,7 +1,7 @@
 var Wheel = function() {
 	this.$id = "wheel";
 	this.$init = "init";
-	this.$order = 2;
+	this.$order = 1;
 	this.$async = true;
 }
 
