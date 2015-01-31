@@ -78,3 +78,33 @@ meta.t12 = {
 	func: Engine,
 	lazy: "aaa"
 }
+
+meta.t13 = {
+	id: 111
+}
+
+meta.t14 = {
+	mid: 111
+}
+
+meta.t15 = {
+	cid: 111
+}
+
+meta.t16 = {
+	id: "car",
+	func: Engine,
+	table: 1
+}
+
+meta.t17 = {
+	id: "car",
+	func: Engine,
+	message: 1
+}
+
+meta.t18 = {
+	id: "car",
+	func: Engine,
+	constraint: 1
+}

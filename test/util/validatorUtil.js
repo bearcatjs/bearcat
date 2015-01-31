@@ -99,5 +99,53 @@ describe('validatorUtil', function() {
 
 			done();
 		});
+
+		it('should metaValidator t13 right', function(done) {
+			var t13 = mock_meta.t13;
+			var ret = validatorUtil.metaValidator(t13);
+			expect(ret).not.to.equal(true);
+
+			done();
+		});
+
+		it('should metaValidator t14 right', function(done) {
+			var t14 = mock_meta.t14;
+			var ret = validatorUtil.metaValidator(t14);
+			expect(ret).not.to.equal(true);
+
+			done();
+		});
+
+		it('should metaValidator t15 right', function(done) {
+			var t15 = mock_meta.t15;
+			var ret = validatorUtil.metaValidator(t15);
+			expect(ret).not.to.equal(true);
+
+			done();
+		});
+
+		it('should metaValidator t16 right', function(done) {
+			var t16 = mock_meta.t16;
+			var ret = validatorUtil.metaValidator(t16);
+			expect(ret).not.to.equal(true);
+
+			done();
+		});
+
+		it('should metaValidator t17 right', function(done) {
+			var t17 = mock_meta.t17;
+			var ret = validatorUtil.metaValidator(t17);
+			expect(ret).not.to.equal(true);
+
+			done();
+		});
+
+		it('should metaValidator t18 right', function(done) {
+			var t18 = mock_meta.t18;
+			var ret = validatorUtil.metaValidator(t18);
+			expect(ret).not.to.equal(true);
+
+			done();
+		});
 	});
 });
