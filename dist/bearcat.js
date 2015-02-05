@@ -6369,7 +6369,10 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 		funcArgsString = "";
 	}
 
-	var funcArgs = funcArgsString.split(",");
+	var funcArgs = [];
+	if (funcArgsString) {
+		funcArgs = funcArgsString.split(",");
+	}
 
 	var meta = {};
 	var props = [];
@@ -6393,9 +6396,9 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 	}
 
 	for (var funcKey in funcProps) {
+		var value = funcProps[funcKey];
 		if (MetaUtil.checkFuncAnnotation(funcKey)) {
 			var key = funcKey.substr(1);
-			var value = funcProps[funcKey];
 			if (MetaUtil.checkInMetaProps(funcKey)) {
 				if (key === Constant.META_AOP && funcProps[funcKey] === true) {
 					meta[key] = this.resolvePrototypeAnnotation(func);
@@ -6427,6 +6430,11 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 					}
 				}
 			}
+		} else if (MetaUtil.checkFuncPropsConfigValue(value)) {
+			props.push({
+				name: funcKey,
+				value: value
+			});
 		}
 	}
 
@@ -6465,6 +6473,7 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 	if (fp) {
 		meta['fpath'] = require('path').resolve(process.cwd(), fp);
 	}
+
 	return meta;
 }
 
@@ -6693,6 +6702,20 @@ MetaUtil.checkFuncPropsType = function(funcKey) {
  */
 MetaUtil.checkFuncPropsNamespace = function(funcKey) {
 	return funcKey.match(/^\$N/);
+}
+
+/**
+ * MetaUtil check function props config value.
+ *
+ * @param  {String}   value
+ * @return {Boolean}  true|false
+ * @api private
+ */
+MetaUtil.checkFuncPropsConfigValue = function(value) {
+	if (!Utils.checkString(value)) {
+		return;
+	}
+	return value.match(/^\$\{.*?\}$/);
 }
 
 module.exports = MetaUtil;
@@ -8943,7 +8966,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
