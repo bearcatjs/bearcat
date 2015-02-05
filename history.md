@@ -1,3 +1,7 @@
+0.3.14 / 2015-2-5
+===================
+* improve consistent configuration, just use placeholder, no need to use $ prefixed attributes
+
 0.3.13 / 2015-1-31
 ===================
 * update readme travis-ci and upgrade aop implements 
