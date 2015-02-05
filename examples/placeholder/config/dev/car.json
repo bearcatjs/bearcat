@@ -6,5 +6,6 @@
 		"y": 30
 	},
 	"car.anum": 101,
+	"car.xnum": 102,
 	"parent": "bus"
 }

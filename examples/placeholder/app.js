@@ -9,4 +9,5 @@ bearcat.start(function() {
 	var car = bearcat.getBean('car'); // get bean
 	car.run(); // call the method
 	car.runo();
+	car.runx();
 });
