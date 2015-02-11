@@ -1,8 +1,6 @@
-var bearcat = require('../../lib/bearcat');
-// var example_dir = 'simple'; // change this to run your examples
-var example_dir = 'model';
-
+var MockResultSet = require('./app/data/mockResultSet');
 var contextPath = require.resolve('./context.json'); // to run simple example
+var bearcat = require('../../lib/bearcat');
 
 bearcat.createApp([contextPath]);
 bearcat.start(function() {
@@ -26,6 +24,27 @@ bearcat.start(function() {
 	r = car.$before()
 		.$set('len', 'aaaaa6');
 
-	console.log(r);
-	console.log(r.stack);
+	// console.log(r);
+	// console.log(r.stack);
+	var resultSet1 = MockResultSet.t3;
+	var resultSet2 = MockResultSet.t2;
+
+	var blogResult1 = bearcat.getModel('blogResult');
+	console.log(blogResult1.modelDefinition);
+	for (var i = 0; i < resultSet1.length; i++) {
+		var r = blogResult1.$packResultSet(resultSet1[i]);
+		if (r) {
+			console.log(r);
+		}
+	}
+	blogResult1.run();
+	// var blogResult2 = bearcat.getModel('blogResult');
+
+	// for (var i = 0; i < resultSet2.length; i++) {
+	// 	var r = blogResult2.$packResultSet(resultSet2[i]);
+	// 	if (r) {
+	// 		console.log(r);
+	// 	}
+	// }
+	// blogResult2.run();
 });
