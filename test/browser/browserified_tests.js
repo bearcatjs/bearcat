@@ -483,6 +483,7 @@ var Car = function() {
 	this.$id = "car";
 	this.$Vnum = "${car.num}";
 	this.$Vonum = "${car.onum}";
+	this.xnum = "${car.xnum}";
 }
 
 Car.prototype.run = function() {
@@ -492,6 +493,10 @@ Car.prototype.run = function() {
 
 Car.prototype.runo = function() {
 	console.log(this.$Vonum);
+}
+
+Car.prototype.runx = function() {
+	console.log(this.xnum);
 }
 
 module.exports = Car;
@@ -5434,8 +5439,6 @@ var Bearcat = {
 
 Bearcat['__proto__'] = EventEmitter.prototype;
 
-module.exports = Bearcat;
-
 /**
  * Bearcat createApp constructor function.
  *
@@ -5506,15 +5509,16 @@ Bearcat.start = function(cb) {
 	this.startTime = Date.now();
 	var self = this;
 
-	var env = this.applicationContext.getEnv();
+	var env = "";
 
 	if (Utils.checkBrowser()) {
-		this.applicationContext.setEnv(env);
 		env = 'browser';
+		this.applicationContext.setEnv(env);
 	}
 
 	this.applicationContext.on('finishRefresh', function() {
 		self.state = STATE_STARTED;
+		env = self.applicationContext.getEnv();
 		logger.info('Bearcat startup in %s with %s ms', env, Date.now() - self.startTime);
 		cb();
 	});
@@ -5776,6 +5780,8 @@ Bearcat.getRoute = function(beanName, fnName) {
 	var bean = Bearcat.getBean(beanName);
 	return bean[fnName].bind(bean);
 }
+
+module.exports = Bearcat;
 },{"../package.json":133,"./beans/beanFactory":95,"./context/applicationContext":104,"./util/utils":118,"events":126,"pomelo-logger":136}],104:[function(require,module,exports){
 (function (process){
 /*!
@@ -7788,51 +7794,11 @@ MetaUtil.mergeMeta = function(meta, originMeta) {
 	}
 
 	for (var key in meta) {
-		// if (key === Constant.DEPENDS_PROPS) {
-		// 	originMeta[key] = MetaUtil.mergeProps(meta[key], originMeta[key]);
-		// } else {
 		originMeta[key] = meta[key];
-		// }
 	}
 
 	return originMeta;
 }
-
-/**
- * MetaUtil merge props with originProps.
- *
- * @param   {Object} props
- * @param   {Object} originProps origin props
- * @param   {Object} merged props
- * @api public
- */
-// MetaUtil.mergeProps = function(props, originProps) {
-// 	var propsMap = {};
-// 	var originPropsMap = {};
-
-// 	for (var i = 0; i < props.length; i++) {
-// 		if (props[i]['name']) {
-// 			propsMap[props[i]['name']] = props[i];
-// 		}
-// 	}
-
-// 	for (var i = 0; i < originProps.length; i++) {
-// 		if (originProps[i]['name']) {
-// 			originPropsMap[originPropsMap[i]['name']] = originPropsMap[i];
-// 		}
-// 	}
-
-// 	for (var key in propsMap) {
-// 		originPropsMap[key] = propsMap[key];
-// 	}
-
-// 	var r = [];
-// 	for (var key in originPropsMap) {
-// 		r.push(originPropsMap[key]);
-// 	}
-
-// 	return r;
-// }
 
 /**
  * MetaUtil resolve function annotation like $id, $scope, $car etc.
@@ -7853,7 +7819,10 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 		funcArgsString = "";
 	}
 
-	var funcArgs = funcArgsString.split(",");
+	var funcArgs = [];
+	if (funcArgsString) {
+		funcArgs = funcArgsString.split(",");
+	}
 
 	var meta = {};
 	var props = [];
@@ -7877,9 +7846,9 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 	}
 
 	for (var funcKey in funcProps) {
+		var value = funcProps[funcKey];
 		if (MetaUtil.checkFuncAnnotation(funcKey)) {
 			var key = funcKey.substr(1);
-			var value = funcProps[funcKey];
 			if (MetaUtil.checkInMetaProps(funcKey)) {
 				if (key === Constant.META_AOP && funcProps[funcKey] === true) {
 					meta[key] = this.resolvePrototypeAnnotation(func);
@@ -7911,6 +7880,11 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 					}
 				}
 			}
+		} else if (MetaUtil.checkFuncPropsConfigValue(value)) {
+			props.push({
+				name: funcKey,
+				value: value
+			});
 		}
 	}
 
@@ -7949,6 +7923,7 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 	if (fp) {
 		meta['fpath'] = require('path').resolve(process.cwd(), fp);
 	}
+
 	return meta;
 }
 
@@ -8177,6 +8152,20 @@ MetaUtil.checkFuncPropsType = function(funcKey) {
  */
 MetaUtil.checkFuncPropsNamespace = function(funcKey) {
 	return funcKey.match(/^\$N/);
+}
+
+/**
+ * MetaUtil check function props config value.
+ *
+ * @param  {String}   value
+ * @return {Boolean}  true|false
+ * @api private
+ */
+MetaUtil.checkFuncPropsConfigValue = function(value) {
+	if (!Utils.checkString(value)) {
+		return;
+	}
+	return value.match(/^\$\{.*?\}$/);
 }
 
 module.exports = MetaUtil;
@@ -13012,7 +13001,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":131,"_process":130,"inherits":127}],133:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.13",
+  "version": "0.3.15",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
