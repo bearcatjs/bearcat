@@ -1,3 +1,7 @@
+0.3.15 / 2015-2-12
+===================
+* fix bearcat startup log env output error bug
+
 0.3.14 / 2015-2-5
 ===================
 * improve consistent configuration, just use placeholder, no need to use $ prefixed attributes

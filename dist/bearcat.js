@@ -3950,8 +3950,6 @@ var Bearcat = {
 
 Bearcat['__proto__'] = EventEmitter.prototype;
 
-module.exports = Bearcat;
-
 /**
  * Bearcat createApp constructor function.
  *
@@ -4022,15 +4020,16 @@ Bearcat.start = function(cb) {
 	this.startTime = Date.now();
 	var self = this;
 
-	var env = this.applicationContext.getEnv();
+	var env = "";
 
 	if (Utils.checkBrowser()) {
-		this.applicationContext.setEnv(env);
 		env = 'browser';
+		this.applicationContext.setEnv(env);
 	}
 
 	this.applicationContext.on('finishRefresh', function() {
 		self.state = STATE_STARTED;
+		env = self.applicationContext.getEnv();
 		logger.info('Bearcat startup in %s with %s ms', env, Date.now() - self.startTime);
 		cb();
 	});
@@ -4292,6 +4291,8 @@ Bearcat.getRoute = function(beanName, fnName) {
 	var bean = Bearcat.getBean(beanName);
 	return bean[fnName].bind(bean);
 }
+
+module.exports = Bearcat;
 },{"../package.json":44,"./beans/beanFactory":11,"./context/applicationContext":20,"./util/utils":34,"events":37,"pomelo-logger":47}],20:[function(require,module,exports){
 (function (process){
 /*!
@@ -6304,51 +6305,11 @@ MetaUtil.mergeMeta = function(meta, originMeta) {
 	}
 
 	for (var key in meta) {
-		// if (key === Constant.DEPENDS_PROPS) {
-		// 	originMeta[key] = MetaUtil.mergeProps(meta[key], originMeta[key]);
-		// } else {
 		originMeta[key] = meta[key];
-		// }
 	}
 
 	return originMeta;
 }
-
-/**
- * MetaUtil merge props with originProps.
- *
- * @param   {Object} props
- * @param   {Object} originProps origin props
- * @param   {Object} merged props
- * @api public
- */
-// MetaUtil.mergeProps = function(props, originProps) {
-// 	var propsMap = {};
-// 	var originPropsMap = {};
-
-// 	for (var i = 0; i < props.length; i++) {
-// 		if (props[i]['name']) {
-// 			propsMap[props[i]['name']] = props[i];
-// 		}
-// 	}
-
-// 	for (var i = 0; i < originProps.length; i++) {
-// 		if (originProps[i]['name']) {
-// 			originPropsMap[originPropsMap[i]['name']] = originPropsMap[i];
-// 		}
-// 	}
-
-// 	for (var key in propsMap) {
-// 		originPropsMap[key] = propsMap[key];
-// 	}
-
-// 	var r = [];
-// 	for (var key in originPropsMap) {
-// 		r.push(originPropsMap[key]);
-// 	}
-
-// 	return r;
-// }
 
 /**
  * MetaUtil resolve function annotation like $id, $scope, $car etc.
@@ -8966,7 +8927,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
