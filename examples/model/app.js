@@ -26,11 +26,11 @@ bearcat.start(function() {
 
 	// console.log(r);
 	// console.log(r.stack);
-	var resultSet1 = MockResultSet.t3;
+	var resultSet1 = MockResultSet.t1;
 	var resultSet2 = MockResultSet.t2;
 
 	var blogResult1 = bearcat.getModel('blogResult');
-	console.log(blogResult1.modelDefinition);
+	// console.log(blogResult1.modelDefinition);
 	for (var i = 0; i < resultSet1.length; i++) {
 		var r = blogResult1.$packResultSet(resultSet1[i]);
 		if (r) {
@@ -38,13 +38,13 @@ bearcat.start(function() {
 		}
 	}
 	blogResult1.run();
-	// var blogResult2 = bearcat.getModel('blogResult');
+	var blogResult2 = bearcat.getModel('blogResult');
 
-	// for (var i = 0; i < resultSet2.length; i++) {
-	// 	var r = blogResult2.$packResultSet(resultSet2[i]);
-	// 	if (r) {
-	// 		console.log(r);
-	// 	}
-	// }
-	// blogResult2.run();
+	for (var i = 0; i < resultSet2.length; i++) {
+		var r = blogResult2.$packResultSet(resultSet2[i]);
+		if (r) {
+			console.log(r);
+		}
+	}
+	blogResult2.run();
 });
