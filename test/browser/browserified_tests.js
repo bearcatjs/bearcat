@@ -5459,7 +5459,7 @@ Bearcat['__proto__'] = EventEmitter.prototype;
  */
 Bearcat.createApp = function(configLocations, opts) {
 	if (this.state >= STATE_INITED) {
-		return;
+		Bearcat.stop();
 	}
 
 	if (!Utils.checkArray(configLocations) && Utils.checkObject(configLocations)) {

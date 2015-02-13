@@ -1,3 +1,7 @@
+0.3.16 / 2015-2-13
+===================
+* bearcat.createApp will auto stop when it has beed started
+
 0.3.15 / 2015-2-12
 ===================
 * fix bearcat startup log env output error bug
