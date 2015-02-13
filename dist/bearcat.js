@@ -6357,7 +6357,18 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 	}
 
 	for (var funcKey in funcProps) {
+		// prototype attribute must be prefixed with $, other attributes will be ignored 
+		if (!funcProps.hasOwnProperty(funcKey) && !MetaUtil.checkFuncAnnotation(funcKey)) {
+			continue;
+		}
+
 		var value = funcProps[funcKey];
+
+		// ignore function value
+		if (Utils.checkFunction(value)) {
+			continue;
+		}
+
 		if (MetaUtil.checkFuncAnnotation(funcKey)) {
 			var key = funcKey.substr(1);
 			if (MetaUtil.checkInMetaProps(funcKey)) {
@@ -6392,6 +6403,7 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 				}
 			}
 		} else if (MetaUtil.checkFuncPropsConfigValue(value)) {
+			// this.num = "${num}"; easy consistent configuration
 			props.push({
 				name: funcKey,
 				value: value
@@ -8927,7 +8939,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.15",
+  "version": "0.3.17",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",

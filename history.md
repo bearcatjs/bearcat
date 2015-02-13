@@ -1,3 +1,7 @@
+0.3.17 / 2015-2-13
+===================
+* fix make the usage of Object.defineProperty change the default object get/set method work, see [issue](https://github.com/bearcatjs/bearcat/issues/131)
+
 0.3.16 / 2015-2-13
 ===================
 * bearcat.createApp will auto stop when it has beed started

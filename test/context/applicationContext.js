@@ -743,4 +743,23 @@ describe('applicationContext', function() {
 			applicationContext.refresh();
 		});
 	});
+
+	describe('complex_function_annotation', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/complex_function_annotation/context.json');
+			if (isBrowser()) {
+				require('../../examples/complex_function_annotation/bearcat-bootstrap.js');
+			}
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.on('finishRefresh', function() {
+				var car = applicationContext.getBean('car');
+				var r = car.run();
+
+				done();
+			})
+			applicationContext.refresh();
+		});
+	});
 });
