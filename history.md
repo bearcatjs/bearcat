@@ -1,3 +1,7 @@
+0.3.18 / 2015-2-14
+===================
+* add BEARCAT_FUNCTION_STRING flag to force use funcString to resolve $ props, see [example](https://github.com/bearcatjs/bearcat/tree/master/examples/state_file_scope_var)
+
 0.3.17 / 2015-2-13
 ===================
 * fix make the usage of Object.defineProperty change the default object get/set method work, see [issue](https://github.com/bearcatjs/bearcat/issues/131)
