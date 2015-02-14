@@ -3955,15 +3955,16 @@ Bearcat['__proto__'] = EventEmitter.prototype;
  *
  * @param  {Array}  configLocations context path array
  * @param  {Object} opts
- * @param  {String} opts.NODE_ENV            setup env
- * @param  {String} opts.BEARCAT_ENV         setup env
- * @param  {String} opts.NODE_CPATH          setup config path
- * @param  {String} opts.BEARCAT_CPATH       setup config path
- * @param  {String} opts.BEARCAT_HPATH       setup hot reload path, usually it is the scan source directory(app by default)
- * @param  {String} opts.BEARCAT_LOGGER      setup 'off' to turn off bearcat logger configuration
- * @param  {String} opts.BEARCAT_HOT         setup 'on' to turn on bearcat hot code reload
- * @param  {String} opts.BEARCAT_ANNOTATION  setup 'off' to turn off bearcat $ based annotation
- * @param  {String} opts.BEARCAT_GLOBAL  	 setup bearcat to be global object
+ * @param  {String} opts.NODE_ENV                    setup env
+ * @param  {String} opts.BEARCAT_ENV                 setup env
+ * @param  {String} opts.NODE_CPATH                  setup config path
+ * @param  {String} opts.BEARCAT_CPATH               setup config path
+ * @param  {String} opts.BEARCAT_HPATH               setup hot reload path, usually it is the scan source directory(app by default)
+ * @param  {String} opts.BEARCAT_LOGGER              setup 'off' to turn off bearcat logger configuration
+ * @param  {String} opts.BEARCAT_HOT                 setup 'on' to turn on bearcat hot code reload
+ * @param  {String} opts.BEARCAT_ANNOTATION          setup 'off' to turn off bearcat $ based annotation
+ * @param  {String} opts.BEARCAT_GLOBAL  	         setup bearcat to be global object
+ * @param  {String} opts.BEARCAT_FUNCTION_STRING  	 setup bearcat to use func.toString for $ based annotation
  *
  * @return {Object} bearcat object
  * @api public
@@ -4565,6 +4566,10 @@ ApplicationContext.prototype.prepareRefresh = function() {
 
 	if (opts['BEARCAT_ANNOTATION'] && opts['BEARCAT_ANNOTATION'] === 'off') {
 		process.env.BEARCAT_ANNOTATION = 'off';
+	}
+
+	if (opts['BEARCAT_FUNCTION_STRING']) {
+		process.env.BEARCAT_FUNCTION_STRING = true;
 	}
 
 	this.getResourceLoader();
@@ -6341,8 +6346,8 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 
 	var funcProps = null;
 
-	if (funcArgs.length) {
-		// if constructor function have arguments
+	if (funcArgs.length || process.env.BEARCAT_FUNCTION_STRING) {
+		// if constructor function have arguments or setup BEARCAT_FUNCTION_STRING flag
 		// use funcString to resolve $ props
 		funcString = MetaUtil.resolveFuncComment(funcString);
 		funcProps = MetaUtil.resolvePropsFromFuncString(funcString, funcArgsString);
@@ -8939,7 +8944,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.17",
+  "version": "0.3.18",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
