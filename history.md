@@ -1,3 +1,7 @@
+0.3.19 / 2015-2-26
+==================
+* review codes and make some improvements
+
 0.3.18 / 2015-2-14
 ===================
 * add BEARCAT_FUNCTION_STRING flag to force use funcString to resolve $ props, see [example](https://github.com/bearcatjs/bearcat/tree/master/examples/state_file_scope_var)
