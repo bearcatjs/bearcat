@@ -1437,8 +1437,6 @@ var BeanFactory = function() {
 	this.singletonBeanFactory = new SingletonBeanFactory();
 }
 
-module.exports = BeanFactory;
-
 /**
  * BeanFactory get bean instance through BeanFactory IoC container.
  *
@@ -2209,6 +2207,8 @@ BeanFactory.prototype.containsBeanDefinition = function(beanName) {
 BeanFactory.prototype.getAspects = function() {
 	return this.aspects;
 }
+
+module.exports = BeanFactory;
 },{"../aop/aspect":3,"../aop/framework/dynamicMetaProxy":7,"../util/aopUtil":26,"../util/beanUtil":27,"../util/constant":28,"../util/utils":34,"../util/validatorUtil":35,"./singletonBeanFactory":12,"./support/beanDefinition":13,"pomelo-logger":47}],12:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -2233,8 +2233,6 @@ var logger = require('pomelo-logger').getLogger('bearcat', 'SingletonBeanFactory
 var SingletonBeanFactory = function() {
 	this.singletonObjects = {};
 }
-
-module.exports = SingletonBeanFactory;
 
 /**
  * SingletonBeanFactory add singleton to SingletonBeanFactory.
@@ -2305,6 +2303,8 @@ SingletonBeanFactory.prototype.getSingletonNames = function() {
 SingletonBeanFactory.prototype.removeSingleton = function(beanName) {
 	delete this.singletonObjects[beanName];
 }
+
+module.exports = SingletonBeanFactory;
 },{"pomelo-logger":47}],13:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -2348,8 +2348,6 @@ var BeanDefinition = function() {
 	this.destroyMethodName = null;
 	this.scope = Constant.SCOPE_DEFAULT;
 }
-
-module.exports = BeanDefinition;
 
 /**
  * BeanDefinition get parentName.
@@ -2919,6 +2917,8 @@ BeanDefinition.prototype.updateSettingsOn = function(BeanDefinition, key, settin
 
 	BeanDefinition[key] = BeanUtils.getBeanSettingsArray(settingsMap);
 }
+
+module.exports = BeanDefinition;
 },{"../../util/beanUtil":27,"../../util/constant":28,"../../util/utils":34}],14:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -2944,8 +2944,6 @@ var Utils = require('../../util/utils');
 var BeanDefinitionVisitor = function(valueResolver) {
 	this.valueResolver = valueResolver;
 }
-
-module.exports = BeanDefinitionVisitor;
 
 /**
  * BeanDefinitionVisitor set valueResolver.
@@ -3052,6 +3050,8 @@ BeanDefinitionVisitor.prototype.visitArgumentsValues = function(beanDefinition) 
 		}
 	}
 }
+
+module.exports = BeanDefinitionVisitor;
 },{"../../util/constant":28,"../../util/utils":34,"pomelo-logger":47}],15:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -3407,8 +3407,6 @@ var BeanWrapper = function() {
 	this.bean = null; // bean dependency inject instance
 }
 
-module.exports = BeanWrapper;
-
 /**
  * BeanWrapper get depend type.
  *
@@ -3571,6 +3569,8 @@ BeanWrapper.prototype.getBean = function() {
 BeanWrapper.prototype.setBean = function(bean) {
 	this.bean = bean;
 }
+
+module.exports = BeanWrapper;
 },{"../../util/constant":28,"../../util/utils":34,"pomelo-logger":47}],17:[function(require,module,exports){
 (function (process){
 /*!
@@ -3610,8 +3610,6 @@ var PlaceHolderConfigurer = function() {
 	this.cpath = DEFAULT_LOAD_PATH;
 	this.properties = {};
 }
-
-module.exports = PlaceHolderConfigurer;
 
 /**
  * PlaceHolderConfigurer post process beanFactory.
@@ -3779,6 +3777,8 @@ PlaceHolderConfigurer.prototype.setProperties = function(properties) {
 PlaceHolderConfigurer.prototype.getProperties = function() {
 	return this.properties;
 }
+
+module.exports = PlaceHolderConfigurer;
 }).call(this,require('_process'))
 },{"../../resource/propertiesLoader":24,"../../util/constant":28,"../../util/utils":34,"./beanDefinitionVisitor":14,"./placeHolderResolver":18,"_process":41}],18:[function(require,module,exports){
 /*!
@@ -3811,8 +3811,6 @@ var PlaceHolderResolver = function(properties) {
 	this.valueSeparator = DEFAULT_VALUE_SEPARATOR;
 	this.properties = properties;
 }
-
-module.exports = PlaceHolderResolver;
 
 /**
  * PlaceHolderResolver resolve string value.
@@ -3901,6 +3899,8 @@ PlaceHolderResolver.prototype.doReplace = function(strVal) {
 	}
 	return res;
 }
+
+module.exports = PlaceHolderResolver;
 },{"../../util/utils":34}],19:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -8944,7 +8944,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":42,"_process":41,"inherits":38}],44:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.3.18",
+  "version": "0.3.19",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
