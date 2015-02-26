@@ -20,12 +20,11 @@ describe('bearcat', function() {
 			modelProxy._modelInit();
 			modelProxy._filter();
 			modelProxy.$pack();
-			modelProxy.getFilters();
-			modelProxy.reset();
-			modelProxy.getModelDefinition();
-			modelProxy.getModelFilter();
+			modelProxy._getFilters();
+			modelProxy._reset();
 			modelProxy['model'] = {}
 			modelProxy._modelInvoke('xxx');
+			modelProxy.toJSON();
 
 			done();
 		})
