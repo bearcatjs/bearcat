@@ -4,7 +4,7 @@ var CarModel = function() {
 	this.id = "$primary;type:Number;";
 	this.num = "$type:Number;notNull";
 	this.len = "$type:String;carSize(max=5)";
-	this.place = "$type:String;default:hangzhou";
+	this.place = "$balance;type:String;default:hangzhou";
 	this.$utils = null;
 }
 
