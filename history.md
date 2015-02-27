@@ -1,3 +1,7 @@
+0.4.0 / 2015-2-27
+==================
+* add bearcat model abstraction ,see [bearcat model](http://bearcatjs.org/guide/model.html)
+
 0.3.19 / 2015-2-26
 ==================
 * review codes and make some improvements
