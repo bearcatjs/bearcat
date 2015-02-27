@@ -2,7 +2,7 @@
 Bearcat makes plain javaScript object magic and expressive, which makes it easy to resolve dependency through DI and declarative middleware service through AOP. Bearcat supports frontend browser, backend [node.js](http://nodejs.org/) , and javaScript based hybrid apps, all you write are plain old javaScript objects, so codes can be easilly shared. Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. 
 
 > ###Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications
-  
+ 
 ![](http://bearcatjs.github.io/bearcat/images/bearcat-logo.png)
 [![Build Status](https://travis-ci.org/bearcatjs/bearcat.svg?branch=master)](https://travis-ci.org/bearcatjs/bearcat)
 

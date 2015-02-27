@@ -529,7 +529,7 @@ describe('applicationContext', function() {
 
 			applicationContext.refresh();
 
-			applicationContext.getBean('xxx');
+			applicationContext.getBean('car');
 
 			done();
 		});
@@ -633,22 +633,22 @@ describe('applicationContext', function() {
 
 				var hotCarPath = require.resolve('../../examples/hot_reload/hot/car.js');
 				var hotBusPath = require.resolve('../../examples/hot_reload/hot/bus.js');
-				// var fs = require('fs');
-				// require(hotCarPath);
-				// require(hotBusPath);
+				var fs = require('fs');
+				require(hotCarPath);
+				require(hotBusPath);
 				setTimeout(function() {
-					// fs.appendFileSync(hotCarPath, "\n");
-					// fs.appendFileSync(hotBusPath, "\n");
-					done();
-					// setTimeout(function() {
-					// 	r = car.run();
-					// 	expect(r).to.eql('car hot');
+					fs.appendFileSync(hotCarPath, "\n");
+					fs.appendFileSync(hotBusPath, "\n");
+					// done();
+					setTimeout(function() {
+						r = car.run();
+						expect(r).to.eql('car hot');
 
-					// 	r = bus.run();
-					// 	expect(r).to.eql('bus hot');
+						r = bus.run();
+						expect(r).to.eql('bus hot');
 
-					// 	done();
-					// }, 6000);
+						done();
+					}, 6000);
 				}, 2000);
 			});
 		});
@@ -716,6 +716,27 @@ describe('applicationContext', function() {
 				var r = car.run();
 
 				expect(r).to.eql('car wheel');
+
+				done();
+			})
+			applicationContext.refresh();
+		});
+	});
+
+	describe('multiple_scan', function() {
+		it('should get bean right', function(done) {
+			var simplepath = require.resolve('../../examples/multiple_scan/context.json');
+			if (isBrowser()) {
+				require('../../examples/multiple_scan/bearcat-bootstrap.js');
+			}
+			var paths = [simplepath];
+
+			var applicationContext = new ApplicationContext(paths);
+			applicationContext.on('finishRefresh', function() {
+				var bus = applicationContext.getBean('bus');
+				var r = bus.run();
+
+				expect(r).to.eql('bus wheel');
 
 				done();
 			})

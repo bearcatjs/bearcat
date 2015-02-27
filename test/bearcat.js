@@ -22,6 +22,18 @@ describe('bearcat', function() {
 			var simplepath = require.resolve('../examples/simple/context.json');
 			var paths = [simplepath];
 
+			bearcat.createApp({});
+			bearcat.stop();
+			bearcat.createApp({
+				BEARCAT_GLOBAL: true
+			});
+			bearcat.stop();
+			bearcat.createApp([], 2);
+			bearcat.stop();
+			bearcat.createApp(paths);
+			bearcat.stop();
+
+			bearcat.createApp(paths);
 			bearcat.createApp(paths);
 			bearcat.start(function() {
 				var car = bearcat.getBean('car');
@@ -141,6 +153,7 @@ describe('bearcat', function() {
 				var r = bus.run();
 				expect(r).to.eql('bus100');
 
+				bearcat.stop();
 				done();
 			});
 		});

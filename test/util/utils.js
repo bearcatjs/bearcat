@@ -250,5 +250,12 @@ describe('utils', function() {
 
 			done();
 		});
+
+		it('should loadPath checkWebWorker right', function(done) {
+			utils.getLoadPath2();
+			utils.checkWebWorker();
+
+			done();
+		});
 	});
 });

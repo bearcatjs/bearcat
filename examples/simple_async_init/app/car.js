@@ -1,8 +1,9 @@
 var Car = function() {
 	this.$id = "car";
 	this.$init = "init";
-	this.$order = 1;
+	this.$order = 3;
 	this.$wheel = null;
+	this.$engine = null;
 	this.num = 0;
 }
 
@@ -14,6 +15,7 @@ Car.prototype.init = function() {
 
 Car.prototype.run = function() {
 	this.$wheel.run();
+	this.$engine.run();
 	console.log('run car...');
 	return 'car ' + this.num;
 }

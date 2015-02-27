@@ -1,0 +1,4 @@
+{
+	"name": "multiple_scan",
+	"scan": ["app1", "app2"]
+}

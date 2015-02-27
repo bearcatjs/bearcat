@@ -1,5 +1,6 @@
 var Bus = function() {
 	this.$id = "bus";
+	this.$car = null;
 }
 
 Bus.prototype.run = function() {
