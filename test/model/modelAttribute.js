@@ -18,7 +18,7 @@ describe('bearcat', function() {
 		it('should do modelAttribute right', function(done) {
 			var modelAttribute = new ModelAttribute();
 			var r = modelAttribute.filterType();
-			expect(r).to.eql(true);
+			expect(r).to.eql(undefined);
 
 			modelAttribute.parse();
 			modelAttribute.parse("aaa");

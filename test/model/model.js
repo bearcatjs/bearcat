@@ -17,9 +17,9 @@ describe('bearcat', function() {
 		it('should do model right|error', function(done) {
 			var bearcat = require('../../lib/bearcat');
 			if (isBrowser()) {
-				require('../../examples/model/bearcat-bootstrap.js');
+				require('../../examples/model_test/bearcat-bootstrap.js');
 			}
-			var simplepath = require.resolve('../../examples/model/context.json');
+			var simplepath = require.resolve('../../examples/model_test/context.json');
 			var paths = [simplepath];
 
 			bearcat.getModel('xxx');
@@ -30,7 +30,7 @@ describe('bearcat', function() {
 				var r = car.$before('before')
 					.$set('num', 100);
 
-				expect(r).to.eql(true);
+				expect(r).to.eql(undefined);
 
 				var num = car.$get('num');
 				expect(num).to.eql(100);
@@ -39,7 +39,7 @@ describe('bearcat', function() {
 					.$after(['transform'])
 					.$set('num', 100);
 
-				expect(r).to.eql(true);
+				expect(r).to.eql(undefined);
 
 				num = car.$get('num');
 				expect(num).to.eql(10000);
@@ -80,7 +80,7 @@ describe('bearcat', function() {
 
 				car.run();
 
-				expect(r).to.eql(true);
+				expect(r).to.eql(undefined);
 
 				r = car.$after(['transformError'])
 					.$set('num', 100);

@@ -1,4 +1,5 @@
 {
 	"name": "model",
+	"description": "model examples",
 	"scan": "app"
 }

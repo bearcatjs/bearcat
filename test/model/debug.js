@@ -1,6 +1,6 @@
 var bearcat = require('../../lib/bearcat');
 
-var simplepath = require.resolve('../../examples/model/context.json');
+var simplepath = require.resolve('../../examples/model_test/context.json');
 var paths = [simplepath];
 
 bearcat.getModel('xxx');
