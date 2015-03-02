@@ -1603,7 +1603,11 @@ BeanFactory.prototype.doGetModelProxy = function(modelId) {
 	for (var key in modelFields) {
 		var modelField = modelFields[key];
 		var modelDefault = modelField.getDefault();
+		var modelFieldType = modelField.getType();
 		if (Utils.isNotNull(modelDefault)) {
+			if (modelFieldType === Constant.TYPE_NUMBER) {
+				modelDefault = parseInt(modelDefault);
+			}
 			modelBean[key] = modelDefault;
 		}
 	}
@@ -5637,7 +5641,7 @@ ModelAttribute.prototype.filterType = function(value) {
 		return;
 	}
 
-	var Type = Utils.normalizeType(type);
+	var Type = type;
 
 	var isType = Utils.isType(Type);
 
@@ -5708,10 +5712,14 @@ ModelAttribute.prototype.parse = function(expression, beanFactory) {
 			if (p.length >= 2) {
 				value = p[1];
 				if (this.checkProps(name)) {
+					if (name === "type") {
+						value = Utils.normalizeType(value);
+					}
+
 					this[name] = value;
 					continue;
 				}
-				// no this case
+				// max:10
 				else {
 					props.push({
 						name: name,
@@ -8057,6 +8065,8 @@ module.exports = {
 
 	BEAN_SPECIAL_MODEL: "_$model",
 	BEAN_SPECIAL_CONSTRAINT: "_$constraint",
+
+	TYPE_NUMBER: "Number"
 }
 },{}],36:[function(require,module,exports){
 /*!
@@ -10978,7 +10988,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":50,"_process":49,"inherits":46}],52:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
