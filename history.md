@@ -1,3 +1,7 @@
+0.4.1 / 2015-3-2
+==================
+* fix model default number attribute should do parseInt
+
 0.4.0 / 2015-2-27
 ==================
 * add bearcat model abstraction ,see [bearcat model](http://bearcatjs.org/guide/model.html)
