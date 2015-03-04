@@ -1,3 +1,7 @@
+0.4.2 / 2015-3-4
+==================
+* add bearcat cocos2d-js jsb env support
+
 0.4.1 / 2015-3-2
 ==================
 * fix model default number attribute should do parseInt
