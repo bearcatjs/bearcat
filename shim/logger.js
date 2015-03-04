@@ -11,6 +11,8 @@
  * MIT Licensed
  */
 
+var Utils = require('../lib/util/utils');
+
 function getLogger(categoryName) {
 	if (typeof console.log !== 'function') {
 		return console;
@@ -28,13 +30,26 @@ function getLogger(categoryName) {
 		// category name is __filename then cut the prefix path
 		categoryName = categoryName.replace(process.cwd(), '');
 	}
-	var logger = console;
+	var levels = ['log', 'debug', 'info', 'warn', 'error', 'trace'];
+
+	var logger = {};
+	if (Utils.checkCocos2dJsb()) {
+		for (var i = 0; i < levels.length; i++) {
+			var level = levels[i];
+			if (cc[level]) {
+				logger[level] = cc[level];
+			} else {
+				logger[level] = cc.log;
+			}
+		}
+	} else {
+		logger = console;
+	}
+
 	var pLogger = {};
 	for (var key in logger) {
 		pLogger[key] = logger[key];
 	}
-
-	var levels = ['log', 'debug', 'info', 'warn', 'error', 'trace'];
 
 	for (var i = 0; i < levels.length; i++) {
 		(function(item) {
