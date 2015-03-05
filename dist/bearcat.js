@@ -11095,7 +11095,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":51,"_process":50,"inherits":47}],53:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.1",
+  "version": "0.4.3",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",

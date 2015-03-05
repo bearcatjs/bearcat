@@ -1,3 +1,7 @@
+0.4.3 / 2015-3-5
+==================
+* update bearcat command
+
 0.4.2 / 2015-3-4
 ==================
 * add bearcat cocos2d-js jsb env support
