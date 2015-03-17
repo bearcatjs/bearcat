@@ -8135,6 +8135,8 @@ module.exports = {
 
 	META_AOP: "aop",
 
+	META_ID: "id",
+
 	META_AOP_ADVICE: "advice",
 
 	FILTER_BUILTIN: "builtin",
@@ -8329,7 +8331,13 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 				if (key === Constant.META_AOP && funcProps[funcKey] === true) {
 					meta[key] = this.resolvePrototypeAnnotation(func);
 				} else {
-					meta[key] = funcProps[funcKey];
+					if (key === Constant.META_ID) {
+						if (MetaUtil.checkInMetaProps(value, true)) {
+							logger.warn('bean id value must not use bearcat special bean attributes: %s', value);
+							return;
+						}
+					}
+					meta[key] = value;
 				}
 			} else {
 				if (!MetaUtil.checkInFuncArgs(funcKey, funcArgs)) {
@@ -8562,11 +8570,16 @@ MetaUtil.getEvalFuncMetaProps = function(t) {
  * @return {Boolean}  true|false
  * @api private
  */
-MetaUtil.checkInMetaProps = function(funcKey) {
+MetaUtil.checkInMetaProps = function(funcKey, flag) {
 	var META_PROPS = Constant.META_PROPS;
 
+	var prefix = "";
+	if (!flag) {
+		prefix = Constant.FUNC_ANNOTATION;
+	}
+
 	for (var i = 0; i < META_PROPS.length; i++) {
-		if (Constant.FUNC_ANNOTATION + META_PROPS[i] === funcKey) {
+		if (prefix + META_PROPS[i] === funcKey) {
 			return true;
 		}
 	}

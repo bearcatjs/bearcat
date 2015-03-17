@@ -1,3 +1,7 @@
+0.4.4 / 2015-3-17
+==================
+* warn bean id value must not use bearcat special bean attributes
+
 0.4.3 / 2015-3-5
 ==================
 * update bearcat command
