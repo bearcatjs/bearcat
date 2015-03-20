@@ -268,7 +268,7 @@ describe('applicationContext', function() {
 
 				setTimeout(function() {
 					done();
-				}, 2000);
+				}, 1000);
 			})
 			applicationContext.refresh();
 		});
@@ -614,6 +614,7 @@ describe('applicationContext', function() {
 			var simplepath = require.resolve('../../examples/hot_reload/context.json');
 			if (isBrowser()) {
 				require('../../examples/hot_reload/bearcat-bootstrap.js');
+				return done();
 			}
 			var hotPath = path.dirname(simplepath) + '/hot';
 			var paths = [simplepath];
