@@ -7668,6 +7668,9 @@ MetaLoader.prototype.loadPath = function(meta, path) {
 			id = m.mid + Constant.BEAN_SPECIAL_MODEL;
 		} else if (m.cid) {
 			id = m.cid + Constant.BEAN_SPECIAL_CONSTRAINT;
+		} else {
+			// ignore
+			continue;
 		}
 
 		var originMeta = meta[id];
@@ -8427,6 +8430,8 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 		id = meta.mid + Constant.BEAN_SPECIAL_MODEL;
 	} else if (meta.cid) {
 		id = meta.cid + Constant.BEAN_SPECIAL_CONSTRAINT;
+	} else {
+		// must have id
 	}
 
 	if (id) {
@@ -11108,7 +11113,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":51,"_process":50,"inherits":47}],53:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.3",
+  "version": "0.4.5",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",

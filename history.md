@@ -1,3 +1,7 @@
+0.4.5 / 2015-3-20
+==================
+* fix getBean by function no id failed error
+
 0.4.4 / 2015-3-17
 ==================
 * warn bean id value must not use bearcat special bean attributes
