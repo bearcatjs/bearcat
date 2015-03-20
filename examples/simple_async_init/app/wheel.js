@@ -10,7 +10,7 @@ Wheel.prototype.init = function(cb) {
 	setTimeout(function() {
 		console.log('asyncInit setTimeout');
 		cb();
-	}, 1000);
+	}, 100);
 }
 
 Wheel.prototype.run = function() {
