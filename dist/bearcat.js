@@ -5295,6 +5295,7 @@ ApplicationContext.prototype.getBeanByFunc = function(func) {
 		return;
 	}
 
+	meta['lazy'] = true;
 	this.registerBeanMeta(meta);
 
 	this.invokeBeanFactoryPostProcessors();
@@ -11113,7 +11114,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":51,"_process":50,"inherits":47}],53:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
