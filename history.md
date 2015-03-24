@@ -1,3 +1,7 @@
+0.4.6 / 2015-3-24
+==================
+* getBeanByFunc should make the bean lazy by default
+
 0.4.5 / 2015-3-20
 ==================
 * fix getBean by function no id failed error
