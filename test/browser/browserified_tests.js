@@ -2847,7 +2847,6 @@ var checkFuncName = function(name) {
 }
 
 module.exports = DynamicAopProxy;
-
 },{"../../util/constant":143,"../../util/utils":150,"pomelo-logger":168}],114:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -2907,7 +2906,6 @@ DynamicMetaProxy.prototype.dyInit = function() {
 					};
 
 					self[method] = function() {
-						arguments = Array.prototype.slice.apply(arguments);
 						return self.dyInvoke(method, arguments);
 					};
 				})(interface);
@@ -3333,7 +3331,7 @@ var BeanFactory = function() {
 	this.beanFunctions = {};
 	this.beanDefinitions = {};
 	this.beanPostProcessors = [];
-	this.singletonBeanFactory = new SingletonBeanFactory();
+	this.singletonBeanFactory = new SingletonBeanFactory(this);
 }
 
 /**
@@ -3348,8 +3346,6 @@ BeanFactory.prototype.getBean = function(beanName) {
 		logger.error("circle reference beanName " + beanName + " is in creating");
 		return;
 	}
-
-	arguments = Array.prototype.slice.apply(arguments);
 
 	this.beanCurMap[beanName] = true;
 	var beanObject = this.doGetBean.apply(this, arguments);
@@ -3367,9 +3363,7 @@ BeanFactory.prototype.getBean = function(beanName) {
  * @api public
  */
 BeanFactory.prototype.getBeanProxy = function(beanName) {
-	arguments = Array.prototype.slice.apply(arguments);
-	var beanProxy = this.doGetBeanProxy.apply(this, arguments);
-	return beanProxy;
+	return this.doGetBeanProxy.apply(this, arguments);
 }
 
 /**
@@ -3409,8 +3403,6 @@ BeanFactory.prototype.doGetBean = function(beanName) {
 		return null;
 	}
 
-	arguments = Array.prototype.slice.apply(arguments);
-
 	if (beanDefinition.isAbstract()) {
 		logger.warn('abstract bean can not get bean instance, you can use bearcat.getFunction to get constructor function of the bean');
 		return this.getBeanFunction(beanName);
@@ -3425,8 +3417,7 @@ BeanFactory.prototype.doGetBean = function(beanName) {
 	// }
 
 	if (beanDefinition.isSingleton()) {
-		arguments.push(this);
-
+		// arguments.push(this);
 		return this.singletonBeanFactory.getSingleton.apply(this.singletonBeanFactory, arguments);
 	} else if (beanDefinition.isPrototype()) {
 
@@ -3449,7 +3440,6 @@ BeanFactory.prototype.doGetBeanProxy = function(beanName) {
 		return null;
 	}
 
-	arguments = Array.prototype.slice.apply(arguments);
 	var dynamicMetaProxy = new DynamicMetaProxy();
 	dynamicMetaProxy.setBeanDefinition(beanDefinition);
 	dynamicMetaProxy.setBeanFactory(this);
@@ -3564,9 +3554,6 @@ BeanFactory.prototype.doCreateBean = function(beanName) {
 		return this.getBeanFromFactoryBean.apply(this, arguments);
 	}
 
-	var args = Array.prototype.slice.apply(arguments);
-	args.shift();
-
 	var argsOn = beanDefinition.getArgsOn();
 	var propsOn = beanDefinition.getPropsOn();
 	var func = this.getBeanFunction(beanName);
@@ -3574,7 +3561,7 @@ BeanFactory.prototype.doCreateBean = function(beanName) {
 		return null;
 	}
 
-	var dependsBeans = this.getDependsBeanValues(argsOn, args);
+	var dependsBeans = this.getDependsBeanValues(argsOn, arguments);
 	var dependsApplyArgs = this.getDependsApplyArgs(dependsBeans);
 
 	var beanObject = Object.create(func.prototype);
@@ -3662,9 +3649,6 @@ BeanFactory.prototype.invokeInitMethods = function(beanObject, beanName, cb) {
 BeanFactory.prototype.getBeanFromFactoryBean = function(beanName) {
 	var beanDefinition = this.getBeanDefinition(beanName);
 
-	var args = Array.prototype.slice.apply(arguments);
-	args.shift();
-
 	var factoryBeanName = beanDefinition.getFactoryBeanName();
 	var factoryMethodName = beanDefinition.getFactoryMethodName();
 	var factoryArgsOn = beanDefinition.getFactoryArgsOn();
@@ -3677,7 +3661,7 @@ BeanFactory.prototype.getBeanFromFactoryBean = function(beanName) {
 
 	var factoryMethod = factoryBean[factoryMethodName];
 
-	var dependsBeans = this.getDependsBeanValues(factoryArgsOn, args);
+	var dependsBeans = this.getDependsBeanValues(factoryArgsOn, arguments);
 
 	var dependsApplyArgs = this.getDependsApplyArgs(dependsBeans);
 
@@ -3700,6 +3684,7 @@ BeanFactory.prototype.getDependsBeanValues = function(dependsOn, args) {
 		return r;
 	}
 
+	var s = 1;
 	for (var i = 0; i < dependsOn.length; i++) {
 		var wbean = dependsOn[i];
 		var beanName = wbean.getRef();
@@ -3711,11 +3696,9 @@ BeanFactory.prototype.getDependsBeanValues = function(dependsOn, args) {
 			}
 		}
 
-		if (Utils.checkArray(args)) {
-			if (wbean.getDependType() === Constant.DEPEND_TYPE_VAR) {
-				var value = args.shift();
-				wbean.setValue(value);
-			}
+		if (wbean.getDependType() === Constant.DEPEND_TYPE_VAR) {
+			var value = args[s++];
+			wbean.setValue(value);
 		}
 
 		r.push(wbean);
@@ -4358,7 +4341,8 @@ var logger = require('pomelo-logger').getLogger('bearcat', 'SingletonBeanFactory
  *
  * @api public
  */
-var SingletonBeanFactory = function() {
+var SingletonBeanFactory = function(beanFactory) {
+	this.beanFactory = beanFactory;
 	this.singletonObjects = {};
 }
 
@@ -4388,13 +4372,11 @@ SingletonBeanFactory.prototype.containsSingleton = function(beanName) {
  * SingletonBeanFactory get singleton from SingletonBeanFactory.
  *
  * @param  {String} beanName
- * @param  {Object} beanFactory
  * @return {Object} singletonObject
  * @api public
  */
-SingletonBeanFactory.prototype.getSingleton = function(beanName, beanFactory) {
-	arguments = Array.prototype.slice.apply(arguments);
-	beanFactory = arguments.pop();
+SingletonBeanFactory.prototype.getSingleton = function(beanName) {
+	var beanFactory = this.beanFactory;
 
 	var bean = this.singletonObjects[beanName];
 	if (bean) {
@@ -6361,9 +6343,7 @@ Bearcat.getBean = function(beanName) {
 		return;
 	}
 
-	arguments = Array.prototype.slice.apply(arguments);
-
-	var firstarg = arguments[0];
+	var firstarg = beanName;
 	var func = "";
 	if (Utils.checkObject(firstarg)) {
 		func = "getBeanByMeta";
@@ -7140,8 +7120,6 @@ ApplicationContext.prototype.isActive = function() {
  * @api public
  */
 ApplicationContext.prototype.getBean = function(beanName) {
-	arguments = Array.prototype.slice.apply(arguments);
-
 	var beanFactory = this.getBeanFactory();
 	return beanFactory.getBean.apply(beanFactory, arguments);
 }
@@ -7160,11 +7138,14 @@ ApplicationContext.prototype.getBeanByMeta = function(meta) {
 		return;
 	}
 
-	this.registerBeanMeta(meta);
+	if (!this.getBeanDefinition(id)) {
+		this.registerBeanMeta(meta);
 
-	this.invokeBeanFactoryPostProcessors();
-	arguments = Array.prototype.slice.apply(arguments);
+		this.invokeBeanFactoryPostProcessors();
+	}
+
 	arguments[0] = id;
+
 	return this.beanFactory.getBeanProxy.apply(this.beanFactory, arguments);
 }
 
@@ -7184,12 +7165,15 @@ ApplicationContext.prototype.getBeanByFunc = function(func) {
 		return;
 	}
 
-	meta['lazy'] = true;
-	this.registerBeanMeta(meta);
+	if (!this.getBeanDefinition(id)) {
+		meta['lazy'] = true;
+		this.registerBeanMeta(meta);
 
-	this.invokeBeanFactoryPostProcessors();
-	arguments = Array.prototype.slice.apply(arguments);
+		this.invokeBeanFactoryPostProcessors();
+	}
+
 	arguments[0] = id;
+
 	return this.beanFactory.getBeanProxy.apply(this.beanFactory, arguments);
 }
 
@@ -8748,7 +8732,6 @@ ModelProxy.prototype._modelInit = function() {
 					};
 
 					self[method] = function() {
-						arguments = Array.prototype.slice.apply(arguments);
 						return self._modelInvoke(method, arguments);
 					};
 				})(interface);
