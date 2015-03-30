@@ -29,6 +29,7 @@ var Root;
 
 Root.bearcat = bearcat;
 
+process.env.LOADER_BIN = 'on';
 var resourceLoader = new ResourceLoader();
 var propertiesLoader = new PropertiesLoader();
 
