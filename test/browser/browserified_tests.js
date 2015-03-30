@@ -6749,6 +6749,7 @@ ApplicationContext.prototype.prepareRefresh = function() {
 		return;
 	}
 
+	MetaUtil.cleanUp();
 	var base = this.getBase();
 
 	if (process.env.BEARCAT_LOGGER !== 'off') {
@@ -7086,6 +7087,7 @@ ApplicationContext.prototype.doClose = function() {
 		this.closeBeanFactory();
 	}
 
+	MetaUtil.cleanUp();
 	this.beanFactory = null;
 	this.resourceLoader = null;
 	this.beanFactoryPostProcessors = [];
@@ -10119,7 +10121,9 @@ var Os = RequireUtil.requireOs();
 var Utils = require('./utils');
 var EOL = Os.EOL;
 
-var MetaUtil = {};
+var MetaUtil = {
+	metaCache: {}
+};
 
 /**
  * MetaUtil merge metaObject with originMeta.
@@ -10145,12 +10149,16 @@ MetaUtil.mergeMeta = function(meta, originMeta) {
  * MetaUtil resolve function annotation like $id, $scope, $car etc.
  *
  * @param  {Function} func function annotation
- * @param  {String} func function file path
+ * @param  {String}   func function file path
  * @return {Object}   metaObject resolved metaObject
  * @api private
  */
 MetaUtil.resolveFuncAnnotation = function(func, fp) {
 	var funcString = func.toString();
+
+	if (this.metaCache[funcString]) {
+		return this.metaCache[funcString];
+	}
 
 	var funcArgsString = funcString.match(Constant.FUNC_ARGS_REGEXP);
 
@@ -10311,6 +10319,7 @@ MetaUtil.resolveFuncAnnotation = function(func, fp) {
 		meta['id'] = id;
 	}
 
+	this.metaCache[funcString] = meta;
 	return meta;
 }
 
@@ -10573,6 +10582,15 @@ MetaUtil.checkFuncPropsConfigValue = function(value) {
 		return;
 	}
 	return value.match(/^\$\{.*?\}$/);
+}
+
+/**
+ * MetaUtil clean up meta cache.
+ *
+ * @api public
+ */
+MetaUtil.cleanUp = function() {
+	this.metaCache = {};
 }
 
 module.exports = MetaUtil;
@@ -15571,7 +15589,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":163,"_process":162,"inherits":159}],165:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.6",
+  "version": "0.4.8",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
@@ -19399,6 +19417,7 @@ describe('FileUtil', function() {
 },{"../../lib/util/fileUtil":144}],213:[function(require,module,exports){
 var MockAnnotationFunction = require('../mock-base/mock-annotation-function');
 var MetaUtil = require('../../lib/util/metaUtil');
+MetaUtil.cleanUp();
 
 var expect = require('expect.js');
 

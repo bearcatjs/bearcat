@@ -1,3 +1,7 @@
+0.4.8 / 2015-3-30
+==================
+* add metaUtil resolveFuncAnnotation metaCache to improve performance
+
 0.4.7 / 2015-3-28
 ==================
 * review getBean process, make it faster about 3 times then before

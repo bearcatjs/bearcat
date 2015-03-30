@@ -156,41 +156,14 @@ var ApplicationContext = require('../../lib/context/applicationContext');
 
 // applicationContext.registerBeanMeta({});
 
-var path = require('path');
-var simplepath = require.resolve('../../examples/hot_reload/context.json');
-var hotPath = path.dirname(simplepath) + '/hot';
-var paths = [simplepath];
-var applicationContext = new ApplicationContext(paths, {
-	BEARCAT_HOT: 'on'
-});
-applicationContext.setHotPath(hotPath);
+var simplepath = require.resolve('../../examples/simple_module_inject/context.json');
 
+var paths = [simplepath];
+
+var applicationContext = new ApplicationContext(paths);
 applicationContext.on('finishRefresh', function() {
 	var car = applicationContext.getBean('car');
-	var bus = applicationContext.getBean('bus');
 	var r = car.run();
 	console.log(r);
-
-	r = bus.run();
-	console.log(r);
-
-	var hotCarPath = require.resolve('../../examples/hot_reload/hot/car.js');
-	var hotBusPath = require.resolve('../../examples/hot_reload/hot/bus.js');
-	var fs = require('fs');
-	require(hotCarPath);
-	require(hotBusPath);
-	setTimeout(function() {
-		fs.appendFileSync(hotCarPath, "\n");
-		fs.appendFileSync(hotBusPath, "\n");
-
-		// done();
-		setTimeout(function() {
-			r = car.run();
-			console.log(r);
-
-			r = bus.run();
-			console.log(r);
-		}, 6000);
-	}, 2000);
-});
+})
 applicationContext.refresh();
