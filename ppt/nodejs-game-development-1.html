@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  
+  <title>Enterprise nodejs web development</title>
+  
+  <meta name="description" content="A jQuery library for modern HTML presentations">
+  <meta name="author" content="Caleb Troughton">
+  <!--meta name="viewport" content="width=1024, user-scalable=no"-->
+  <meta name="viewport" content="width=device-width, initial-scale=1，user-scalable=no"/>
+  
+  <!-- Core and extension CSS files -->
+  <link rel="stylesheet" href="./deck.js/core/deck.core.css">
+  <link rel="stylesheet" href="./deck.js/extensions/goto/deck.goto.css">
+  <link rel="stylesheet" href="./deck.js/extensions/menu/deck.menu.css">
+  <link rel="stylesheet" href="./deck.js/extensions/navigation/deck.navigation.css">
+  <link rel="stylesheet" href="./deck.js/extensions/status/deck.status.css">
+  <link rel="stylesheet" href="./deck.js/extensions/hash/deck.hash.css">
+  <link rel="stylesheet" type="text/css" href="all.css">
+  
+  <!-- Theme CSS files (menu swaps these out) -->
+  <link rel="stylesheet" id="style-theme-link" href="./deck.js/themes/style/swiss.css">
+  <link rel="stylesheet" id="transition-theme-link" href="./deck.js/themes/transition/horizontal-slide.css">
+  
+  <!-- Custom CSS just for this page -->
+  <link rel="stylesheet" href="./prettify.css">
+  
+  <script src="./deck.js/modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container">
+
+
+<section class="slide"><h1>Nodejs game development based on pomelo and bearcat</h1>
+  <p style="position:absolute;top:70%; right:10%;"><a href="https://github.com/fantasyni">@fantasyni </a> from <a href="https://github.com/NetEase/pomelo">Pomelo</a> Netease</p>
+</section>
+
+<section class="slide">
+<h2>About me</h2>
+
+<ul>
+<li>github: <a href="https://github.com/fantasyni">@fantasyni</a></li>
+<li>yixin, wechat: fantasyni</li>
+<li>core member from <a href="http://pomelo.netease.com/">pomelo</a> at Netease</li>
+<li>node.js hacker, over 3 years node experiences</li>
+<li>not just a code farmer, but a code poet</li>
+</ul>
+
+<img src="resource/pomelo.jpg">
+<img src="resource/netease_logo.gif">
+</section>
+
+<section class="slide">
+<h2>Category</h2>
+
+<ul>
+<li>概述</li>
+<li>知识</li>
+<li>技巧</li>
+</ul>
+
+</section>
+
+<section class="slide">
+<h2>Overview -- What is Node.js</h2>
+
+<ul>
+  <li>In a nutshell: server-side javaScript</li>
+  <li>Used to build fast, scalable network applications</li>
+  <li>Built on Google's v8 javaScript engine</li>
+  <li>Event-driven, non-blocking(asynchronous) I/O</li>
+</ul>
+
+<img src="resource/node.svg" style="width:50%">
+
+</section>
+
+<section class="slide">
+<h2>Overview -- What is Node.js</h2>
+<ul>
+  <li>Small core, vibrant community</li>
+  <li>Extreme modularity</li>
+  <li>Reimplement everything in Javascript</li>
+</ul>
+<img src="resource/node.svg" style="width:50%">
+</section>
+
+<section class="slide">
+<h2>Knowledge -- Game development</h2>
+
+<ul>
+  <li>pomelo</li>
+  <li>bearcat</li>
+  <li>logger</li>
+  <li>test</li>
+  <li>grunt</li>
+  <li>request</li>
+  <li>debug</li>
+</ul>
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+<p>网易开源的基于nodejs的分布式游戏服务器引擎</p>
+<p>pomelo 框架组成</p>
+<img src="resource/pomelo_base/pomelo-arch.png">
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+  <ul>
+    <li>server management</li>
+    <p>pomelo是个真正多进程、分布式的游戏服务器。因此各游戏server(进程)的管理是pomelo很重要的部分，框架通过抽象使服务器的管理非常容易。server management 部分维护服务器的监控信息，对服务器进行管理等功能;</p>
+    <li>network</li>
+    <p>pomelo中的通信，包括服务器与客户端的通信，也包括服务器群中各个服务器进程之间的通信，也就是服务器间的rpc调用。请求、响应、广播、rpc、session管理等构成了整个游戏框架的脉络，所有游戏流程都构建在这个脉络上。</p>
+    <li>application</li>
+    <p>应用的定义、component管理、上下文配置，这些使pomelo framework的对外接口很简单， 并且具有松耦合、可插拔架构。</p>
+  </ul>
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+<p>典型的游戏运行架构</p>
+<img src="resource/pomelo_base/mmo-arch.png">
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+<h3>服务器抽象</h3>
+<p>pomelo 把游戏服务器做了抽象， 抽象成为两类：前端服务器和后端服务器</p>
+<img src="resource/pomelo_base/serverAbst.png">
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+<h3>服务器抽象</h3>
+<ul>
+  <li>前端服务器(frontend)的职责</li>
+  <p>负责承载客户端请求的连接</p>
+  <p>维护session信息</p>
+  <p>把请求转发到后端</p>
+  <p>把后端需要广播的消息或响应发送到客户端</p>
+  <li>后端服务器(backend)的职责</li>
+  <p>处理业务逻辑， 包括RPC和前端请求的逻辑</p>
+  <p>把消息推送回前端或者将对客户端请求的响应发送到前端服务器</p>
+</ul>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+<h3>服务器鸭子模型</h3>
+<p>基于 conversion over configuration (COC 惯例优先)原则</p>
+<p>servers 文件夹下创建不同服务器类型的代码</p>
+<p>handler 接口 -- 处理客户端请求</p>
+<p>remote 接口 -- 处理RPC请求</p>
+<img src="resource/pomelo_base/serverAbsDir.png">
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+<h3>请求抽象</h3>
+<p>客户端request、notify</p>
+<img src="resource/pomelo_base/req-resp.png">
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+<h3>请求抽象</h3>
+<p>服务器RPC</p>
+<img src="resource/pomelo_base/rpc.png">
+<p>rpc 调用第一个参数为 route 参数，用于route计算，最后一个参数为cb，中间为rpc参数</p>
+<pre><code>app.rpc.chat.chatRemote.kick(session, uid, player, function(data){});
+</code></pre>
+<p>可以指定server则不需要route参数</p>
+<pre><code>pomelo.app.rpc.scheduler.jobRemote.createTask.toServer(serverId, task, cb);
+</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+<h3>session</h3>
+<p>session 维持着客户端与服务器之间的连接以及用户信息</p>
+<p>session 在 handler 里不能直接操作，需要通过 proxy session 来进行</p>
+<p>前端服务器上有 FrontendSession 代理</p>
+<p>后端服务器上有 BackendSession 代理</p>
+<pre><code>AgentHandler.prototype.handleMessage = function(message, session, next) {}</code></pre>
+<p>提供一些代理方法，比如 bind、unbind、on(事件)</p>
+<p>由于是代理，直接在该session上set一个值是不应用于原session的，需要进行push或者pushAll</p>
+<a href="https://github.com/NetEase/pomelo/blob/master/lib/common/service/sessionService.js#L539">FrontendSession 代码</a>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+<h3>session</h3>
+<p>sessionService 管理着当前服务器上的所有session信息（只在前端服务器上有）</p>
+<pre><code>var sessionService = pomelo.app.get('sessionService');</code></pre>
+<p>提供一些session操作api</p>
+<p>bind、unbind、kick、kickBySessionId</p>
+<a href="https://github.com/NetEase/pomelo/blob/master/lib/common/service/sessionService.js#L23">sessionService 代码</a>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- pomelo</h2>
+<h3>channel</h3>
+<p>服务器向客户端push消息的频道</p>
+<p>uid(user id)、sid(前端服务器id)</p>
+<pre><code>var channelService = pomelo.app.get('channelService');</code></pre>
+<p>pushMessageByUids</p>
+<pre><code>ChannelService.prototype.pushMessageByUids = function(route, msg, uids, opts, cb) {}</code></pre>
+<p>broadcast</p>
+<pre><code>ChannelService.prototype.broadcast = function(stype, route, msg, opts, cb) {}</code></pre>
+<a href="https://github.com/NetEase/pomelo/blob/master/lib/common/service/channelService.js#L21">channelService 代码</a>
+</section>
+
+<section class="slide">
+<h2>Knowledge -- bearcat</h2>
+
+<p><a href="https://github.com/bearcatjs/bearcat">Bearcat</a> 是一个基于自描述js对象的应用层框架，它提供了轻量级的容器来使得这些自描述的js对象组合、协作起来构建<span class="highlight">弹性</span>、<span class="highlight">可维护</span>的系统</p>
+
+<blockquote>Simple POJOs + Configuration metadatas = Elastic, maintainable system</blockquote>
+
+  <img src="resource/bearcat-logo.png">
+
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat</h2>
+<h3>bearcat 的主要概念: </h3>
+<ul>
+  <li>自描述对象</li>
+  <li>IoC</li>
+  <li>AOP</li>
+  <li>一致性配置</li>
+</ul>
+</section>
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- POJO</h2>
+<h3>What is POJO ?</h3>
+<ul>
+  <li>POJO === Plain Old <span class="highlight">Java</span> Object in java Platform</li>
+  <li>POJO === Plain Old <span class="highlight">JavaScript</span> Object in node.js Platform</li>
+</ul>
+<pre><code>var POJO = function() {
+    this.$id = "pojo";
+    this.props = null;
+}
+
+POJO.prototype.method = function() {
+
+}
+
+module.exports = POJO;</code></pre>
+
+<h3>Why should we use POJO ?</h3>
+<ul>
+  <li>简单，每个人都会写</li>
+  <li>开发保持一致</li>
+  <li>利于生成文档</li>
+</ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<ul>
+  <li>控制反转 Inversion of Control (IoC) 是一个用于解决组件间<span class="highlight">依赖关系</span>、<span class="highlight">配置</span>、<span class="highlight">生命周期</span>的一种设计模式</li>
+  <li>IoC 以好莱坞法则而闻名: "Dont's call us, we'll call you".</li>
+  <li>依赖注入 Dependency injection (DI), 是实现 IoC 的一种方式，组件不主动去寻找依赖，仅仅提供对<span class="highlight">依赖的描述</span>，然后由<span class="highlight">容器</span>完成依赖的反转注入
+  </li>
+  <p>描述：内嵌在js对象里</p>
+  <p>容器：bearcat</p>
+</ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<h3>没有 IoC</h3>
+<pre><code>var Engine = require('./engine');
+var Wheel = require('./wheel');
+
+var Car = function() {
+  this.engine = new Engine();
+  this.wheel = new Wheel();
+}
+
+Car.prototype.run = function() {
+  this.engine.run();
+  var res = this.wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+
+<p>car 必须手动去寻找 engine 和 wheel，然后去初始化，car 和 engine、wheel 之间是紧密耦合的</p>
+</section>
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<h3>使用 IoC</h3>
+
+<pre><code>var Car = function($engine) {
+  this.$id = "car";
+  this.$engine = $engine;
+  this.$wheel = null;
+}
+
+Car.prototype.run = function() {
+  this.$engine.run();
+  var res = this.$wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+
+<p>car 不用知道 engine、wheel 从哪里来，如何初始化的，仅仅描述下，然后交给容器，最后使用即可</p>
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<h3>如何使得 IoC work ?</h3>
+
+<p>仅仅添加一个context配置文件 context.json</p>
+<pre><code>{
+  "name": "simple_inject",
+  "scan": ""
+}</code></pre>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<h3>bearcat Startup</h3>
+
+<pre><code>var bearcat = require('bearcat');
+var contextPath = require.resolve('./context.json');
+
+bearcat.createApp([contextPath]);
+bearcat.start(function(){
+   var car = bearcat.getBean('car'); // get bean
+   car.run(); // call the method
+});</code></pre>
+
+<pre><code>[2014-05-04 18:50:41.996] [INFO] bearcat - [app] Bearcat startup in 6 ms
+run engine...
+run wheel...
+run car...
+</code></pre>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Scopes</li>
+<p>默认情况下, scope 是单例(singleton)的 </p>
+<pre><code>var Car = function($engine) {
+  this.$id = "car";
+  this.$scope = "singleton";
+  this.$engine = $engine;
+  this.$wheel = null;
+}
+
+Car.prototype.run = function() {
+  this.$engine.run();
+  var res = this.$wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+<pre><code>var car1 = bearcat.getBean('car');
+var car2 = bearcat.getBean('car');
+// car1和car2是同一个实例</code></pre></ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>Scopes</li>
+<p>可以设置 scope 为多例(prototype)的 </p>
+<pre><code>var Car = function($engine) {
+  this.$id = "car";
+  this.$scope = "prototype";
+  this.$engine = $engine;
+  this.$wheel = null;
+}
+
+Car.prototype.run = function() {
+  this.$engine.run();
+  var res = this.$wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+<pre><code>var car1 = bearcat.getBean('car');
+var car2 = bearcat.getBean('car');
+// car2 和 car1 是完全不同的两个实例</code></pre></ul>
+
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>生命周期回调</li>
+<p>初始化方法</p>
+<pre><code>var Car = function() {
+    this.$id = "car";
+    this.$init = "init";
+    this.num = 0;
+    this.$engine = null;
+}
+
+Car.prototype.init = function() {
+    console.log('init car...');
+    this.num = 1;
+    return 'init car';
+}
+
+Car.prototype.run = function() {
+    this.$engine.run();
+    console.log('run car...');
+    return 'car ' + this.num;
+}
+
+module.exports = Car;</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>生命周期回调</li>
+<p>销毁方法</p>
+<pre><code>var Car = function() {
+  this.$id = "car";
+  this.$destroy = "destroy";
+}
+
+Car.prototype.destroy = function() {
+    console.log('destroy car...');
+    return 'destroy car';
+}
+
+Car.prototype.run = function() {
+    console.log('run car...');
+    return 'car';
+}
+
+module.exports = Car;</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>生命周期回调</li>
+<p>异步初始化方法</p>
+<pre><code>var Car = function() {
+    this.$id = "car";
+    this.$init = "init";
+    this.$order = 2;
+    this.num = 0;
+}
+
+Car.prototype.init = function() {
+    console.log('init car...');
+    this.num = 1;
+    return 'init car';
+}
+
+Car.prototype.run = function() {
+    console.log('run car...');
+    return 'car ' + this.num;
+}
+
+module.exports = Car;</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+
+<h2>Knowledge -- bearcat -- IoC</h2>
+<h3>More magic in Bearcat IoC</h3>
+
+<ul><li>生命周期回调</li>
+<p>异步初始化方法</p>
+<pre><code>var Engine = function() {
+  this.$id = "engine";
+  this.$init = "init";
+  this.$async = true;
+  this.$order = 1;
+}
+
+Engine.prototype.init = function(cb) {
+    console.log('init engine...');
+    setTimeout(function() {
+        console.log('asyncInit setTimeout');
+        cb();
+    }, 1000);
+}
+
+Engine.prototype.run = function() {
+    console.log('run engine...');
+    return 'wheel';
+}
+
+module.exports = Engine;</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+<h2>Framework -- bearcat -- AOP</h2>
+<p>Aspect-Oriented Programming (AOP) -- key unit -- <span class="highlight">aspect</span>. </p>
+<p>Object-Oriented Programming (OOP) -- key unit -- <span class="highlight">class</span>. </p>
+<p>AOP 面向切面编程，使得横切逻辑可以进行模块化，横切逻辑比如事务、日志、权限处理</p>
+<pre><code>var Car = function() {
+}
+
+Car.prototype.run = function() {
+  // pointcut
+  // advice code ...
+  console.log('Car run...');
+  // pointcut
+  // advice code ...
+}</code></pre>
+</section>
+
+<section class="slide">
+<h2>Framework -- bearcat -- AOP</h2>
+<h3>aspect -- 日志 --  没有 AOP</h3>
+<pre><code>var Car = function(engine) {
+  this.engine = engine;
+  this.wheel = null;
+  this.log = null;
+}
+
+Car.prototype.run = function() {
+  this.log.info('log...');
+  this.engine.run();
+  var res = this.wheel.run();
+  console.log('run car...');
+  return 'car ' + res;
+}
+
+module.exports = Car;</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Framework -- bearcat -- AOP</h2>
+  <h3>aspect -- 日志 -- 没有 AOP</h3>
+  <pre><code>var Engine = function() {
+    this.log = null;
+}
+
+Engine.prototype.run = function() {
+  this.log.info('log...');
+  console.log('run engine...');
+  return 'engine';
+}
+
+module.exports = Engine;</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Framework -- bearcat -- AOP</h2>
+  <h3>aspect -- 日志 -- 没有 AOP</h3>
+  <pre><code>var Wheel = function() {
+    this.log = null;
+}
+
+Wheel.prototype.run = function() {
+  this.log.info('log...');
+  console.log('run wheel...');
+  return 'wheel';
+}
+
+module.exports = Wheel;</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Framework -- bearcat -- AOP</h2>
+  <h3>aspect -- 日志 -- 使用 AOP</h3>
+
+  <ul><li>Declare an aspect</li>
+    <pre><code>var Aspect = function() {
+  this.$id = "aspect";
+  this.$aop = true;
+}
+
+Aspect.prototype.doBefore = function(next) {
+  var $pointcut = "before:.*?run";
+  console.log('log...');
+  next();
+}
+
+module.exports = Aspect;</code></pre>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Framework -- bearcat -- AOP</h2>
+  <h3>aspect -- 日志 -- 使用 AOP</h3>
+
+<pre><code>[2014-05-04 18:50:41.996] [INFO] bearcat - [app] Bearcat startup in 6 ms
+log...
+run engine...
+log...
+run wheel...
+log...
+run car...</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Framework -- bearcat -- AOP</h2>
+  <h3>aspect -- 事务 -- 没有 AOP</h3>
+ <p>事务管理是一个很好的AOP的例子</p>
+ <p><a href="https://github.com/felixge/node-mysql">node-mysql</a> provides simple transaction support at the connection level:</p>
+ <pre><code>connection.beginTransaction(function(err) {
+  connection.query('INSERT INTO posts SET title=?', title, function(err, result) {
+    if (err) { 
+      return connection.rollback(function() {});
+    }
+    var log = 'Post ' + result.insertId + ' added';
+    connection.query('INSERT INTO log SET data=?', log, function(err, result) {
+      if (err) { 
+        return connection.rollback(function() {});
+      }  
+      connection.commit(function(err) {
+        if (err) { 
+          return connection.rollback(function() {});
+        }
+        console.log('success!');
+      });
+    });
+  });
+});</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Framework -- bearcat -- AOP</h2>
+  <h3>aspect -- 事务 -- 使用 AOP</h3>
+  <pre><code>SimpleService.prototype.testMethodTransaction = function(cb, txStatus) {
+    var self = this;
+    this.simpleDao.transaction(txStatus).addPerson(['aaa'], function(err, results) {
+        if (err) {
+            return cb(err); // if err occur, rollback will be emited
+        }
+        self.simpleDao.transaction(txStatus).getList([1, 2], function(err, results) {
+            if (err) { 
+                return cb(err); // if err occur, rollback will be emited
+            }
+            cb(null, results); // commit the operations
+        });
+    });
+}</code></pre>
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- bearcat -- Consistent configuration</h2>
+  <p>配置其实就是给对象里的属性赋值，因此可以使用依赖注入（DI）来更好的完成这个任务</p>
+  <pre><code>var Car = function() {
+  this.$id = "car";
+  this.num = "${car.num}";
+}
+
+Car.prototype.run = function() {
+  console.log('run car' + this.num);
+  return 'car' + this.num;
+}
+
+module.exports = Car;</code></pre>
+  
+</section>
+
+<section class="slide">
+<h2>Knowledge -- bearcat -- Consistent configuration</h2>
+<ul><li>使用占位符</li>
+    <p>placeHolder 会被不同环境下的具体配置所替换</p>
+<pre><code>${car.num}</code></pre>
+<p>then in config.json file you can define car.num with the specific value</p>
+<pre><code>{
+    "car.num": 100
+}</code></pre>
+</ul>
+</section>
+<section class="slide">
+  <h2>Knowledge -- bearcat -- Consistent configuration</h2>
+  
+  <ul><li>Environment configuration</li>
+    <p>不同环境配置:</p>
+    <pre><code>├─┬ placeholderSample/
+│ ├─┬ config/
+│ │ └─┬ dev/
+│ │ │ └── car.json
+│ │ └─┬ prod/
+│ │   └── car.json
+│ └── car.js
+└── context.json</code></pre>
+<ul>
+  <li><span class="highlight">dev</span> -- 开发环境配置</li>
+  <li><span class="highlight">prod</span> -- 生产环境配置</li>
+</ul>
+</ul>
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- bearcat -- Consistent configuration</h2>
+  
+  <ul><li>切换环境</li>
+    <p>启动时提供env参数，默认情况下是 <span class="highlight">dev</span></p>
+    <p>通过 env 或者 --env 参数</p>
+<pre><code>node app.js env=prod</code></pre>
+<p>Run with NODE_ENV</p>
+<pre><code>NODE_ENV=prod node app.js</code></pre>
+</ul>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- logger</h2>
+  <p>日志通过 <a href="https://github.com/NetEase/pomelo-logger">pomelo-logger</a>模块来处理</p>
+  <p>pomelo-logger 是对 log4js 的简单封装，并提供了一些非常有用的 feature</p>
+  <pre><code>var logger = require('pomelo-logger').getLogger('bearcat-test', 'AgentService');
+  </code></pre>
+  <p>getLogger 第一个参数是 category，日志都是与 category 进行对应输出到指定的文件中</p>
+  <p>getLogger 第二个之后的参数在打印日志的时候，会添加到日志开头，一般建议为当前POJO名，以便根据日志进行定位</p>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- logs</h2>
+  <p>日志的配置 log4js.json</p>
+  <p>bearcat 开发下该文件放在 config/env 下面</p>
+  <pre><code>{
+  "appenders": [{
+    "type": "console"
+  }, {
+    "type": "file",
+    "filename": "logs/bearcat.log",
+    "maxLogSize": 104857600,
+    "layout": {
+      "type": "basic"
+    },
+    "backups": 5,
+    "category": "bearcat"
+  }, {
+    "type": "file",
+    "filename": "logs/bearcat-dao.log",
+    "maxLogSize": 104857600,
+    "layout": {
+      "type": "basic"
+    },
+    "backups": 5,
+    "category": "bearcat-dao"
+  }, {
+    "type": "file",
+    "filename": "logs/nscheduler.log",
+    "maxLogSize": 104857600,
+    "layout": {
+      "type": "basic"
+    },
+    "backups": 5,
+    "category": "nscheduler"
+  }],
+
+  "levels": {
+    "bearcat": "DEBUG",
+    "bearcat-dao": "DEBUG",
+    "nscheduler": "DEBUG",
+    "pomelo": "ERROR",
+    "pomelo-rpc": "ERROR",
+    "pomelo-admin": "ERROR"
+  },
+
+  "replaceConsole": false,
+
+  "lineDebug": true
+}</code></pre>
+<p>具体配置可以参照<a href="https://github.com/NetEase/pomelo/wiki/pomelo%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86">pomelo-logger配置</a></p>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- test</h2>
+  <p>单元测试、测试覆盖率</p>
+  <p>测试框架 <a href="http://mochajs.org/">mocha</a></p> 
+  <p>断言库 <a href="https://github.com/Automattic/expect.js">expect.js</a></p>
+  <pre><code>var expect = require("expect.js")
+describe('Array', function(){
+  describe('#indexOf()', function(){
+    it('should return -1 when the value is not present', function(){
+      expect(-1).to.eql([1,2,3].indexOf(5));
+      expect(-1).to.eql([1,2,3].indexOf(0));
+    })
+  })
+})</code></pre> 
+<p>测试覆盖率结合 grunt 完成</p>
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- grunt</h2>
+  <p><a href="http://gruntjs.com/">grunt</a>自动化构建工具</p>
+  <p>可以配置单元测试、clean、打包、browserify化、jshint检查等等任务</p>
+  <p>简单执行grunt即可运行任务</p>
+  <pre><code>grunt</code></pre> 
+
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- request</h2>
+  <p>http request module</p>
+  <br>
+  <a href="https://github.com/request/request">https://github.com/request/request</a> 
+  <pre><code>var request = require('request');
+request('http://www.google.com', function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    console.log(body) // Print the google web page.
+  }
+})</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- request</h2>
+  <p>streaming</p>
+  <pre><code>request('http://google.com/doodle.png').pipe(fs.createWriteStream('doodle.png'))</code></pre>
+  <pre><code>fs.createReadStream('file.json').pipe(request.put('http://mysite.com/obj.json'))</code></pre>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- request</h2>
+  <p>form 提交</p>
+  <p>application/x-www-form-urlencoded</p>
+  <pre><code>request.post('http://service.com/upload', {form:{key:'value'}})
+  </code></pre>
+  <p>multipart/form-data</p>
+  <pre><code>var r = request.post('http://service.com/upload', function optionalCallback(err, httpResponse, body) {});
+
+var form = r.form();
+form.append('my_field', 'my_value');
+form.append('my_buffer', new Buffer([1, 2, 3]));
+form.append('custom_file', fs.createReadStream(__dirname + '/unicycle.jpg'), {filename: 'unicycle.jpg'});
+  </code></pre>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- request</h2>
+  <p>request(options, callback)</p>
+  <a href="https://github.com/request/request#requestoptions-callback">https://github.com/request/request#requestoptions-callback</a>
+  <p>headers</p>
+  <p>timeout</p>
+  <p>pool</p>
+  <p>proxy</p>
+  <p>localAddress</p>
+  <p>...</p>
+</section>
+
+<section class="slide">
+  <h2>Knowledge -- debug</h2>
+  <p>单步调试 <a href="https://github.com/node-inspector/node-inspector">node-inspector</a></p>
+  <p>对于单进程 node-debug app.js 即可</p>
+  <p>多进程</p>
+  <pre><code>node-inspector
+pgrep -l node
+kill -s USR1 2345</code></pre>
+<p>打开浏览器即可调试 http://127.0.0.1:8080/debug?port=5858</p>
+</ul>
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>编写高性能javaScript以及对v8相关技术</p>  
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>声明变量带上 var</p>  
+  <ul>
+    <li>不带var则会在上一级作用域查找</li>
+    <li>如果没有找到，则自动变成global对象</li>
+  </ul>
+  <p>不带var的变量比var变量性能低</p>
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>谨慎使用全局变量</p>  
+  <ul>
+    <li>全局变量需要搜索更长的作用域链</li>
+    <li>全局变量的生命周期比局部变量长，不利于内存释放</li>
+    <li>过多的全局变量容易造成混淆，增大产生bug的可能性</li>
+  </ul>
+  <p>对于常用的全局变量，用 <span class="highlight">局部变量</span>进行缓存能提高性能</p>
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>合理使用闭包</p>  
+  <ul>
+    <li>闭包--变量的作用域</li>
+    <pre><code>function f1(){
+  var n = 999;
+　function f2(){
+　　　alert(n); 
+　}
+　
+  return f2;
+}
+　　
+var result=f1();
+result(); // 999</code></pre> 
+    <li>闭包存在内存泄露隐患</li>
+    <p>上面的n会一直在内存中存在，除非手动delete</p>
+    <li>闭包可以通过对象进行代替</li>
+  </ul>
+
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>合理使用闭包</p>  
+  <pre><code>var myObj = {
+    callMeMaybe: function () {
+        var myRef = this;
+        var val = setTimeout(function () { 
+            console.log('Time is running out!'); 
+            myRef.callMeMaybe();
+        }, 1000);
+    }
+};</code></pre>
+
+<pre><code>myObj=null;</code></pre>
+<p>myObj对象不会被释放掉，因为内部的myRef对象也指向了myObj， 而内部的setTimeout调用使会将闭包加到node.js事件循环的队列里，因此myRef对象不会释放。</p>
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>避免在for循环中使用try catch</p>  
+  <ul>
+    <li>try-catch 在 catch 执行时会动态插入变量到当前域，对性能会有一定影响</li>
+    <li>可以在for循环外使用try-catch</li>
+    <pre><code>try {
+ for (var i = 0; i < 200; i++) {}
+} catch (e) {}</code></pre>
+<p>nodejs 中异步方法无法try-catch</p>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>使用for代替for...in遍历数组</p>  
+  <ul>
+    <li>for...in 内部实现是构造一个所有元素的列表，然后开始循环</li>
+  </ul>
+  <pre><code>var a = [];
+a[5] = 5; // 数组自动填充
+
+</code></pre>
+  <pre><code>var a = [];
+a[5] = 5;
+for (var x in a) {
+    // Shows only the explicitly set index of "5", and ignores 0-4
+}</code></pre> 
+</section>
+
+ <section class="slide">
+  <h2>Skill</h2>
+ <ul>
+  <li>异步控制流处理</li>
+  <p>node.js 中绝大多数 api 都是异步的，流程控制要在异步回调中处理</p>
+  <a href="https://github.com/caolan/async">https://github.com/caolan/async</a>
+  <li>异常的处理</li>
+  <p>异步方法，在回调第一个参数err处理，底层方法直接cb(err)往上抛即可，上层调用方再去判断异常是否存在并打日志 <span class="highlight">err.stack</span></p>
+  <p>不要试图用 try catch 去捕获一个异步方法的异常</p>
+  <p>全局异常捕获要加上以免进程退出</p>
+  <pre><code>// Uncaught exception handler
+process.on('uncaughtException', function(e) {
+  logger.error('Caught exception: ' + e.stack);
+});</code></pre>
+</ul> 
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>隐藏类(hidden class)</p>
+  <p>v8 会为对象动态的创建隐藏类来加快对象属性的访问速度</p>
+  <pre><code>function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}</code></pre>
+  <img src="resource/pomelo_base/v8_hidden_class.png">
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>内联缓存(inline cache)</p>
+  <p>v8 在第一次访问对象属性时，会先找到隐藏类</p>
+  <p>修改对应的内联代码让其他对象属性使用该隐藏类</p>
+  <p>如果命中，则一条指令即可找到</p>
+  <p>如果miss，则修改内联cache</p>
+  <img src="resource/pomelo_base/v8_inline_cache.png">
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>两次编译与反优化(Crankshaft)</p>
+  <p>现代javaScript运行时引擎都会进行编译</p>
+  <p>V8 有两个不同的运行时(JIT)编译器</p>
+  <ul>
+    <li>完全编译器(unoptimized)</li>
+    <p>一开始，所有的v8代码都运行在unoptimized状态，好处是编译速度非常快，代码初次运行快</p>
+    <li>优化编译器(optimized)</li>
+    <p>v8发现热代码时，会根据通常的执行路径进行优化，生成optimized代码，优化代码执行非常快</p>
+  </ul>
+  <p>编译器有可能从"优化"状态退回到"完全"状态，这就是deoptimized</p>
+  <p>最惨的是不停的被optimized，然后又被deoptimized，这会带来很大的性能损耗</p>
+
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>两次编译与反优化(Crankshaft)</p>
+  <img src="resource/pomelo_base/v8_optimized.png">
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>隐藏类优化</p>
+  <ul>
+    <li>在构造函数里初始化所有对象成员</li>
+    <li>总是以相同的次序初始化对象成员</li>
+    <li>永远不要delete对象的某个属性</li>
+  </ul> 
+
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>隐藏类优化</p>
+  <pre><code>function Point(x, y) {
+  this.x = x;
+  this.y = y;
+}
+
+var p1 = new Point(11, 22);
+var p2 = new Point(33, 44);
+// At this point, p1 and p2 have a shared hidden class
+// 这里的p1和p2拥有共享的隐藏类
+p2.z = 55;
+// warning! p1 and p2 now have different hidden classes!
+// 注意！这时p1和p2的隐藏类已经不同了！</code></pre> 
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>隐藏类优化</p>
+  <pre><code>function Point(x, y) {
+  this.x = x;
+  this.y = y;
+}
+
+for (var i=0; i<1000000; i++) {
+  var p1 = new Point(11, 22);
+  delete p1.x;
+  p1.y++;
+}</code></pre> 
+<p>以上例子由于调用了delete，将导致hidden class产生变化，导致p1.y不能用inline cache直接获取</p>
+<p>以上程序在使用了delete之后耗时0.339s,在注释掉delete后只需0.05s</p>
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>deoptimized优化</p>
+  <ul>
+    <li>单态操作优于多态操作</li>
+    <p>如果一个操作的输入总是相同类型的，则其为单态操作。否则，操作调用时的某个参数可以跨越不同的类型，那就是多态操作</p>
+    <pre><code>function add(x, y) {
+  return x + y;
+}
+
+add(1, 2);     // add中的+操作是单态操作
+add("a", "b"); // add中的+操作变成了多态操作</code></pre>
+    <li>谨慎使用try catch与for in</li>
+  </ul> 
+
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>v8 array</p>
+  <p>为了掌控大而稀疏的数组，V8内部有两种数组存储方式</p>
+  <ul>
+    <li>快速元素：对于紧凑型关键字集合，进行线性存储</li>
+    <li>字典元素：对于其它情况，使用哈希表</li>
+  </ul> 
+  <p>最好别导致数组存储方式在两者之间切换</p>
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>v8 array 优化</p>
+  <ul>
+    <li>使用从0开始连续的数组关键字</li>
+    <li>别预分配大数组(比如大于64K个元素)到其最大尺寸</li>
+    <li>别删除数组里的元素，尤其是数字数组</li>
+    <li>别加载未初始化或已删除的元素</li>
+  </ul> 
+</section>
+
+<section class="slide">
+  <h2>Skill</h2>
+  <p>v8 优化</p>  
+  <p>v8 array 优化</p>
+  <pre><code>a = new Array();
+for (var b = 0; b < 10; b++) {
+  a[0] |= b;  // 杯具！
+}</code></pre> 
+<pre><code>a = new Array();
+a[0] = 0;
+for (var b = 0; b < 10; b++) {
+  a[0] |= b;  // 比上面快2倍
+}</code></pre>
+<p>以上两段代码，由于第一段代码的a[0]未初始化， 尽管执行结果正确，但会导致执行效率的大幅下降。</p>
+</section>
+
+<section class="slide"><h1>QA</h1></section>
+
+<p class="deck-status">
+  <span class="deck-status-current"></span>
+  /
+  <span class="deck-status-total"></span>
+</p>
+
+<form action="." method="get" class="goto-form">
+  <label for="goto-slide">Go to slide:</label>
+  <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+  <datalist id="goto-datalist"></datalist>
+  <input type="submit" value="Go">
+</form>
+
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+
+<!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+<script>window.jQuery || document.write('<script src="./deck.js/jquery-1.7.min.js"><\/script>')</script>
+<script src="./prettify.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="./deck.js/core/deck.core.js"></script>
+<script src="./deck.js/extensions/hash/deck.hash.js"></script>
+<script src="./deck.js/extensions/menu/deck.menu.js"></script>
+<script src="./deck.js/extensions/goto/deck.goto.js"></script>
+<script src="./deck.js/extensions/status/deck.status.js"></script>
+<script src="./deck.js/extensions/navigation/deck.navigation.js"></script>
+
+<!-- Specific to this page -->
+<script>
+$(function() {
+  // Deck initialization
+  $.deck('.slide');
+  $('pre code').parent().addClass('prettyprint');
+  prettyPrint();
+});
+</script>
+
+</body>
+</html>
