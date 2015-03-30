@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Bearcat by bearcatnode</title>
+    <title>Bearcat by bearcatjs</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -17,30 +17,31 @@
     <div class="wrapper">
       <header>
         <h1 class="header">Bearcat</h1>
-        <p class="header">a POJOs based application framework for node.js</p>
+        <p class="header">Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications</p>
 
         <ul>
-          <li class="download"><a class="buttons" href="https://github.com/bearcatnode/bearcat/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/bearcatnode/bearcat/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/bearcatnode/bearcat">View On GitHub</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/bearcatjs/bearcat/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/bearcatjs/bearcat/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/bearcatjs/bearcat">View On GitHub</a></li>
         </ul>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/bearcatnode">bearcatnode</a></p>
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/bearcatjs">bearcatjs</a></p>
 
 
       </header>
       <section>
         <h2>
-<a name="bearcat----a-pojos-based-application-framework" class="anchor" href="#bearcat----a-pojos-based-application-framework"><span class="octicon octicon-link"></span></a>Bearcat -- a POJOs based application framework</h2>
+<a id="bearcat----a-pojos-based-application-framework" class="anchor" href="#bearcat----a-pojos-based-application-framework" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bearcat -- a POJOs based application framework</h2>
 
 <p>Bearcat is a POJOs based application framework which provides a lightweight container for writing simple, maintainable <a href="http://nodejs.org/">node.js</a>. Bearcat provides an infrastructural backbone to manage business objects so that developers can focus on application-level business logic. Bearcat enables you to build applications from "plain old javaScript object"(POJO) and to apply enterprise services non-invasively to POJOs.</p>
 
 <blockquote>
 <h3>
-<a name="simple-pojos--configuration-metadatas--elastic-maintainable-system" class="anchor" href="#simple-pojos--configuration-metadatas--elastic-maintainable-system"><span class="octicon octicon-link"></span></a>Simple POJOs + Configuration metadatas = Elastic, maintainable system</h3>
+<a id="simple-pojos--configuration-metadatas--elastic-maintainable-system" class="anchor" href="#simple-pojos--configuration-metadatas--elastic-maintainable-system" aria-hidden="true"><span class="octicon octicon-link"></span></a>Simple POJOs + Configuration metadatas = Elastic, maintainable system</h3>
 </blockquote>
 
-<p><img src="http://bearcatnode.github.io/bearcat/images/bearcat-logo.png" alt=""><a href="https://travis-ci.org/bearcatnode/bearcat"><img src="https://travis-ci.org/bearcatnode/bearcat.svg?branch=master" alt="Build Status"></a></p>
+<p><img src="http://bearcatnode.github.io/bearcat/images/bearcat-logo.png" alt="">
+<a href="https://travis-ci.org/bearcatnode/bearcat"><img src="https://travis-ci.org/bearcatnode/bearcat.svg?branch=master" alt="Build Status"></a></p>
 
 <ul>
 <li>Homepage: <a href="http://bearcatnode.github.io/bearcat/">http://bearcatnode.github.io/bearcat/</a>
@@ -52,18 +53,22 @@
 <li>Issues: <a href="https://github.com/bearcatnode/bearcat/issues/">https://github.com/bearcatnode/bearcat/issues/</a>
 </li>
 <li>Tags: nodejs, POJO, IoC, AOP, consistent configuration</li>
-</ul><h2>
-<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+</ul>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <h3>
-<a name="lightweight-container" class="anchor" href="#lightweight-container"><span class="octicon octicon-link"></span></a>lightweight container</h3>
+<a id="lightweight-container" class="anchor" href="#lightweight-container" aria-hidden="true"><span class="octicon octicon-link"></span></a>lightweight container</h3>
 
 <ul>
 <li>Dependency injection implementated Inversion of Control (IoC) to manage POJOs</li>
 <li>AOP based declarative middleware services</li>
 <li>Consistent development and configuration</li>
-</ul><h3>
-<a name="easy" class="anchor" href="#easy"><span class="octicon octicon-link"></span></a>Easy</h3>
+</ul>
+
+<h3>
+<a id="easy" class="anchor" href="#easy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Easy</h3>
 
 <ul>
 <li>Simple meta configuration and POJOs</li>
@@ -74,20 +79,26 @@
 <li>One stop shop: no need for a dedicated Singleton or factory for every object etc</li>
 <li>Easy to mock objects for unit test based on IoC</li>
 <li>Hot reload prototype function nicely</li>
-</ul><h3>
-<a name="powerful" class="anchor" href="#powerful"><span class="octicon octicon-link"></span></a>Powerful</h3>
+</ul>
+
+<h3>
+<a id="powerful" class="anchor" href="#powerful" aria-hidden="true"><span class="octicon octicon-link"></span></a>Powerful</h3>
 
 <ul>
 <li>Good reference materials: full <a href="https://github.com/bearcatnode/bearcat/wiki">docs</a>, many examples includes <a href="https://github.com/bearcatnode/todo">web todo</a>, <a href="https://github.com/bearcatnode/chatofpomelo-websocket">realtime app</a>
 </li>
 <li>well-tested: test cases <a href="http://bearcatnode.github.io/bearcat/coverage.html">coverage</a> is over 95%</li>
-</ul><h3>
-<a name="extensible" class="anchor" href="#extensible"><span class="octicon octicon-link"></span></a>Extensible</h3>
+</ul>
+
+<h3>
+<a id="extensible" class="anchor" href="#extensible" aria-hidden="true"><span class="octicon octicon-link"></span></a>Extensible</h3>
 
 <ul>
 <li>Custom features: you can add custom codes to container</li>
-</ul><h2>
-<a name="what-is-pojo-" class="anchor" href="#what-is-pojo-"><span class="octicon octicon-link"></span></a>What is POJO ?</h2>
+</ul>
+
+<h2>
+<a id="what-is-pojo-" class="anchor" href="#what-is-pojo-" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is POJO ?</h2>
 
 <p>POJO is an acronym for Plain Old Java Object, you can refer to <a href="http://en.wikipedia.org/wiki/Plain_Old_Java_Object">POJO wikipedia</a>. It is mostly used in Java Platform which is used to emphasize that a given object is an ordinary Java Object, not a special object.<br>
 In Node, what is POJO ?<br>
@@ -107,7 +118,7 @@ module.exports = POJO;
 </code></pre>
 
 <h2>
-<a name="why-should-we-use-pojo-" class="anchor" href="#why-should-we-use-pojo-"><span class="octicon octicon-link"></span></a>Why should we use POJO ?</h2>
+<a id="why-should-we-use-pojo-" class="anchor" href="#why-should-we-use-pojo-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why should we use POJO ?</h2>
 
 <ul>
 <li>POJO is simple, everyone can write it<br>
@@ -116,8 +127,10 @@ module.exports = POJO;
 </li>
 <li>POJO makes it friendly to document<br>
 </li>
-</ul><h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+</ul>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <p>Running bearcat is quite simple, all you have to do is to write simple POJOs and simple configuration metadatas like context.json, after this, passing context.json paths to bearcat, and run it, then all your POJOs will be magicly turned into an elastic, maintainable system.  </p>
 
@@ -136,7 +149,7 @@ bearcat.start(function(){
 <p>more bearcat apis can be refered to <a href="http://bearcatnode.github.io/bearcat/bearcat-api.html">bearcat-api</a></p>
 
 <h2>
-<a name="generator" class="anchor" href="#generator"><span class="octicon octicon-link"></span></a>Generator</h2>
+<a id="generator" class="anchor" href="#generator" aria-hidden="true"><span class="octicon octicon-link"></span></a>Generator</h2>
 
 <p><a href="https://github.com/bearcatnode/generator-bearcat">generator-bearcat</a> is provided for quick startup  </p>
 
@@ -153,7 +166,7 @@ bearcat.start(function(){
 <img src="http://bearcatnode.github.io/bearcat/images/yeoman_bearcat.png" alt=""></p>
 
 <h2>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>(The MIT License)</p>
 
