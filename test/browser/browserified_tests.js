@@ -3417,7 +3417,6 @@ BeanFactory.prototype.doGetBean = function(beanName) {
 	// }
 
 	if (beanDefinition.isSingleton()) {
-		// arguments.push(this);
 		return this.singletonBeanFactory.getSingleton.apply(this.singletonBeanFactory, arguments);
 	} else if (beanDefinition.isPrototype()) {
 
@@ -6948,7 +6947,7 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 			}
 
 			if (Utils.checkFunction(meta)) {
-				meta = MetaUtil.resolveFuncAnnotation(meta);
+				meta = MetaUtil.resolveFuncAnnotation(meta, null, true);
 			}
 
 			if (Utils.checkObject(meta)) {
@@ -10150,13 +10149,14 @@ MetaUtil.mergeMeta = function(meta, originMeta) {
  *
  * @param  {Function} func function annotation
  * @param  {String}   func function file path
+ * @param  {Boolean}  force resolve func annotation
  * @return {Object}   metaObject resolved metaObject
  * @api private
  */
-MetaUtil.resolveFuncAnnotation = function(func, fp) {
+MetaUtil.resolveFuncAnnotation = function(func, fp, force) {
 	var funcString = func.toString();
 
-	if (this.metaCache[funcString]) {
+	if (this.metaCache[funcString] && !force) {
 		return this.metaCache[funcString];
 	}
 
@@ -15589,7 +15589,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":163,"_process":162,"inherits":159}],165:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",

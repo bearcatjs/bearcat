@@ -1,3 +1,7 @@
+0.4.9 / 2015-3-30
+==================
+* add metaUtil resolveFuncAnnotation force refresh metaCache when in hot reload case
+
 0.4.8 / 2015-3-30
 ==================
 * add metaUtil resolveFuncAnnotation metaCache to improve performance
