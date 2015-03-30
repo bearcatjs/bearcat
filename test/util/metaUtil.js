@@ -1,5 +1,6 @@
 var MockAnnotationFunction = require('../mock-base/mock-annotation-function');
 var MetaUtil = require('../../lib/util/metaUtil');
+MetaUtil.cleanUp();
 
 var expect = require('expect.js');
 
