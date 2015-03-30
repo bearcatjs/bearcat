@@ -1,3 +1,7 @@
+0.4.10 / 2015-3-30
+==================
+* fix bearcat generate fpath does not generate right bug
+
 0.4.9 / 2015-3-30
 ==================
 * add metaUtil resolveFuncAnnotation force refresh metaCache when in hot reload case

@@ -6962,14 +6962,14 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 						var proto = func.prototype;
 
 						for (var key in proto) {
-							logger.info('bearcat reload %j:%j', filename, key);
+							logger.info('bearcat reload %s : %s', filename, key);
 							beanFunc.prototype[key] = proto[key];
 						}
 					}
 				}
 			}
 			self.emit('reload');
-			logger.info('Bearcat hot reloading done...');
+			logger.info('Bearcat hot reloading done ...');
 		}
 
 		setTimeout(doHotReload, s * 1000 + p + s);
@@ -10155,6 +10155,10 @@ MetaUtil.mergeMeta = function(meta, originMeta) {
  */
 MetaUtil.resolveFuncAnnotation = function(func, fp, force) {
 	var funcString = func.toString();
+
+	if (process.env.LOADER_BIN === 'on') {
+		force = true;
+	}
 
 	if (this.metaCache[funcString] && !force) {
 		return this.metaCache[funcString];
@@ -15589,7 +15593,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":163,"_process":162,"inherits":159}],165:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
