@@ -4179,7 +4179,7 @@ Bearcat['__proto__'] = EventEmitter.prototype;
  * @param  {String} opts.BEARCAT_ENV                 setup env
  * @param  {String} opts.NODE_CPATH                  setup config path
  * @param  {String} opts.BEARCAT_CPATH               setup config path
- * @param  {String} opts.BEARCAT_HPATH               setup hot reload path, usually it is the scan source directory(app by default)
+ * @param  {String} opts.BEARCAT_HPATH               setup hot reload path(s), usually it is the scan source directory(app by default)
  * @param  {String} opts.BEARCAT_LOGGER              setup 'off' to turn off bearcat logger configuration
  * @param  {String} opts.BEARCAT_HOT                 setup 'on' to turn on bearcat hot code reload
  * @param  {String} opts.BEARCAT_ANNOTATION          setup 'off' to turn off bearcat $ based annotation
@@ -4820,10 +4820,6 @@ ApplicationContext.prototype.prepareRefresh = function() {
 		process.env.BEARCAT_CPATH = opts['BEARCAT_CPATH'];
 	}
 
-	if (opts['BEARCAT_HPATH']) {
-		process.env.BEARCAT_HPATH = opts['BEARCAT_HPATH'];
-	}
-
 	if (opts['BEARCAT_LOGGER'] && opts['BEARCAT_LOGGER'] === 'off') {
 		process.env.BEARCAT_LOGGER = 'off';
 	}
@@ -4879,13 +4875,14 @@ ApplicationContext.prototype.prepareRefresh = function() {
 	}
 
 	var hpath = this.getHotPath();
-	hpath = args.hpath || args['--hpath'] || process.env.BEARCAT_HPATH || hpath;
+	// BEARCAT_HPATH can be array
+	// process.env.BEARCAT_HPATH will JSON.stringify this value
+	// so do not use process.env.BEARCAT_HPATH
+	hpath = args.hpath || args['--hpath'] || opts['BEARCAT_HPATH'] || hpath;
 	this.setHotPath(hpath);
 
 	if (process.env.BEARCAT_HOT === 'on') {
-		if (FileUtil.existsSync(hpath)) {
-			this.hotReloadFileWatch(hpath);
-		}
+		this.hotReloadFileWatch(hpath);
 	}
 }
 
@@ -5065,16 +5062,23 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 				id = meta['id'];
 				var func = meta['func'];
 
-				if (id && Utils.checkFunction(func)) {
-					var beanFactory = self.getBeanFactory();
-					var beanFunc = beanFactory.getBeanFunction(id);
+				if (event == 'add') {
+					// dynamic add file
+					logger.info('bearcat reload add bean %s', id);
+					self.registerBeanMeta(meta);
+				} else {
+					if (id && Utils.checkFunction(func)) {
+						var beanFactory = self.getBeanFactory();
+						var beanFunc = beanFactory.getBeanFunction(id);
 
-					if (beanFunc) {
-						var proto = func.prototype;
+						self.doHotAddAttributes(meta, id);
+						if (beanFunc) {
+							var proto = func.prototype;
 
-						for (var key in proto) {
-							logger.info('bearcat reload %s : %s', filename, key);
-							beanFunc.prototype[key] = proto[key];
+							for (var key in proto) {
+								logger.info('bearcat reload update prototype %s:%s', id, key);
+								beanFunc.prototype[key] = proto[key];
+							}
 						}
 					}
 				}
@@ -5085,6 +5089,71 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 
 		setTimeout(doHotReload, s * 1000 + p + s);
 	});
+}
+
+/**
+ * ApplicationContext do hot add attributes.
+ *
+ * @param  {Object} hot reload new metaObject
+ * @param  {String} hot reload bean name
+ * @api private
+ */
+ApplicationContext.prototype.doHotAddAttributes = function(metaObject, beanName) {
+	var beanFactory = this.getBeanFactory();
+	var beanFunc = beanFactory.getBeanFunction(beanName);
+	var beanDefinition = beanFactory.getBeanDefinition(beanName);
+
+	if (!beanDefinition) {
+		return;
+	}
+
+	var beanPrototype = beanFunc.prototype;
+	var propsOn = beanDefinition.getPropsOn();
+	var props = metaObject.props;
+
+	if (!Utils.checkArray(props)) {
+		return;
+	}
+
+	for (var i = 0; i < props.length; i++) {
+		(function(w) {
+			var name = w.name;
+			var flag = 1;
+
+			for (j = 0; j < propsOn.length; j++) {
+				var p = propsOn[j];
+				if (name === p.getName()) {
+					flag = 0;
+					break;
+				}
+			}
+
+			// new prop attribute
+			if (flag) {
+				var value = w.value;
+				var ref = w.ref;
+				var key = "";
+				if (ref) {
+					key = Constant.DEFINE_GETTER_PREFIX + name;
+				}
+
+				logger.info('hot reload add attribute %s to %s', name, beanName);
+				beanPrototype.__defineGetter__(name, function() {
+					if (value) {
+						return value;
+					}
+
+					if (ref) {
+						if (!this[key]) {
+							this[key] = beanFactory.getBean(ref);
+						}
+
+						return this[key];
+					}
+				});
+			}
+		})(props[i]);
+	}
 }
 
 ApplicationContext.prototype.postProcessBeanFactory = function() {
@@ -8146,7 +8215,9 @@ module.exports = {
 	BEAN_SPECIAL_MODEL: "_$model",
 	BEAN_SPECIAL_CONSTRAINT: "_$constraint",
 
-	TYPE_NUMBER: "Number"
+	TYPE_NUMBER: "Number",
+
+	DEFINE_GETTER_PREFIX: "__"
 }
 },{}],37:[function(require,module,exports){
 /*!
@@ -11119,7 +11190,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":51,"_process":50,"inherits":47}],53:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.10",
+  "version": "0.4.11",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",

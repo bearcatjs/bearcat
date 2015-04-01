@@ -1,3 +1,7 @@
+0.4.11 / 2015-4-1
+==================
+* improve bearcat hot reload with adding file and adding auto attribute dependency support
+
 0.4.10 / 2015-3-30
 ==================
 * fix bearcat generate fpath does not generate right bug
