@@ -5,6 +5,10 @@
 		"func": "car"
 	}, {
 		"id": "bus",
-		"func": "bus"
+		"func": "bus",
+		"scope": "prototype"
+	}, {
+		"id": "tank",
+		"func": "tank"
 	}]
 }
