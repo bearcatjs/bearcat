@@ -1,6 +1,6 @@
 {
   "name": "bearcat",
-  "version": "0.4.10",
+  "version": "0.4.11",
   "main": "dist/bearcat.js",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "authors": ["fantasyni <fantasyni@163.com>"],
