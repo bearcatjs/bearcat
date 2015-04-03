@@ -1,3 +1,7 @@
+0.4.12 / 2015-4-3
+==================
+* modelAttribute do not filter null value
+
 0.4.11 / 2015-4-1
 ==================
 * improve bearcat hot reload with adding file and adding auto attribute dependency support

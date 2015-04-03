@@ -7603,8 +7603,11 @@ var ModelAttribute = function() {
  * @api public
  */
 ModelAttribute.prototype.filter = function(value) {
-	var r;
-	r = this.filterType(value);
+	if (!Utils.isNotNull(value)) {
+		return;
+	}
+
+	var r = this.filterType(value);
 	if (Utils.checkModelFilterError(r)) {
 		return r;
 	}
@@ -15665,7 +15668,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":163,"_process":162,"inherits":159}],165:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
