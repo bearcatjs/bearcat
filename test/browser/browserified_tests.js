@@ -15668,7 +15668,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":163,"_process":162,"inherits":159}],165:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.12",
+  "version": "0.4.13",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
@@ -15697,7 +15697,7 @@ module.exports={
   "dependencies": {
     "pomelo-logger": "0.1.x",
     "commander": "2.x",
-    "chokidar": "0.12.6"
+    "chokidar": "~1.0.1"
   },
   "browser": {
     "pomelo-logger": "./shim/logger.js",
