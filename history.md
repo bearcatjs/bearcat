@@ -1,3 +1,7 @@
+0.4.13 / 2015-4-12
+==================
+* update chokidar to latest stable version
+
 0.4.12 / 2015-4-3
 ==================
 * modelAttribute do not filter null value
