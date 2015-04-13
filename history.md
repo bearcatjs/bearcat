@@ -1,3 +1,7 @@
+0.4.14 / 2015-4-13
+==================
+* bearcat placeHolder consistent configuration add subdirectory configuration support
+
 0.4.13 / 2015-4-12
 ==================
 * update chokidar to latest stable version
