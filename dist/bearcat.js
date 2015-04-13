@@ -4079,12 +4079,8 @@ PlaceHolderResolver.prototype.getProperties = function() {
  * @api private
  */
 PlaceHolderResolver.prototype.doReplace = function(strVal) {
-	if (!strVal) {
-		return null;
-	}
-
 	var properties = this.getProperties();
-	if (!properties) {
+	if (!strVal || !properties) {
 		return null;
 	}
 
@@ -7809,7 +7805,11 @@ PropertiesLoader.prototype.loadDir = function(meta, lpath) {
 		fn = files[i];
 		fp = lpath + fn;
 
-		if (Utils.isDir(fp) || !Utils.isFile(fp) || !Utils.checkFileType(fp, 'json')) {
+		if (Utils.isDir(fp)) {
+			this.loadDir(meta, fp);
+		}
+
+		if (!Utils.isFile(fp) || !Utils.checkFileType(fp, 'json')) {
 			// only load json properties files
 			continue;
 		}
