@@ -9663,7 +9663,7 @@ module.exports = PropertiesLoader;
 PropertiesLoader.prototype.loadProperties = function(lpath, env) {
 	var meta = {};
 
-	this.loadDir(meta, lpath);
+	this.loadDir(meta, lpath, true);
 	this.loadDir(meta, lpath + '/' + env);
 
 	return meta;
@@ -9672,14 +9672,16 @@ PropertiesLoader.prototype.loadProperties = function(lpath, env) {
 /**
  * PropertiesLoader load properties from directory.
  *
- * @param    {Object} meta properties
- * @param    {String} lpath load path
+ * @param    {Object}  meta properties
+ * @param    {String}  lpath load path
+ * @param    {Boolean} lflag if not load subdirectory or not, true not
  * @api private
  */
-PropertiesLoader.prototype.loadDir = function(meta, lpath) {
+PropertiesLoader.prototype.loadDir = function(meta, lpath, lflag) {
 	if (!FileUtil.existsSync(lpath)) {
 		return;
 	}
+
 	if (!Utils.isDir(lpath)) {
 		return;
 	}
@@ -9695,7 +9697,7 @@ PropertiesLoader.prototype.loadDir = function(meta, lpath) {
 		fn = files[i];
 		fp = lpath + fn;
 
-		if (Utils.isDir(fp)) {
+		if (!lflag && Utils.isDir(fp)) {
 			this.loadDir(meta, fp);
 		}
 
@@ -15668,7 +15670,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":163,"_process":162,"inherits":159}],165:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.13",
+  "version": "0.4.15",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
