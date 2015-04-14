@@ -1,3 +1,7 @@
+0.4.15 / 2015-4-14
+==================
+* consistent configuration properties loader first directory does not load subdirectory
+
 0.4.14 / 2015-4-13
 ==================
 * bearcat placeHolder consistent configuration add subdirectory configuration support
