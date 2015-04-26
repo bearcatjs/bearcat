@@ -1,3 +1,7 @@
+0.4.16 / 2015-4-26
+==================
+* add SIGTERM SIGHUP destroy signal hook
+
 0.4.15 / 2015-4-14
 ==================
 * consistent configuration properties loader first directory does not load subdirectory
