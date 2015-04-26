@@ -5209,11 +5209,21 @@ ApplicationContext.prototype.finishRefresh = function() {
 		return;
 	}
 
-	process.on('SIGINT', function() {
+	var destroyFlag = false;
+	var doDestroy = function() {
+		if (destroyFlag) {
+			return;
+		}
+
+		destroyFlag = true;
 		logger.info('Bearcat starts destroying...');
 		self.destroy();
 		process.exit();
-	});
+	}
+
+	process.on('SIGINT', doDestroy);
+	process.on('SIGTERM', doDestroy);
+	process.on('SIGHUP', doDestroy);
 }
 
 /**
@@ -11195,7 +11205,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":51,"_process":50,"inherits":47}],53:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.15",
+  "version": "0.4.16",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
