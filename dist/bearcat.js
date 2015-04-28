@@ -2,7 +2,7 @@
 require('./lib/util/requireUtil');
 
 module.exports = require('./lib/bearcat');
-},{"./lib/bearcat":19,"./lib/util/requireUtil":41}],2:[function(require,module,exports){
+},{"./lib/bearcat":20,"./lib/util/requireUtil":42}],2:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -507,7 +507,7 @@ AutoProxyCreator.prototype.canApply = function(advisor, beanObject, beanName) {
 }
 
 module.exports = AutoProxyCreator;
-},{"../../util/aopUtil":34,"../../util/utils":43,"../framework/proxyFactory":8,"../targetSource":10}],5:[function(require,module,exports){
+},{"../../util/aopUtil":35,"../../util/utils":44,"../framework/proxyFactory":8,"../targetSource":10}],5:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -690,7 +690,7 @@ AdvisedSupport.prototype.doGetInterceptionAdvice = function(method, beanName, ad
 }
 
 module.exports = AdvisedSupport;
-},{"../../util/utils":43}],6:[function(require,module,exports){
+},{"../../util/utils":44}],6:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -958,7 +958,7 @@ var checkFuncName = function(name) {
 }
 
 module.exports = DynamicAopProxy;
-},{"../../util/constant":36,"../../util/utils":43,"pomelo-logger":56}],7:[function(require,module,exports){
+},{"../../util/constant":37,"../../util/utils":44,"pomelo-logger":57}],7:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -1153,7 +1153,7 @@ var checkFuncName = function(name) {
 }
 
 module.exports = DynamicMetaProxy;
-},{"../../util/utils":43,"pomelo-logger":56}],8:[function(require,module,exports){
+},{"../../util/utils":44,"pomelo-logger":57}],8:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -1208,7 +1208,7 @@ ProxyFactory.prototype.getProxy = function() {
 }
 
 module.exports = ProxyFactory;
-},{"../../util/requireUtil":41,"../../util/utils":43,"./advisedSupport":5,"./dynamicAopProxy":6}],9:[function(require,module,exports){
+},{"../../util/requireUtil":42,"../../util/utils":44,"./advisedSupport":5,"./dynamicAopProxy":6}],9:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -1326,7 +1326,7 @@ Pointcut.prototype.match = function(targetMethod) {
 }
 
 module.exports = Pointcut;
-},{"../util/utils":43}],10:[function(require,module,exports){
+},{"../util/utils":44}],10:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -2430,7 +2430,46 @@ BeanFactory.prototype.getModelDefinitionByTable = function(table) {
 }
 
 module.exports = BeanFactory;
-},{"../aop/aspect":3,"../aop/framework/dynamicMetaProxy":7,"../model/modelConstraint":23,"../model/modelDefinition":24,"../model/modelFilter":25,"../model/modelProxy":27,"../util/aopUtil":34,"../util/beanUtil":35,"../util/constant":36,"../util/modelUtil":39,"../util/utils":43,"../util/validatorUtil":44,"./singletonBeanFactory":12,"./support/beanDefinition":13,"pomelo-logger":56}],12:[function(require,module,exports){
+},{"../aop/aspect":3,"../aop/framework/dynamicMetaProxy":7,"../model/modelConstraint":24,"../model/modelDefinition":25,"../model/modelFilter":26,"../model/modelProxy":28,"../util/aopUtil":35,"../util/beanUtil":36,"../util/constant":37,"../util/modelUtil":40,"../util/utils":44,"../util/validatorUtil":45,"./singletonBeanFactory":13,"./support/beanDefinition":14,"pomelo-logger":57}],12:[function(require,module,exports){
+var logger = require('pomelo-logger').getLogger('bearcat', 'ModuleFactory');
+
+var ModuleFactory = function() {
+	this.factoryMap = {};
+	this.moduleMap = {};
+}
+
+ModuleFactory.prototype.define = function(id, factory) {
+	if (this.factoryMap[id]) {
+		logger.warn('module %s has been registered ...', id);
+		return;
+	}
+
+	this.factoryMap[id] = factory;
+}
+
+ModuleFactory.prototype.require = function(id) {
+	if (!this.moduleMap[id]) {
+		var exports = {};
+		var factory = this.factoryMap[id];
+
+		if (!factory) {
+			logger.warn('require file %s not exists ...', id);
+			return;
+		}
+
+		var module = {
+			exports: {}
+		}
+
+		factory(module.exports, module);
+		this.moduleMap[id] = module.exports;
+	}
+
+	return this.moduleMap[id];
+}
+
+module.exports = ModuleFactory;
+},{"pomelo-logger":57}],13:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -2525,7 +2564,7 @@ SingletonBeanFactory.prototype.removeSingleton = function(beanName) {
 }
 
 module.exports = SingletonBeanFactory;
-},{"pomelo-logger":56}],13:[function(require,module,exports){
+},{"pomelo-logger":57}],14:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -3139,7 +3178,7 @@ BeanDefinition.prototype.updateSettingsOn = function(BeanDefinition, key, settin
 }
 
 module.exports = BeanDefinition;
-},{"../../util/beanUtil":35,"../../util/constant":36,"../../util/utils":43}],14:[function(require,module,exports){
+},{"../../util/beanUtil":36,"../../util/constant":37,"../../util/utils":44}],15:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -3272,7 +3311,7 @@ BeanDefinitionVisitor.prototype.visitArgumentsValues = function(beanDefinition) 
 }
 
 module.exports = BeanDefinitionVisitor;
-},{"../../util/constant":36,"../../util/utils":43,"pomelo-logger":56}],15:[function(require,module,exports){
+},{"../../util/constant":37,"../../util/utils":44,"pomelo-logger":57}],16:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -3594,7 +3633,7 @@ BeanModule.STATUS = STATUS;
 BeanModule.anonymousMeta = anonymousMeta;
 
 module.exports = BeanModule;
-},{"../../util/requestUtil":40,"../../util/utils":43}],16:[function(require,module,exports){
+},{"../../util/requestUtil":41,"../../util/utils":44}],17:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -3791,7 +3830,7 @@ BeanWrapper.prototype.setBean = function(bean) {
 }
 
 module.exports = BeanWrapper;
-},{"../../util/constant":36,"../../util/utils":43,"pomelo-logger":56}],17:[function(require,module,exports){
+},{"../../util/constant":37,"../../util/utils":44,"pomelo-logger":57}],18:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -4000,7 +4039,7 @@ PlaceHolderConfigurer.prototype.getProperties = function() {
 
 module.exports = PlaceHolderConfigurer;
 }).call(this,require('_process'))
-},{"../../resource/propertiesLoader":32,"../../util/constant":36,"../../util/utils":43,"./beanDefinitionVisitor":14,"./placeHolderResolver":18,"_process":50}],18:[function(require,module,exports){
+},{"../../resource/propertiesLoader":33,"../../util/constant":37,"../../util/utils":44,"./beanDefinitionVisitor":15,"./placeHolderResolver":19,"_process":51}],19:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -4117,7 +4156,7 @@ PlaceHolderResolver.prototype.doReplace = function(strVal) {
 }
 
 module.exports = PlaceHolderResolver;
-},{"../../util/utils":43}],19:[function(require,module,exports){
+},{"../../util/utils":44}],20:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -4419,6 +4458,40 @@ Bearcat.module = function(func, context) {
 }
 
 /**
+ * Bearcat define module(bean).
+ *
+ * Examples:
+ *
+ *    bearcat.define('car', function(exports, module) {
+ *	     module.exports = function() {
+ *	         console.log('run car...')
+ *       }
+ *    }, typeof module !== 'undefined' ? module : {});
+ *
+ * @param  {String}   id
+ * @param  {Function} factory function
+ * @param  {object}   context object
+ * @api public
+ */
+Bearcat.define = function(id, factory, context) {
+	return this.applicationContext.define(id, factory, context);
+}
+
+/**
+ * Bearcat add module(bean) to IoC container through $ annotation function.
+ *
+ * Examples:
+ *
+ *	  var Car = bearcat.require('car');
+ *
+ * @param  {String} id
+ * @api public
+ */
+Bearcat.require = function(id) {
+	return this.applicationContext.require(id);
+}
+
+/**
  * Bearcat get bean from IoC container through beanName or meta argument.
  *
  * Examples:
@@ -4536,7 +4609,7 @@ Bearcat.getRoute = function(beanName, fnName) {
 }
 
 module.exports = Bearcat;
-},{"../package.json":53,"./beans/beanFactory":11,"./context/applicationContext":20,"./util/utils":43,"events":46,"pomelo-logger":56}],20:[function(require,module,exports){
+},{"../package.json":54,"./beans/beanFactory":11,"./context/applicationContext":21,"./util/utils":44,"events":47,"pomelo-logger":57}],21:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -4559,6 +4632,7 @@ var AsyncScriptLoader = require('../resource/asyncScriptLoader');
 var BootStrapLoader = require('../resource/bootStrapLoader');
 var ResourceLoader = require('../resource/resourceLoader');
 var defaultConstraints = require('../model/constraints');
+var ModuleFactory = require('../beans/moduleFactory');
 var BeanFactory = require('../beans/beanFactory');
 var EventEmitter = require('events').EventEmitter;
 var RequireUtil = require('../util/requireUtil');
@@ -4591,6 +4665,7 @@ var ApplicationContext = function(configLocations, opts) {
 	this.reloadMap = {};
 	this.beanFactory = null;
 	this.startUpDate = null;
+	this.moduleFactory = null;
 	this.resourceLoader = null;
 	this.bootStrapLoader = null;
 	this.asyncScriptLoader = null;
@@ -5441,6 +5516,36 @@ ApplicationContext.prototype.module = function(func, context) {
 }
 
 /**
+ * ApplicationContext service locator pattern define module.
+ *
+ * @param   {String}   id
+ * @param   {Function} factory factory function
+ * @api public
+ */
+ApplicationContext.prototype.define = function(id, factory, context) {
+	// loader env
+	if (process.env.LOADER_BIN && Utils.isNotNull(context) && context['exports']) {
+		return context['exports'] = {
+			id: id,
+			func: factory
+		};
+	}
+
+	return this.getModuleFactory().define(id, factory);
+}
+
+/**
+ * ApplicationContext service locator pattern define module.
+ *
+ * @param   {String}   id
+ * @param   {Function} factory factory function
+ * @api public
+ */
+ApplicationContext.prototype.require = function(id) {
+	return this.getModuleFactory().require(id);
+}
+
+/**
  * ApplicationContext add startup loaded bean ids.
  *
  * @param   {Array} startup loaded bean ids
@@ -5546,6 +5651,14 @@ ApplicationContext.prototype.getBeanFactory = function() {
 	return this.beanFactory;
 }
 
+ApplicationContext.prototype.getModuleFactory = function() {
+	if (!this.moduleFactory) {
+		this.moduleFactory = new ModuleFactory();
+	}
+
+	return this.moduleFactory;
+}
+
 /**
  * ApplicationContext createBeanFactory.
  *
@@ -5646,7 +5759,7 @@ ApplicationContext.prototype.getBase = function() {
 	return this.base;
 }
 }).call(this,require('_process'))
-},{"../aop/autoproxy/autoProxyCreator":4,"../beans/beanFactory":11,"../beans/support/placeHolderConfigurer":17,"../model/constraints":21,"../model/modelKeyMapResolver":26,"../resource/asyncScriptLoader":28,"../resource/bootStrapLoader":29,"../resource/resourceLoader":33,"../util/constant":36,"../util/fileUtil":37,"../util/metaUtil":38,"../util/requireUtil":41,"../util/utils":43,"_process":50,"chokidar":55,"events":46,"pomelo-logger":56}],21:[function(require,module,exports){
+},{"../aop/autoproxy/autoProxyCreator":4,"../beans/beanFactory":11,"../beans/moduleFactory":12,"../beans/support/placeHolderConfigurer":18,"../model/constraints":22,"../model/modelKeyMapResolver":27,"../resource/asyncScriptLoader":29,"../resource/bootStrapLoader":30,"../resource/resourceLoader":34,"../util/constant":37,"../util/fileUtil":38,"../util/metaUtil":39,"../util/requireUtil":42,"../util/utils":44,"_process":51,"chokidar":56,"events":47,"pomelo-logger":57}],22:[function(require,module,exports){
 (function (__dirname){
 var Utils = require('../../util/utils');
 
@@ -5676,7 +5789,7 @@ if (!Utils.checkBrowser()) {
 
 module.exports = Constraints;
 }).call(this,"/lib/model/constraints")
-},{"../../util/utils":43,"fs":45,"path":49}],22:[function(require,module,exports){
+},{"../../util/utils":44,"fs":46,"path":50}],23:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -6106,7 +6219,7 @@ ModelAttribute.prototype.checkProps = function(key) {
 }
 
 module.exports = ModelAttribute;
-},{"../util/constant":36,"../util/utils":43,"util":52}],23:[function(require,module,exports){
+},{"../util/constant":37,"../util/utils":44,"util":53}],24:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -6192,7 +6305,7 @@ ModelConstraint.prototype.getConstraint = function() {
 }
 
 module.exports = ModelConstraint;
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -6442,7 +6555,7 @@ ModelDefinition.prototype.isOneToMany = function() {
 }
 
 module.exports = ModelDefinition;
-},{"../util/utils":43}],25:[function(require,module,exports){
+},{"../util/utils":44}],26:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -6565,7 +6678,7 @@ ModelFilter.prototype.doFilterKeys = function() {
 }
 
 module.exports = ModelFilter;
-},{"../util/utils":43,"pomelo-logger":56}],26:[function(require,module,exports){
+},{"../util/utils":44,"pomelo-logger":57}],27:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -6684,7 +6797,7 @@ ModelKeyMapResolver.prototype.processModelDefinition = function(beanFactory, mod
 }
 
 module.exports = ModelKeyMapResolver;
-},{"pomelo-logger":56}],27:[function(require,module,exports){
+},{"pomelo-logger":57}],28:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -7169,7 +7282,7 @@ var checkFuncName = function(name) {
 }
 
 module.exports = ModelProxy;
-},{"../util/constant":36,"../util/utils":43,"pomelo-logger":56}],28:[function(require,module,exports){
+},{"../util/constant":37,"../util/utils":44,"pomelo-logger":57}],29:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -7372,7 +7485,7 @@ AsyncScriptLoader.prototype.setApplicationContext = function(applicationContext)
 }
 
 module.exports = AsyncScriptLoader;
-},{"../beans/support/beanModule":15,"../util/requireUtil":41,"../util/scriptUtil":42,"../util/utils":43,"pomelo-logger":56}],29:[function(require,module,exports){
+},{"../beans/support/beanModule":16,"../util/requireUtil":42,"../util/scriptUtil":43,"../util/utils":44,"pomelo-logger":57}],30:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -7409,7 +7522,7 @@ BootStrapLoader.prototype.load = function(idPaths) {
 }
 
 module.exports = BootStrapLoader;
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -7472,7 +7585,7 @@ ConfigLoader.prototype.getResources = function(cpath) {
 		metaLoader.load(scanPaths[i]);
 	}
 
-	return metaLoader.getMetaObejcts();
+	return metaLoader.getMetaObjects();
 }
 
 /**
@@ -7579,7 +7692,7 @@ ConfigLoader.prototype.getRecursiveScanPath = function(cpath, scanPaths, metaObj
 	}
 }
 }).call(this,require('_process'))
-},{"../util/constant":36,"../util/metaUtil":38,"../util/requireUtil":41,"../util/utils":43,"./metaLoader":31,"_process":50,"pomelo-logger":56}],31:[function(require,module,exports){
+},{"../util/constant":37,"../util/metaUtil":39,"../util/requireUtil":42,"../util/utils":44,"./metaLoader":32,"_process":51,"pomelo-logger":57}],32:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -7654,7 +7767,7 @@ MetaLoader.prototype.setMetaObject = function(beanName, metaObject) {
  * @return   {Object} metaObjects
  * @api public
  */
-MetaLoader.prototype.getMetaObejcts = function() {
+MetaLoader.prototype.getMetaObjects = function() {
 	return this.metaObjects;
 }
 
@@ -7743,7 +7856,7 @@ MetaLoader.prototype.loadPath = function(meta, path) {
 	return meta;
 };
 }).call(this,require('_process'))
-},{"../util/constant":36,"../util/fileUtil":37,"../util/metaUtil":38,"../util/utils":43,"_process":50,"path":49,"pomelo-logger":56}],32:[function(require,module,exports){
+},{"../util/constant":37,"../util/fileUtil":38,"../util/metaUtil":39,"../util/utils":44,"_process":51,"path":50,"pomelo-logger":57}],33:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -7838,7 +7951,7 @@ PropertiesLoader.prototype.loadDir = function(meta, lpath, lflag) {
 		}
 	}
 }
-},{"../util/fileUtil":37,"../util/utils":43,"pomelo-logger":56}],33:[function(require,module,exports){
+},{"../util/fileUtil":38,"../util/utils":44,"pomelo-logger":57}],34:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -7905,7 +8018,7 @@ ResourceLoader.prototype.load = function(cpath) {
 
 	return metaObjects;
 }
-},{"./configLoader":30}],34:[function(require,module,exports){
+},{"./configLoader":31}],35:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -7998,7 +8111,7 @@ AopUtil.sortAdvisorsByOrder = function(advisors) {
 }
 
 module.exports = AopUtil;
-},{"../aop/advisor":2,"../aop/aspect":3,"./utils":43}],35:[function(require,module,exports){
+},{"../aop/advisor":2,"../aop/aspect":3,"./utils":44}],36:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -8133,7 +8246,7 @@ BeanUtils.sortBeanDefinitions = function(beanDefinitions, beanFactory) {
 }
 
 module.exports = BeanUtils;
-},{"../beans/support/beanWrapper":16,"./utils":43}],36:[function(require,module,exports){
+},{"../beans/support/beanWrapper":17,"./utils":44}],37:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -8234,7 +8347,7 @@ module.exports = {
 
 	DEFINE_GETTER_PREFIX: "__"
 }
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -8295,7 +8408,7 @@ if (fs) {
 }
 
 module.exports = FileUtil;
-},{"fs":45}],38:[function(require,module,exports){
+},{"fs":46}],39:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -8796,7 +8909,7 @@ MetaUtil.cleanUp = function() {
 
 module.exports = MetaUtil;
 }).call(this,require('_process'))
-},{"./constant":36,"./requireUtil":41,"./utils":43,"_process":50,"path":49,"pomelo-logger":56}],39:[function(require,module,exports){
+},{"./constant":37,"./requireUtil":42,"./utils":44,"_process":51,"path":50,"pomelo-logger":57}],40:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -8868,7 +8981,7 @@ ModelUtil.buildModelAttribute = function(attributes, beanFactory) {
 }
 
 module.exports = ModelUtil;
-},{"../model/modelAttribute":22,"./constant":36,"./utils":43}],40:[function(require,module,exports){
+},{"../model/modelAttribute":23,"./constant":37,"./utils":44}],41:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -9019,7 +9132,7 @@ RequestUtil.addOnload = function(head, node, callback, url) {
 }
 
 module.exports = RequestUtil;
-},{"./utils":43}],41:[function(require,module,exports){
+},{"./utils":44}],42:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -9088,7 +9201,7 @@ RequireUtils.requireUtil = function() {
 }
 
 module.exports = RequireUtils;
-},{"../../shim/builtins":54,"os":48,"path":49,"util":52}],42:[function(require,module,exports){
+},{"../../shim/builtins":55,"os":49,"path":50,"util":53}],43:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -9362,7 +9475,7 @@ ScriptUtil.getLoaderDir = function() {
 }
 
 module.exports = ScriptUtil;
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -9811,7 +9924,7 @@ Utils.checkCocos2dJsb = function() {
 }
 
 module.exports = Utils;
-},{"./constant":36,"./fileUtil":37,"./requireUtil":41}],44:[function(require,module,exports){
+},{"./constant":37,"./fileUtil":38,"./requireUtil":42}],45:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -9912,9 +10025,9 @@ ValidatorUtil.metaValidator = function(metaObject) {
 }
 
 module.exports = ValidatorUtil;
-},{"./constant":36,"./utils":43}],45:[function(require,module,exports){
+},{"./constant":37,"./utils":44}],46:[function(require,module,exports){
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -10217,7 +10330,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -10242,7 +10355,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 exports.endianness = function () { return 'LE' };
 
 exports.hostname = function () {
@@ -10289,7 +10402,7 @@ exports.tmpdir = exports.tmpDir = function () {
 
 exports.EOL = '\n';
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -10517,7 +10630,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":50}],50:[function(require,module,exports){
+},{"_process":51}],51:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -10605,14 +10718,14 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -11202,10 +11315,10 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":51,"_process":50,"inherits":47}],53:[function(require,module,exports){
+},{"./support/isBuffer":52,"_process":51,"inherits":48}],54:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.16",
+  "version": "0.4.17",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
@@ -11253,7 +11366,7 @@ module.exports={
     "grunt-contrib-uglify": "~0.3.2"
   }
 }
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -11272,7 +11385,7 @@ exports.path = require('./modules/path');
 exports.util = require('./modules/util');
 exports.os = require('./modules/os');
 require('./object');
-},{"./modules/os":57,"./modules/path":58,"./modules/process":59,"./modules/util":62,"./object":63}],55:[function(require,module,exports){
+},{"./modules/os":58,"./modules/path":59,"./modules/process":60,"./modules/util":63,"./object":64}],56:[function(require,module,exports){
 var Chokidar = {};
 
 Chokidar.watch = function() {
@@ -11280,7 +11393,7 @@ Chokidar.watch = function() {
 }
 
 module.exports = Chokidar;
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 (function (process){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
@@ -11364,7 +11477,7 @@ module.exports = {
 	getLogger: getLogger
 }
 }).call(this,require('_process'))
-},{"../lib/util/utils":43,"_process":50}],57:[function(require,module,exports){
+},{"../lib/util/utils":44,"_process":51}],58:[function(require,module,exports){
 exports.endianness = function() {
     return 'LE'
 };
@@ -11423,7 +11536,7 @@ exports.tmpdir = exports.tmpDir = function() {
 };
 
 exports.EOL = '\n';
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -11649,7 +11762,7 @@ var substr = 'ab'.substr(-1) === 'b' ? function(str, start, len) {
   return str.substr(start, len);
 };
 }).call(this,require('_process'))
-},{"_process":50}],59:[function(require,module,exports){
+},{"_process":51}],60:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -11738,7 +11851,7 @@ process.cwd = function() {
 process.chdir = function(dir) {
     throw new Error('process.chdir is not supported');
 };
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -11762,11 +11875,11 @@ if (typeof Object.create === 'function') {
     ctor.prototype.constructor = ctor
   }
 }
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
 	return arg && typeof arg === 'object' && typeof arg.copy === 'function' && typeof arg.fill === 'function' && typeof arg.readUInt8 === 'function';
 }
-},{}],62:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -12363,7 +12476,7 @@ function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/inherits":60,"./support/isBuffer":61,"_process":50}],63:[function(require,module,exports){
+},{"./support/inherits":61,"./support/isBuffer":62,"_process":51}],64:[function(require,module,exports){
 if (typeof Object.create != 'function') {
   Object.create = (function() {
     var Object = function() {};

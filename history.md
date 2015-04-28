@@ -1,3 +1,7 @@
+0.4.17 / 2015-4-28
+==================
+* add bearcat.require, bearcat.exports support for cocos2d-js environment
+
 0.4.16 / 2015-4-26
 ==================
 * add SIGTERM SIGHUP destroy signal hook
