@@ -995,8 +995,8 @@ var DynamicMetaProxy = function() {
  *
  * @api public
  */
-DynamicMetaProxy.prototype.dyInit = function() {
-	var beanDefinition = this.getBeanDefinition();
+DynamicMetaProxy.prototype._dyInit = function() {
+	var beanDefinition = this.beanDefinition;
 	if (!beanDefinition) {
 		logger.error('init error no beanDefinition.');
 		return;
@@ -1017,7 +1017,7 @@ DynamicMetaProxy.prototype.dyInit = function() {
 					};
 
 					self[method] = function() {
-						return self.dyInvoke(method, arguments);
+						return self._dyInvoke(method, arguments);
 					};
 				})(interface);
 			}
@@ -1032,8 +1032,8 @@ DynamicMetaProxy.prototype.dyInit = function() {
  * @param  {Array}  args target invoke arguments
  * @api private
  */
-DynamicMetaProxy.prototype.dyInvoke = function(method, args) {
-	var targetBean = this.getBean();
+DynamicMetaProxy.prototype._dyInvoke = function(method, args) {
+	var targetBean = this._getBean();
 	if (Utils.checkFunction(targetBean[method])) {
 		return targetBean[method].apply(targetBean, args);
 	} else {
@@ -1047,100 +1047,18 @@ DynamicMetaProxy.prototype.dyInvoke = function(method, args) {
  * @return  {Object}  target bean
  * @api public
  */
-DynamicMetaProxy.prototype.getBean = function() {
-	var args = this.getArgs();
+DynamicMetaProxy.prototype._getBean = function() {
+	var args = this.args;
 
-	var beanFactory = this.getBeanFactory();
-	if (!this.getTarget()) {
-		this.setTarget(beanFactory.getBean.apply(beanFactory, args));
+	var beanFactory = this.beanFactory;
+	if (!this.target) {
+		this.target = beanFactory.getBean.apply(beanFactory, args);
 	}
 
 	return this.target;
 }
 
-/**
- * DynamicMetaProxy set args.
- *
- * @param  {Array}  args get bean arguments
- * @api public
- */
-DynamicMetaProxy.prototype.setArgs = function(args) {
-	this.args = args;
-}
-
-/**
- * DynamicMetaProxy get args.
- *
- * @return  {Array}  get bean arguments
- * @api public
- */
-DynamicMetaProxy.prototype.getArgs = function() {
-	return this.args;
-}
-
-/**
- * DynamicMetaProxy set target instance.
- *
- * @param  {Object} target target object instance
- * @api public
- */
-DynamicMetaProxy.prototype.setTarget = function(target) {
-	this.target = target;
-}
-
-/**
- * DynamicMetaProxy get target instance.
- *
- * @return  {Object} target object instance
- * @api public
- */
-DynamicMetaProxy.prototype.getTarget = function() {
-	return this.target;
-}
-
-/**
- * DynamicMetaProxy set beanFactory.
- *
- * @param  {Object} beanFactory
- * @api public
- */
-DynamicMetaProxy.prototype.setBeanFactory = function(beanFactory) {
-	this.beanFactory = beanFactory;
-}
-
-/**
- * DynamicMetaProxy get beanFactory.
- *
- * @return  {Object} beanFactory
- * @api public
- */
-DynamicMetaProxy.prototype.getBeanFactory = function() {
-	return this.beanFactory;
-}
-
-/**
- * DynamicMetaProxy set beanDefinition.
- *
- * @param  {Object} beanDefinition
- * @api public
- */
-DynamicMetaProxy.prototype.setBeanDefinition = function(beanDefinition) {
-	this.beanDefinition = beanDefinition;
-}
-
-/**
- * DynamicMetaProxy get beanDefinition.
- *
- * @return  {Object} beanDefinition
- * @api public
- */
-DynamicMetaProxy.prototype.getBeanDefinition = function() {
-	return this.beanDefinition;
-}
-
-var names = ["dyInit", "dyInvoke", "getBean", "setBeanName",
-	"getBeanName", "setMeta", "getMeta", "setTarget", "setBeanFactory", "getBeanFactory"
-];
+var names = ["_dyInit", "_dyInvoke", "_getBean"];
 
 var checkFuncName = function(name) {
 	for (var i = 0; i < names.length; i++) {
@@ -1551,10 +1469,10 @@ BeanFactory.prototype.doGetBeanProxy = function(beanName) {
 	}
 
 	var dynamicMetaProxy = new DynamicMetaProxy();
-	dynamicMetaProxy.setBeanDefinition(beanDefinition);
-	dynamicMetaProxy.setBeanFactory(this);
-	dynamicMetaProxy.setArgs(arguments);
-	dynamicMetaProxy.dyInit();
+	dynamicMetaProxy['beanDefinition'] = beanDefinition;
+	dynamicMetaProxy['beanFactory'] = this;
+	dynamicMetaProxy['args'] = arguments;
+	dynamicMetaProxy._dyInit();
 
 	return dynamicMetaProxy;
 }
