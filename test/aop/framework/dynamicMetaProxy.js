@@ -8,8 +8,8 @@ describe('DynamicMetaProxy', function() {
 
 			}
 
-			dynamicMetaProxy.dyInit();
-			dynamicMetaProxy.dyInvoke('run', []);
+			dynamicMetaProxy._dyInit();
+			dynamicMetaProxy._dyInvoke('run', []);
 
 			done();
 		});
