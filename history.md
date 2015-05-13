@@ -1,3 +1,7 @@
+0.4.18 / 2015-5-13
+==================
+* upgrade dynamicMetaProxy methods
+
 0.4.17 / 2015-4-28
 ==================
 * add bearcat.require, bearcat.exports support for cocos2d-js environment
