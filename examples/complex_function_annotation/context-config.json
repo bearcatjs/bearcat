@@ -1,0 +1,27 @@
+{
+	"name": "complex_function_annotation",
+	"beans": [{
+		"id": "car",
+		"func": "./app/car",
+		"scope2": "prototype",
+		"props": [{
+			"name": "$engine",
+			"ref": "engine"
+		}, {
+			"name": "$wheel",
+			"ref": "wheel"
+		}, {
+			"name": "$light",
+			"ref": "light"
+		}]
+	}, {
+		"id": "engine",
+		"func": "./app/engine"
+	}, {
+		"id": "light",
+		"func": "./app/light"
+	}, {
+		"id": "wheel",
+		"func": "./app/wheel"
+	}]
+}
