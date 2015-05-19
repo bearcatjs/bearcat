@@ -376,11 +376,17 @@ var properties = {};
 Root.__bearcatData__.configData = properties;
 
 },{"/home/fantasyni/projects/pomelo-projects/bearcat/examples/circle_reference/app/bus.js":11,"/home/fantasyni/projects/pomelo-projects/bearcat/examples/circle_reference/app/car.js":12}],14:[function(require,module,exports){
+var num = 1;
+
 var Car = function() {
 	this.$id = "car";
+	// this.$scope = "singleton";
+	this.$scope = "prototype";
 	this["$engine"] = null; // use []
 	var wheelName = "$wheel";
 	this[wheelName] = null; // use variable
+	this.num = num++;
+	// this.$Tvalue = value;
 };
 
 Car.prototype["$light"] = null; // use variable in prototype
@@ -389,7 +395,7 @@ Car.prototype.run = function() {
 	this.$engine.run();
 	this.$light.shine();
 	this.$wheel.run();
-	console.log('car run...');
+	console.log('car run %d ...', this.num);
 }
 
 module.exports = Car;
@@ -6954,8 +6960,9 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 						if (beanFunc) {
 							var proto = func.prototype;
 
+							logger.info('bearcat reload update bean %s', id);
 							for (var key in proto) {
-								logger.info('bearcat reload update prototype %s:%s', id, key);
+								// logger.info('bearcat reload update prototype %s:%s', id, key);
 								beanFunc.prototype[key] = proto[key];
 							}
 						}
@@ -6963,7 +6970,7 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 				}
 			}
 			self.emit('reload');
-			logger.info('Bearcat hot reloading done ...');
+			logger.info('bearcat hot reloading done ...');
 		}
 
 		setTimeout(doHotReload, s * 1000 + p + s);
@@ -15711,7 +15718,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":164,"_process":163,"inherits":160}],166:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.17",
+  "version": "0.4.19",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",

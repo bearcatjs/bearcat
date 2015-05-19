@@ -5064,8 +5064,9 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 						if (beanFunc) {
 							var proto = func.prototype;
 
+							logger.info('bearcat reload update bean %s', id);
 							for (var key in proto) {
-								logger.info('bearcat reload update prototype %s:%s', id, key);
+								// logger.info('bearcat reload update prototype %s:%s', id, key);
 								beanFunc.prototype[key] = proto[key];
 							}
 						}
@@ -5073,7 +5074,7 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 				}
 			}
 			self.emit('reload');
-			logger.info('Bearcat hot reloading done ...');
+			logger.info('bearcat hot reloading done ...');
 		}
 
 		setTimeout(doHotReload, s * 1000 + p + s);
@@ -11236,7 +11237,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":52,"_process":51,"inherits":48}],54:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.17",
+  "version": "0.4.19",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
