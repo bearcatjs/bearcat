@@ -1,3 +1,7 @@
+0.4.19 / 2015-5-19
+==================
+* update bearcat hot reload logs
+
 0.4.18 / 2015-5-13
 ==================
 * upgrade dynamicMetaProxy methods
