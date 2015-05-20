@@ -7,11 +7,9 @@
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat shim logger.js
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
-
-var Utils = require('../lib/util/utils');
 
 function getLogger(categoryName) {
 	if (typeof console.log !== 'function') {
@@ -33,7 +31,7 @@ function getLogger(categoryName) {
 	var levels = ['log', 'debug', 'info', 'warn', 'error', 'trace'];
 
 	var logger = {};
-	if (Utils.checkCocos2dJsb()) {
+	if (checkCocos2dJsb()) {
 		for (var i = 0; i < levels.length; i++) {
 			var level = levels[i];
 			if (cc[level]) {
@@ -75,6 +73,14 @@ function getLogger(categoryName) {
 
 	return pLogger;
 };
+
+function checkCocos2dJsb() {
+	if (typeof cc !== 'undefined' && cc && cc.sys && cc.sys.isNative) {
+		return true;
+	}
+
+	return false;
+}
 
 module.exports = {
 	getLogger: getLogger
