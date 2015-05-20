@@ -1,3 +1,7 @@
+0.4.21 / 2015-5-21
+==================
+* update shim logger.js
+
 0.4.20 / 2015-5-20
 ==================
 * improve hot reload random interval time to avoid require file failed
