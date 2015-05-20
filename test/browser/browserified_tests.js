@@ -6929,11 +6929,14 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 			return;
 		}
 
+		var pid = process.pid;
 		var s = Math.floor(Math.random(0, 1) * 5);
+		var m = Math.floor(Math.random(0, 1) * 10);
 		var p = Math.floor(Math.random(0, 1) * 100);
+		var t = s * 1000 + p * (pid % 100) + p + s * m;
 
 		var doHotReload = function() {
-			logger.info('%j changed, bearcat start hot reloading ...', filename);
+			logger.info('%s changed, bearcat start hot reloading %d ...', filename, t);
 			var meta = Utils.myRequireHot(filename);
 			if (!meta) {
 				return;
@@ -6973,7 +6976,7 @@ ApplicationContext.prototype.hotReloadFileWatch = function(hpath) {
 			logger.info('bearcat hot reloading done ...');
 		}
 
-		setTimeout(doHotReload, s * 1000 + p + s);
+		setTimeout(doHotReload, t);
 	});
 }
 
@@ -11304,6 +11307,7 @@ module.exports = ScriptUtil;
  * MIT Licensed
  */
 
+var logger = require('pomelo-logger').getLogger('bearcat', 'Utils');
 var RequireUtil = require('./requireUtil');
 var Constant = require('./constant');
 var FileUtil = require('./fileUtil');
@@ -11487,8 +11491,9 @@ Utils.myRequire = function(cpath) {
 	try {
 		context = require(cpath);
 		return context;
-	} catch (e) {
-		console.log(e.stack);
+	} catch (err) {
+		logger.error('myRequire error %s', err.stack);
+		// logger.debug('myRequire error file pid %d %s %s', process.pid, cpath, FileUtil.readFileSync(cpath).toString());
 		return context;
 	}
 }
@@ -11505,8 +11510,9 @@ Utils.myRequireHot = function(cpath) {
 	try {
 		context = Utils.requireUncached(cpath);
 		return context;
-	} catch (e) {
-		console.log(e.stack);
+	} catch (err) {
+		logger.error('myRequireHot error %s', err.stack);
+		// logger.debug('myRequireHot error file pid %d %s %s', process.pid, cpath, FileUtil.readFileSync(cpath).toString());
 		return context;
 	}
 }
@@ -11739,7 +11745,7 @@ Utils.checkCocos2dJsb = function() {
 }
 
 module.exports = Utils;
-},{"./constant":144,"./fileUtil":145,"./requireUtil":149}],152:[function(require,module,exports){
+},{"./constant":144,"./fileUtil":145,"./requireUtil":149,"pomelo-logger":169}],152:[function(require,module,exports){
 /*!
  * .______    _______     ___      .______       ______     ___   .__________.
  * (   _  )  (   ____)   /   \     (   _  )     (      )   /   \  (          )
@@ -15718,7 +15724,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":164,"_process":163,"inherits":160}],166:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.19",
+  "version": "0.4.20",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
@@ -18439,7 +18445,7 @@ describe('applicationContext', function() {
 						expect(r).to.eql('bus hot');
 
 						done();
-					}, 6000);
+					}, 11000);
 				}, 2000);
 			});
 		});

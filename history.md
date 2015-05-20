@@ -1,3 +1,7 @@
+0.4.20 / 2015-5-20
+==================
+* improve hot reload random interval time to avoid require file failed
+
 0.4.19 / 2015-5-19
 ==================
 * update bearcat hot reload logs
