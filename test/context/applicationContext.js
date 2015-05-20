@@ -649,7 +649,7 @@ describe('applicationContext', function() {
 						expect(r).to.eql('bus hot');
 
 						done();
-					}, 6000);
+					}, 11000);
 				}, 2000);
 			});
 		});
