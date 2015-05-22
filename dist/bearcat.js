@@ -11243,7 +11243,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":52,"_process":51,"inherits":48}],54:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.20",
+  "version": "0.4.21",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
@@ -11329,11 +11329,9 @@ module.exports = Chokidar;
  * (______)  (_______/__/     \__\ ( _| `.____) (______)__/     \__\  |__|
  *
  * Bearcat shim logger.js
- * Copyright(c) 2014 fantasyni <fantasyni@163.com>
+ * Copyright(c) 2015 fantasyni <fantasyni@163.com>
  * MIT Licensed
  */
-
-var Utils = require('../lib/util/utils');
 
 function getLogger(categoryName) {
 	if (typeof console.log !== 'function') {
@@ -11355,7 +11353,7 @@ function getLogger(categoryName) {
 	var levels = ['log', 'debug', 'info', 'warn', 'error', 'trace'];
 
 	var logger = {};
-	if (Utils.checkCocos2dJsb()) {
+	if (checkCocos2dJsb()) {
 		for (var i = 0; i < levels.length; i++) {
 			var level = levels[i];
 			if (cc[level]) {
@@ -11398,11 +11396,19 @@ function getLogger(categoryName) {
 	return pLogger;
 };
 
+function checkCocos2dJsb() {
+	if (typeof cc !== 'undefined' && cc && cc.sys && cc.sys.isNative) {
+		return true;
+	}
+
+	return false;
+}
+
 module.exports = {
 	getLogger: getLogger
 }
 }).call(this,require('_process'))
-},{"../lib/util/utils":44,"_process":51}],58:[function(require,module,exports){
+},{"_process":51}],58:[function(require,module,exports){
 exports.endianness = function() {
     return 'LE'
 };
