@@ -8242,6 +8242,8 @@ module.exports = {
 
 	FUNC_PROPS_REGEXP: /\s*this\.\$\w+\s*=(.|\s)*?;/g,
 
+	FUNC_PROPS_REGEXP_ATTR: /\s*this\.\w+\s*=\s*\"\$(.|\s)*?\";/g,
+	 
 	FUNC_COMMENT_LINE: /\/\/.*?\n/g,
 
 	FUNC_COMMENT_STAR: /\/\*(.|\s)*?\*\//g,
@@ -8586,14 +8588,22 @@ MetaUtil.resolveFuncAnnotation = function(func, fp, force) {
  */
 MetaUtil.resolvePropsFromFuncString = function(funcString, funcArgsString) {
 	var funcPropsArray = funcString.match(Constant.FUNC_PROPS_REGEXP);
+	var funcPropsAttrArray = funcString.match(Constant.FUNC_PROPS_REGEXP_ATTR);
 
+	var t = "var FuncProps = function(" + funcArgsString + ") {" + EOL;
 	if (funcPropsArray && Utils.checkArray(funcPropsArray)) {
-		var t = "var FuncProps = function(" + funcArgsString + ") {" + EOL;
 		for (var i = 0; i < funcPropsArray.length; i++) {
 			t += (funcPropsArray[i] + EOL);
 		}
-		t += "}";
 	}
+
+	if (funcPropsAttrArray && Utils.checkArray(funcPropsAttrArray)) {
+		for (var i = 0; i < funcPropsAttrArray.length; i++) {
+			t += (funcPropsAttrArray[i] + EOL);
+		}
+	}
+
+	t += "}";
 
 	var funcProps = MetaUtil.getEvalFuncProps(t);
 
@@ -11261,7 +11271,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":52,"_process":51,"inherits":48}],54:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.21",
+  "version": "0.4.23",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
