@@ -1,3 +1,6 @@
+0.4.23 / 2015-6-5
+* fix resolve function string inject $ attribute value bug
+
 0.4.22 / 2015-6-5
 ==================
 * add bearcat.getClass alias to bearcat.getFunction
