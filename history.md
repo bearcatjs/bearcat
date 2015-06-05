@@ -1,3 +1,7 @@
+0.4.22 / 2015-6-5
+==================
+* add bearcat.getClass alias to bearcat.getFunction
+
 0.4.21 / 2015-5-21
 ==================
 * update shim logger.js

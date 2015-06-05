@@ -4480,6 +4480,24 @@ Bearcat.getFunction = function(beanName) {
 }
 
 /**
+ * Bearcat get bean constructor function from IoC container through beanName, the same as bearcat.getFunction.
+ *
+ * Examples:
+ *
+ *
+ *	  // through beanName
+ *	  var Car = bearcat.getClass("car");
+ *
+ *
+ * @param  {String}   beanName
+ * @return {Function} bean constructor function
+ * @api public
+ */
+Bearcat.getClass = function(beanName) {
+	return Bearcat.getFunction(beanName);
+}
+
+/**
  * Bearcat get model from bearcat through modelId.
  *
  * Examples:
