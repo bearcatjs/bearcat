@@ -1,0 +1,5 @@
+{
+	"name": "module",
+	"description": "define require module examples",
+	"scan": "app"
+}
