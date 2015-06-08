@@ -3344,7 +3344,6 @@ BeanFactory.prototype.doGetBean = function(beanName) {
 	if (beanDefinition.isSingleton()) {
 		return this.singletonBeanFactory.getSingleton.apply(this.singletonBeanFactory, arguments);
 	} else if (beanDefinition.isPrototype()) {
-
 		return this.createBean.apply(this, arguments);
 	}
 }
@@ -6394,6 +6393,53 @@ Bearcat.getClass = function(beanName) {
 }
 
 /**
+ * Bearcat shim to enable function inherits.
+ *
+ * Examples:
+ *
+ *
+ *	  bearcat.extend("bus", "car");
+ *
+ *
+ * @param  {String}   		beanName
+ * @param  {String|Array}   superBeanName or superBeanName array
+ * @api public
+ */
+Bearcat.extend = function(beanName, superBeanName) {
+	if (!beanName || !superBeanName) {
+		logger.error('[bearcat.extend] beanName or superBeanName can not be null');
+		return;
+	}
+
+	this.applicationContext.extendBean(beanName, superBeanName);
+}
+
+/**
+ * Bearcat call function used for inherits to call super constructor function.
+ *
+ * Examples:
+ *
+ *
+ *	  bearcat.call("car", this);
+ *
+ *
+ * @param  {String}   beanName
+ * @param  {Object}   context
+ * @api public
+ */
+Bearcat.call = function(beanName, context) {
+	var beanFunction = Bearcat.getFunction(beanName);
+
+	if (!beanFunction) {
+		logger.error('[bearcat.call] bean function %s not exist', beanName);
+		return;
+	}
+
+	var args = Array.prototype.slice.call(arguments, 2);
+	beanFunction.apply(context, args);
+}
+
+/**
  * Bearcat get model from bearcat through modelId.
  *
  * Examples:
@@ -6497,6 +6543,9 @@ var ApplicationContext = function(configLocations, opts) {
 	this.reloadMap = {};
 	this.beanFactory = null;
 	this.startUpDate = null;
+	this.extendBeanMap = {};
+	this.extendedBeanMap = {};
+	this.extendBeanCurMap = {};
 	this.moduleFactory = null;
 	this.resourceLoader = null;
 	this.bootStrapLoader = null;
@@ -6665,6 +6714,9 @@ ApplicationContext.prototype.refresh = function(cb) {
 
 	// Refresh internal beanFactory
 	self.refreshBeanFactory();
+
+	// Extend beans
+	self.doExtendBeans();
 
 	// Try Async loading for dependencies
 	self.tryAsyncLoading(function() {
@@ -7310,12 +7362,112 @@ ApplicationContext.prototype.getModelDefinition = function(modelId) {
 /**
  * ApplicationContext get bean contructor function.
  *
- * @param  {String} beanName
+ * @param  {String}   beanName
  * @return {Function} bean constructor function
  * @api public
  */
 ApplicationContext.prototype.getBeanFunction = function(beanName) {
 	return this.beanFactory.getBeanFunction(beanName);
+}
+
+/**
+ * ApplicationContext extend bean.
+ *
+ * @param  {String}   		beanName
+ * @param  {String|Array}   superBeanName or superBeanName array
+ * @api public
+ */
+ApplicationContext.prototype.extendBean = function(beanName, superBeanName) {
+	if (!this.extendBeanMap[beanName]) {
+		this.extendBeanMap[beanName] = [];
+	}
+
+	this.extendBeanMap[beanName] = this.extendBeanMap[beanName].concat(superBeanName);
+}
+
+/**
+ * ApplicationContext do extend beans.
+ *
+ * @api private
+ */
+ApplicationContext.prototype.doExtendBeans = function() {
+	var extendBeanMap = this.extendBeanMap;
+
+	for (var beanName in extendBeanMap) {
+		var superNames = extendBeanMap[beanName];
+
+		for (var i = 0; i < superNames.length; i++) {
+			var superBeanName = superNames[i];
+			this.doExtendBean(beanName, superBeanName);
+		}
+	}
+}
+
+/**
+ * ApplicationContext do extend bean.
+ *
+ * @param  {String}   beanName
+ * @param  {String}   superBeanName
+ * @api public
+ */
+ApplicationContext.prototype.doExtendBean = function(beanName, superBeanName) {
+	var cacheKey = beanName + '_' + superBeanName;
+	if (this.extendBeanCurMap[superBeanName]) {
+		logger.error("[bearcat.extend] error circle beanName %s extend %s is not allowed", beanName, superBeanName);
+		return;
+	}
+
+	this.extendBeanCurMap[beanName] = true;
+
+	if (this.extendedBeanMap[cacheKey]) {
+		return;
+	}
+
+	var beanFunction = this.getBeanFunction(beanName);
+	if (!beanFunction) {
+		logger.error('[bearcat.extend] %s from super %s, %s null', beanName, superBeanName, beanName);
+		return;
+	}
+
+	var superFunction = this.getBeanFunction(superBeanName);
+	if (!superFunction) {
+		logger.error('[bearcat.extend] %s from super %s, %s null', beanName, superBeanName, superBeanName);
+		return;
+	}
+
+	var _superBeans = this.extendBeanMap[superBeanName];
+	if (_superBeans && _superBeans.length) {
+		for (var i = 0; i < _superBeans.length; i++) {
+			this.doExtendBean(superBeanName, _superBeans[i]);
+		}
+	}
+
+	var _super = superFunction.prototype;
+	var props = beanFunction.prototype;
+	for (var name in _super) {
+		if (!props[name]) {
+			props[name] = _super[name];
+		} else {
+			if (Utils.checkFunction(props[name]) && Utils.checkFunction(_super[name])) {
+				props[name] = (function(super_fn, fn) {
+					return function() {
+						var tmp = this._super;
+
+						this._super = super_fn;
+
+						var ret = fn.apply(this, arguments);
+
+						this._super = tmp;
+
+						return ret;
+					}
+				})(_super[name], props[name]);
+			}
+		}
+	}
+
+	delete this.extendBeanCurMap[beanName];
+	this.extendedBeanMap[cacheKey] = true;
 }
 
 /**
@@ -15752,7 +15904,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":164,"_process":163,"inherits":160}],166:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.23",
+  "version": "0.4.24",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
