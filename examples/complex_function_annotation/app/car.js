@@ -8,6 +8,7 @@ var Car = function() {
 	var wheelName = "$wheel";
 	this[wheelName] = null; // use variable
 	this.num = num++;
+	// this.$Tvalue = value;
 };
 
 Car.prototype["$light"] = null; // use variable in prototype

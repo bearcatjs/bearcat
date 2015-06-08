@@ -2,7 +2,9 @@ var bearcat = require('../../lib/bearcat');
 // var example_dir = 'simple'; // change this to run your examples
 var example_dir = 'placeholder';
 
-var contextPath = require.resolve('./context.json'); // to run simple example
+var contextPath = require.resolve('./context.json', {
+	BEARCAT_FUNCTION_STRING: true
+}); // to run simple example
 
 bearcat.createApp([contextPath]);
 bearcat.start(function() {
