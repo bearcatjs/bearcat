@@ -1,3 +1,7 @@
+0.4.24 / 2015-6-8
+==================
+* add bearcat.extend feature to make it easy for bearcat function to use inherits
+
 0.4.23 / 2015-6-5
 * fix resolve function string inject $ attribute value bug
 
