@@ -1,3 +1,7 @@
+0.4.25 / 2015-6-30
+==================
+* fix bearcat destroy hook when in spawn child mode
+
 0.4.24 / 2015-6-8
 ==================
 * add bearcat.extend feature to make it easy for bearcat function to use inherits

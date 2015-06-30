@@ -7167,7 +7167,7 @@ ApplicationContext.prototype.finishRefresh = function() {
 		return;
 	}
 
-	var listeners = process.listeners('SIGINT');
+	var listeners = process.listeners('SIGTERM');
 	if (listeners && listeners.length) {
 		return;
 	}
@@ -15904,7 +15904,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":164,"_process":163,"inherits":160}],166:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.24",
+  "version": "0.4.25",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
