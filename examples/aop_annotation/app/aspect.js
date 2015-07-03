@@ -1,6 +1,7 @@
 var Aspect = function() {
 	this.$id = "aspect";
 	this.$aop = true;
+	this.$wheel = null;
 }
 
 Aspect.prototype.doBefore = function(next) {
