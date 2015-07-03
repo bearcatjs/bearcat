@@ -12,4 +12,5 @@ bearcat.start(function() {
 	car.run(); // call the method
 	car.runo();
 	car.runx();
+	car.runx2();
 });

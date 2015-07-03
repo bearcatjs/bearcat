@@ -3,6 +3,7 @@ var Car = function() {
 	this.$Vnum = "${car.num}";
 	this.$Vonum = "${car.onum}";
 	this.xnum = "${car.xnum}";
+	this.xnum2 = '${car.xnum}';
 }
 
 Car.prototype.run = function() {
@@ -16,6 +17,10 @@ Car.prototype.runo = function() {
 
 Car.prototype.runx = function() {
 	console.log(this.xnum);
+}
+
+Car.prototype.runx2 = function() {
+	console.log(this.xnum2);
 }
 
 module.exports = Car;
