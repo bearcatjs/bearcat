@@ -1,3 +1,7 @@
+0.4.26 / 2015-7-3
+==================
+* fix FUNC_PROPS_REGEXP_ATTR match bug [issue@205](https://github.com/bearcatjs/bearcat/issues/205)
+
 0.4.25 / 2015-6-30
 ==================
 * fix bearcat destroy hook when in spawn child mode

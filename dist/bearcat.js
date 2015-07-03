@@ -8394,8 +8394,8 @@ module.exports = {
 
 	FUNC_PROPS_REGEXP: /\s*this\.\$\w+\s*=(.|\s)*?;/g,
 
-	FUNC_PROPS_REGEXP_ATTR: /\s*this\.\w+\s*=\s*\"\$(.|\s)*?\";/g,
-	 
+	FUNC_PROPS_REGEXP_ATTR: /\s*this\.\w+\s*=\s*[\"\']\$(.|\s)*?[\"\'];/g,
+
 	FUNC_COMMENT_LINE: /\/\/.*?\n/g,
 
 	FUNC_COMMENT_STAR: /\/\*(.|\s)*?\*\//g,
@@ -11423,7 +11423,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":52,"_process":51,"inherits":48}],54:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.25",
+  "version": "0.4.26",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
