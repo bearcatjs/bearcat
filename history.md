@@ -1,3 +1,7 @@
+0.4.27 / 2015-8-24
+==================
+* dynamicAopProxy around runtime return to make it compatiable with promise
+
 0.4.26 / 2015-7-3
 ==================
 * fix FUNC_PROPS_REGEXP_ATTR match bug [issue@205](https://github.com/bearcatjs/bearcat/issues/205)
