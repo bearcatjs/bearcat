@@ -152,6 +152,7 @@ Wheel.prototype.doWheel = function() {
 var Aspect = function() {
 	this.$id = "aspect";
 	this.$aop = true;
+	this.$wheel = null;
 }
 
 Aspect.prototype.doBefore = function(next) {
@@ -286,14 +287,15 @@ Car.prototype.doRunAfterSync = function() {
 	return 'runAfterSync';
 }
 
-Car.prototype.dyInit = function() {
+// Car.prototype.dyInit = function() {
 
-}
+// }
 
 module.exports = Car;
 },{}],9:[function(require,module,exports){
 var Wheel = function() {
 	this.$id = "wheel";
+	this.$proxy = false;
 }
 
 Wheel.prototype.doWheel = function() {
@@ -2700,7 +2702,7 @@ DynamicAopProxy.prototype.dyInvoke = function(method, args) {
 		}
 
 		if (needAround) {
-			self.doInvokeAdvisorsAround(target, method, args, aroundAdvisors, function() {
+			return self.doInvokeAdvisorsAround(target, method, args, aroundAdvisors, function() {
 				arguments = Array.prototype.slice.apply(arguments);
 				invokeCb.apply(null, arguments);
 				self.doInvokeAdvisorsAfter(method, arguments, afterAdvisors, function() {});
@@ -2794,9 +2796,9 @@ DynamicAopProxy.prototype.doInvokeAdvisorsAround = function(target, method, args
 		args.unshift(method);
 		args.unshift(target);
 		args.push(cb);
-		aspectBean[advise].apply(aspectBean, args);
+		return aspectBean[advise].apply(aspectBean, args);
 	} else {
-		aspectBean[advise](target, method, cb);
+		return aspectBean[advise](target, method, cb);
 	}
 }
 
@@ -15909,7 +15911,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":164,"_process":163,"inherits":160}],166:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.26",
+  "version": "0.4.27",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",

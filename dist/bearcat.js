@@ -799,7 +799,7 @@ DynamicAopProxy.prototype.dyInvoke = function(method, args) {
 		}
 
 		if (needAround) {
-			self.doInvokeAdvisorsAround(target, method, args, aroundAdvisors, function() {
+			return self.doInvokeAdvisorsAround(target, method, args, aroundAdvisors, function() {
 				arguments = Array.prototype.slice.apply(arguments);
 				invokeCb.apply(null, arguments);
 				self.doInvokeAdvisorsAfter(method, arguments, afterAdvisors, function() {});
@@ -893,9 +893,9 @@ DynamicAopProxy.prototype.doInvokeAdvisorsAround = function(target, method, args
 		args.unshift(method);
 		args.unshift(target);
 		args.push(cb);
-		aspectBean[advise].apply(aspectBean, args);
+		return aspectBean[advise].apply(aspectBean, args);
 	} else {
-		aspectBean[advise](target, method, cb);
+		return aspectBean[advise](target, method, cb);
 	}
 }
 
@@ -11423,7 +11423,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":52,"_process":51,"inherits":48}],54:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.26",
+  "version": "0.4.27",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
