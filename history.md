@@ -1,3 +1,7 @@
+0.4.28 / 2015-9-28
+==================
+* fix entend bean circle check bug
+
 0.4.27 / 2015-8-24
 ==================
 * dynamicAopProxy around runtime return to make it compatiable with promise

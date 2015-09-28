@@ -5521,8 +5521,6 @@ ApplicationContext.prototype.doExtendBean = function(beanName, superBeanName) {
 		return;
 	}
 
-	this.extendBeanCurMap[beanName] = true;
-
 	if (this.extendedBeanMap[cacheKey]) {
 		return;
 	}
@@ -5538,6 +5536,8 @@ ApplicationContext.prototype.doExtendBean = function(beanName, superBeanName) {
 		logger.error('[bearcat.extend] %s from super %s, %s null', beanName, superBeanName, superBeanName);
 		return;
 	}
+
+	this.extendBeanCurMap[beanName] = true;
 
 	var _superBeans = this.extendBeanMap[superBeanName];
 	if (_superBeans && _superBeans.length) {
@@ -11423,7 +11423,7 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":52,"_process":51,"inherits":48}],54:[function(require,module,exports){
 module.exports={
   "name": "bearcat",
-  "version": "0.4.27",
+  "version": "0.4.28",
   "description": "Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications",
   "main": "index.js",
   "bin": "./bin/bearcat-bin.js",
