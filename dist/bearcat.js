@@ -9776,7 +9776,7 @@ Utils.myRequire = function(cpath) {
 		context = require(cpath);
 		return context;
 	} catch (err) {
-		logger.error('myRequire error %s', err.stack);
+		logger.error('myRequire path %s error %s', cpath, err.stack);
 		// logger.debug('myRequire error file pid %d %s %s', process.pid, cpath, FileUtil.readFileSync(cpath).toString());
 		return context;
 	}
