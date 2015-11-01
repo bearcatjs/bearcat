@@ -1,3 +1,7 @@
+0.4.29 / 2015-11-1
+==================
+* utils.myRequire error log with require path info
+
 0.4.28 / 2015-9-28
 ==================
 * fix entend bean circle check bug
